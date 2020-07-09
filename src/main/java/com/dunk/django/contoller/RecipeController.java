@@ -19,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 public class RecipeController {
     
     //git test
+    //이렇게 주석 다는 것으로는 안 되나?
     private final RecipeService service;
 
     @GetMapping("/list")
