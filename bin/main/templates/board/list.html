@@ -1,0 +1,51 @@
+<header th:replace="/includes/header.html"></header>
+<div class="container">
+    <div class="row">
+    <div class="col-md-12 ftco-animate fadeInUp ftco-animated">
+        <div class="cart-list">
+          <span class="navbar-brand">자유 게시판</span>
+          <a th:href="@{/board/register(page=${pageDTO.page}, size=${pageDTO.size})}">
+          <button type="submit"class="btn btn-primary" style="float: right;;">글쓰기</button>
+        </a>
+            <table class="table">
+                <thead class="thead-primary">
+                  <tr class="text-center">
+                    <th>NO</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                  </tr>
+                </thead>
+                <tbody th:each="dto:${result.dtoList}">
+                  <tr class="text-center">
+                    <td th:text="${dto.bno}"></td>
+                    <td><a th:href="@{/board/get(page=${pageDTO.page}, size=${pageDTO.size}, bno=${dto.bno})}">[[${dto.title}]]</a></td>
+                    <td th:text="${dto.writer}"></td>
+                    <td th:text="${#temporals.format(dto.regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                  </tr><!-- END TR-->
+                </tbody>
+              </table>
+          </div>
+    </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col text-center">
+    <div class="block-27">
+      <ul>
+        <li th:if="${result.prev}">
+          <a th:href="@{/board/list(page=${result.start-1}, size=${pageDTO.size})}"><</a>
+        </li>
+        <li th:class="${num == pageDTO.page ? 'active' : ''}" th:each=" num:${result.pageList}">
+          <a th:href="@{/board/list(page=${num}, size=${pageDTO.size})}"><span>[[${num}]]</span></a>
+      </li>
+      <li th:if="${result.next}">
+          <a th:href="@{/board/list(page=${result.end + 1}, size=${pageDTO.size})}">></a>
+      </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer th:replace="/includes/footer.html"></footer>

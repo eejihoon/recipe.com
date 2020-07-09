@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>로그인</h1>	
+
+<form method="post" action="/member/login">
+	<div>
+		<input type="text" name="username" value="m1">
+	</div>
+	<div>
+		<input type="password" name="password" value="1234">
+	</div>
+	<div>
+		<input type="checkbox" name='remember-me'>자동 로그인
+	</div>
+	<div>
+		<input type='submit' value="로그인">
+	</div>
+</form>
+
+	<a href="/member/signup"><button>가입</button></a>
+</body>
+</html>

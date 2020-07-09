@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Admin</h1>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <h1>USER Name - [[${#authentication.principal.name}]]</h1>
+    </div>
+
+    <a href="/member/logout"><button>로그아웃</button></a>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<header th:replace="/includes/header.html"></header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 ftco-animate fadeInUp ftco-animated">
+            <form id="form" class="bg-white p-5 contact-form">
+                <span class="navbar-brand">게시물 수정</span>
+                <div class="form-group">
+                    <label for="name">게시물 번호</label>
+                <input type="text" class="form-control" name="bno" th:value="${get.bno}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="name">제목</label>
+                <input type="text" class="form-control" name="title" th:value="${get.title}">
+                </div>
+                <div class="form-group">
+                <label for="name">내용</label>
+                <textarea name="content" id="" cols="30" rows="7" class="form-control">[[${get.content}]]</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="name">작성자</label>
+                    <input type="text" name="writer" class="form-control" th:value="${get.writer}" readonly>
+                </div>
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+
+                <button class="btn btn-primary py-3 px-3" data-oper="modify">완료</button>
+                <button class="btn btn-primary py-3 px-3" data-oper="back">취소</button>
+                <button class="btn btn-danger py-3 px-3" data-oper="remove">삭제</button>
+                </div>
+
+                <input type="hidden" name="page" th:value="${pageDTO.page}">
+                <input type="hidden" name="size" th:value="${pageDTO.size}">
+        </form>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+$(document).ready(function() {
+
+    var form = $("#form")
+    var oper = $(this).data("oper");
+
+    $("button").on("click", function(e) {
+        e.preventDefault();
+
+        var oper = $(this).data("oper");
+		console.log("operation : " + oper);
+
+        if(oper === 'modify') {
+            form.attr("method","post").attr("action", "/board/modify");
+        } else if(oper === 'back') {
+            form.attr("method","get").attr("action","/board/get");
+        } else if(oper === 'remove') {
+            if(confirm("삭제하겠습니까?")){
+                form.attr("method","post").attr("action","/board/remove");
+            } else {return;}
+        }
+        form.submit();
+
+    }); //button
+
+}); //docu
+</script>
+<footer th:replace="/includes/footer.html"></footer>

@@ -1,0 +1,44 @@
+<header th:replace="/includes/header.html"></header>
+
+<div class="container">
+    <div class="row">
+        <div th:each="list: ${list}" class="col-md-6 col-lg-3 ftco-animate">
+            <div class="product">
+                <a th:href="@{/recipe/list(itemId=${list.itemId})}" class="img-prod move"><img class="img-fluid" th:src="${list.img}"
+                    style="width:100%; height:100%;"
+                    alt="Colorlib Template">
+                    <div class="overlay"></div>
+                </a>
+                <div class="text py-3 pb-4 px-3 text-center">
+                    <h3> <a class="move" th:href="@{/recipe/list(itemId=${list.itemId})}">[[${list.recipe_name}]]</a></h3>
+                    <div class="d-flex">
+                        <div class="pricing">
+                            <p class="price"><span></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Pagination-->
+        <div th:align="center">
+        <ul class="pagination " th:align="center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active">
+              <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </div>
+        <!--END Pagination-->
+
+</div>
+</div>
+
+<footer th:replace="/includes/footer.html"></footer>

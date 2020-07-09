@@ -1,0 +1,48 @@
+<header th:replace="/includes/header.html"></header>
+<div class="container">
+  <div class="row">
+   <div class="col-md-12 ftco-animate fadeInUp ftco-animated">
+<form id="form" th:action="@{/board/register}" method="post" class="bg-white p-5 contact-form">
+    <div class="form-group">
+        <label for="name">제목</label>
+      <input type="text" class="form-control" name="title" placeholder="제목">
+    </div>
+    <div class="form-group">
+      <label for="name">내용</label>
+      <textarea name="content" id="" cols="30" rows="7" class="form-control" placeholder="내용을 입력하세요."></textarea>
+    </div>
+    <div class="form-group">
+        <label for="name">작성자</label>
+        <input type="text" name="writer" class="form-control">
+    </div>
+    <div class="form-group">
+    </div>
+    <div class="form-group">
+      <input type="submit" value="등록" class="btn btn-primary py-3 px-3">
+      <input type="submit" id="back" value="취소" class="btn btn-danger py-3 px-3">
+    </div>
+  </form>
+  <input type="hidden" id="page" name="page" th:value="${pageDTO.page}">
+  <input type="hidden" id="size" name="size" th:value="${pageDTO.size}">
+  </div>
+  </div>
+  </div>
+
+<script th:inline="javascript">
+$(document).ready(function() {
+  var form = $("#form");
+  var page = $("input[type='hidden']").clone();
+
+  $("#back").on("click",function(e){
+    e.preventDefault();
+
+    form.empty();
+    form.attr("method", "get").attr("action","/board/list");
+    form.append(page);
+
+    form.submit();
+  }); //back
+}); //docu
+</script>
+
+<footer th:replace="/includes/footer.html"></footer>
