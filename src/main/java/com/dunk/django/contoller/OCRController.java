@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,7 +40,7 @@ public class OCRController {
 
   @PostMapping("/upload")
   // @ResponseBody
-  public String upload(MultipartFile[] files) {
+  public String upload(MultipartFile[] files, Authentication auth) {
 
     log.info(files);
     log.info(files.length);
@@ -132,11 +133,11 @@ public class OCRController {
             for (int i = 0; i < arr2.size(); i++) {
               log.info(arr2.get(i));
 
-              UserFridgeDTO dto = UserFridgeDTO.builder().username("pmr").ingr_name(arr2.get(i))
+              UserFridgeDTO dto = UserFridgeDTO.builder().username(auth.getName()).ingr_name(arr2.get(i))
                   .cno(service.getCategoryCno(arr2.get(i))) // 추가부분.
                   .build();
-              // service.register(dto);
-              service.scanAndRegist(dto); // 밑의 메서드로 변경.
+              service.register(dto);
+              // service.scanAndRegist(dto); // 밑의 메서드로 변경.
             }
 
             log.info("==============================");
