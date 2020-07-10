@@ -31,21 +31,23 @@ public class DjangoMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
+
     @Column(name = "mno")
     private Long userId;
-    
+
     private String id;
-    
+
     private String password;
     private String name;
+
+    private String token; // 변경
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "DjangoMember")
     private Set<MemberRole> roleSets;
 
     public void addRole(MemberRole role) {
-        if(roleSets == null) {
+        if (roleSets == null) {
             roleSets = new HashSet<>();
         }
         roleSets.add(role);

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="manifest" href="/manifest.json">
+
+</head>
+
+<body>
+
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.15.5/firebase-messaging.js"></script>
+    <script type="text/javascript" src="/firebaseMsg.js"></script>
+
+    <script>
+        window.onload = () => {
+            // 파이어베이스 앱 및 메세징 객체 초기화
+            firebaseMsg.init();
+            const messaging = firebaseMsg.getMessaging();
+
+            var token = function () {
+                messaging.getToken().then((currentToken) => {
+                    if (currentToken) {
+                        console.log("토큰: " + currentToken);
+                        // 이 페이지를 열게한 페이지에 토큰을 보낸다.
+                        // opener = 페이지를 연 페이지
+                        // 알림허용/차단의 상태와 토큰 두 가지를 보낸다.
+                        this.opener.postMessage({
+                            "permission": Notification.permission,
+                            "currentToken": currentToken
+                        }, "*");
+                    } else {
+                        console.log('No Instance ID token available. Request permission to generate one.');
+                    }
+                });
+            };
+            console.log("firebaseMsg.getToken(messaging)")
+            // 포그라운드 메시지 처리
+            // ( 혹은 서비스 워커의 `messaging.setBackgroundMessageHandler` 로 
+            // 만들어진 알람을 클릭했을 때 )
+            messaging.onMessage((payload) => {
+                console.log('Message received. ', payload);
+            });
+            // 호출이후 알람을 허용했는지 안햇는지 여부를 확인함.
+            Notification.requestPermission().then((permission) => {
+                console.log(permission);
+                if (permission === 'granted') {
+                    token();
+                    console.log("token send");
+                } else {
+                    console.log("denied....");
+                    window.open("about:blank", "_self").close();
+                }
+            });
+        }// end window onload
+
+            // 토큰이 새로 발급되었을 때,
+            // messaging.onTokenRefresh(() => {
+            //     messaging.getToken().then((refreshedToken) => {
+            //         console.log('Token refreshed.');
+            //         this.opener.postMessage(refreshedToken, "*");
+            //     }).catch((err) => {
+            //         console.log('Unable to retrieve refreshed token ', err);
+            //     });
+            // });
+
+
+
+    </script>
+</body>
+
+</html>

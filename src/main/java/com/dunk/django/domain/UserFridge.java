@@ -1,6 +1,8 @@
 package com.dunk.django.domain;
 
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +31,7 @@ public class UserFridge extends BaseEntity{
     private String ingr_name;
 
     private Long cno;
-
-    private int expirationdate;
+    // 변경
+    private LocalDateTime expirationdate;
     
 }

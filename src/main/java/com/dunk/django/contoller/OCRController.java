@@ -29,147 +29,143 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class OCRController {
 
-    private final ResourceLoader resourceLoader;
-    // [START spring_vision_autowire]
-    private final CloudVisionTemplate cloudVisionTemplate;
-  
-    private final AmazonS3Client s3Client;
+  private final ResourceLoader resourceLoader;
+  // [START spring_vision_autowire]
+  private final CloudVisionTemplate cloudVisionTemplate;
 
-    private final UserFridgeService service;
-    
-    @PostMapping("/upload")
-    //@ResponseBody
-    public String upload(MultipartFile[] files){
+  private final AmazonS3Client s3Client;
 
-        log.info(files);
-        log.info(files.length);
+  private final UserFridgeService service;
 
-        String bucket ="seokhwan";
+  @PostMapping("/upload")
+  // @ResponseBody
+  public String upload(MultipartFile[] files) {
 
-        if(files.length > 0){
-            for(MultipartFile file:files){
-                log.info(file.getOriginalFilename());
-                log.info(file.getContentType());
+    log.info(files);
+    log.info(files.length);
 
-                String fileName = file.getOriginalFilename();
+    String bucket = "seokhwan";
 
-                try {
-                    //Object Meta Data
-                    ObjectMetadata metadata = new ObjectMetadata();
-                    metadata.setContentType(file.getContentType());
-                    metadata.setContentLength(file.getSize());
+    if (files.length > 0) {
+      for (MultipartFile file : files) {
+        log.info(file.getOriginalFilename());
+        log.info(file.getContentType());
 
-                    PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, file.getInputStream(), metadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead);
+        String fileName = file.getOriginalFilename();
 
-                    s3Client.putObject(putObjectRequest);
+        try {
+          // Object Meta Data
+          ObjectMetadata metadata = new ObjectMetadata();
+          metadata.setContentType(file.getContentType());
+          metadata.setContentLength(file.getSize());
 
-                    String thumbnailUri = s3Client.getUrl(bucket, fileName).toString();
-                    String textFromImage =
-                    this.cloudVisionTemplate.extractTextFromImage(this.resourceLoader.getResource(thumbnailUri));
+          PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, file.getInputStream(), metadata)
+              .withCannedAcl(CannedAccessControlList.PublicRead);
 
-                    
-        //textFromImage json에 넣기
-        final JsonPrimitive firstHost= new JsonPrimitive(textFromImage);
-        final JsonArray jArray = new JsonArray();
-        jArray.add(firstHost);
+          s3Client.putObject(putObjectRequest);
 
-        final JsonObject jObj = new JsonObject();
-        jObj.add("virtual_hosts",jArray);
+          String thumbnailUri = s3Client.getUrl(bucket, fileName).toString();
+          String textFromImage = this.cloudVisionTemplate
+              .extractTextFromImage(this.resourceLoader.getResource(thumbnailUri));
 
-       
-        //String[] words = textFromImage.split(("\\\n"));
+          // textFromImage json에 넣기
+          final JsonPrimitive firstHost = new JsonPrimitive(textFromImage);
+          final JsonArray jArray = new JsonArray();
+          jArray.add(firstHost);
 
-        //숫자, 특수문자 제거
-        String text= stringReplace(textFromImage);
-     
-        //문자열 쪼개기
-        String[] words2 = text.split(("\\\n"));
-      
-          //긁어온 텍스트 단어들 배열값 저장한 리스트 
+          final JsonObject jObj = new JsonObject();
+          jObj.add("virtual_hosts", jArray);
+
+          // String[] words = textFromImage.split(("\\\n"));
+
+          // 숫자, 특수문자 제거
+          String text = stringReplace(textFromImage);
+
+          // 문자열 쪼개기
+          String[] words2 = text.split(("\\\n"));
+
+          // 긁어온 텍스트 단어들 배열값 저장한 리스트
           ArrayList<String> arr = new ArrayList<>();
-          //텍스트에서 긁어온 재료 목록을 저장한 리스트
+          // 텍스트에서 긁어온 재료 목록을 저장한 리스트
           ArrayList<String> arr2 = new ArrayList<>();
-          //빈배열제거
-          for(String temp:words2){
-            if(temp.trim().length()>0)
-            arr.add(temp);
+          // 빈배열제거
+          for (String temp : words2) {
+            if (temp.trim().length() > 0)
+              arr.add(temp);
           }
           log.info("==============목록================");
-          //이미지에서 긁어온 text arraylist 목록
+          // 이미지에서 긁어온 text arraylist 목록
           log.info(arr);
           log.info("==============필터================");
 
-          //면세로 시작하는 단어찾기
+          // 면세로 시작하는 단어찾기
           Optional<String> target = arr.stream().filter(str -> str.startsWith("면세")).findFirst();
-          //총 품목으로 시작하는 단어찾기
+          // 총 품목으로 시작하는 단어찾기
           Optional<String> target2 = arr.stream().filter(str -> str.startsWith("총 품목")).findFirst();
-          //액이 포함된 단어 찾기
+          // 액이 포함된 단어 찾기
           Optional<String> target3 = arr.stream().filter(str -> str.contains("액")).findFirst();
-         
-          
-        if(target3.isPresent()){
-          String textC = target3.get();
-          int idx3 = arr.indexOf(textC);
 
-          if(target.isPresent()){
-            String textA = target.get();
-            int idx = arr.indexOf(textA);
+          if (target3.isPresent()) {
+            String textC = target3.get();
+            int idx3 = arr.indexOf(textC);
 
-            for(int i=idx3+1;i<idx;i++){
-              log.info(i+ " : "+arr.get(i));
-              arr2.add(arr.get(i));
+            if (target.isPresent()) {
+              String textA = target.get();
+              int idx = arr.indexOf(textA);
+
+              for (int i = idx3 + 1; i < idx; i++) {
+                log.info(i + " : " + arr.get(i));
+                arr2.add(arr.get(i));
+              }
+            } else if (target2.isPresent()) {
+              String textB = target2.get();
+              int idx2 = arr.indexOf(textB);
+              for (int i = idx3 + 1; i < idx2; i++) {
+                log.info(i + " : " + arr.get(i));
+                arr2.add(arr.get(i));
+              }
             }
-          }else if(target2.isPresent()){
-            String textB = target2.get();
-            int idx2 = arr.indexOf(textB);
-            for(int i=idx3+1;i<idx2;i++){
-              log.info(i+ " : "+arr.get(i));
-             arr2.add(arr.get(i));
+            log.info("==============================");
+            log.info(arr2);
+            log.info("==============================");
+
+            for (int i = 0; i < arr2.size(); i++) {
+              log.info(arr2.get(i));
+
+              UserFridgeDTO dto = UserFridgeDTO.builder().username("pmr").ingr_name(arr2.get(i))
+                  .cno(service.getCategoryCno(arr2.get(i))) // 추가부분.
+                  .build();
+              // service.register(dto);
+              service.scanAndRegist(dto); // 밑의 메서드로 변경.
             }
+
+            log.info("==============================");
+
+            // 텍스트에서 긁은 재료 목록 (arr2)를 냉장고 db에 insert해야한다
+            // service.insert();
           }
-          log.info("==============================");
-          log.info(arr2);
-          log.info("==============================");
-
-          for(int i =0 ; i<arr2.size();i++){
-          log.info(arr2.get(i));
-
-          UserFridgeDTO dto = 
-          UserFridgeDTO.builder()
-            .username("pmr")
-            .ingr_name(arr2.get(i))
-            .build();
-          service.register(dto);  
-          }
-
-          log.info("==============================");
-
-          //텍스트에서 긁은 재료 목록 (arr2)를 냉장고 db에 insert해야한다
-          // service.insert();
-        }
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-
-            }
+        } catch (Exception e) {
+          e.printStackTrace();
         }
 
-        return "redirect:/django/index";
+      }
     }
 
+    return "redirect:/django/index";
+  }
 
-     //특수문자 and 숫자 제거
-  public static String stringReplace(String str){
+  // 특수문자 and 숫자 제거
+  public static String stringReplace(String str) {
     String match = "[!,@.#$%^n&*:()]";
 
-      //[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]
-      //특수문자제거
-      
-      str =str.replaceAll(match, "");
+    // [^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]
+    // 특수문자제거
 
-      //숫자제거
-      String str2= str.replaceAll("[0-9]","");
+    str = str.replaceAll(match, "");
 
-      return str2;
-}}
+    // 숫자제거
+    String str2 = str.replaceAll("[0-9]", "");
+
+    return str2;
+  }
+}

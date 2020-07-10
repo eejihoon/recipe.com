@@ -20,10 +20,7 @@ public class UserFridgeDTO {
     private String ingr_name;
 
     private Long cno;
+    // 유통기한 타입 변경
+    private LocalDateTime regdate, updatedate, expirationdate;
 
-    private int expirationdate;
-
-    private LocalDateTime regdate, updatedate;
-
-    
 }
