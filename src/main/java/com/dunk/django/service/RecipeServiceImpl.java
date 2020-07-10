@@ -64,10 +64,9 @@ public class RecipeServiceImpl implements RecipeService {
 
         log.info(result);
 
-        GenericListDTO<RecipeDTO,Recipe> listDTO
-        = new GenericListDTO<>(result, en -> bindToDTO(en));
+        GenericListDTO<RecipeDTO, Recipe> listDTO = new GenericListDTO<>(result, en -> bindToDTO(en));
 
         return listDTO;
     }
-    
+
 }
