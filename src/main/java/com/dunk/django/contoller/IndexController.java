@@ -56,25 +56,6 @@ public class IndexController {
         log.info("===============================SCAN==================================");
     }
 
-    @GetMapping("/recipe")
-    public void recipeGet(@RequestParam("itemId") Long itemId, Authentication auth,Model model) {
-        log.info("=======================get==================");
-        log.info("itemId : " + itemId);
-        // log.info("id : " + auth.getName());
- 
-        model.addAttribute("get", service.get(itemId));
-
-        //로그인 중일 때만
-        if(auth!=null){
-            Long userId = memberService.getMno(auth.getName()).get().getUserId();
-    
-            log.info(userId);
-            //userId와 itemId로 select한다.
-    
-            preferencesService.getAndRegisterOrModify(userId, itemId);
-            
-        }
-    }
     //------------------추가-------------------
     @GetMapping("/myFridge")
     public void getMyFridge(Authentication auth, Model model) {
