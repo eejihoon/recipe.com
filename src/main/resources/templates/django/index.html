@@ -1,10 +1,10 @@
 <header th:replace="/includes/header.html"></header>
 <section id="home-section" class="hero">
   <div class="home-slider owl-carousel">
-    <div class="slider-item" style="background-image: url(images/bg_1.jpg);">
+    <div class="slider-item" style="background-image: url(/images/bg_1.jpg);">
       <div class="overlay"></div>
       <div class="container">
-        <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
+        <div class="row slider-text justify-content-center align-items-center">
           <div class="col-md-12 ftco-animate text-center">
             <h1 class="mb-2">Welcome DJANGO</h1>
             <h2 class="subheading mb-4">TAKE PICTURE YOUR BILL</h2>
@@ -16,8 +16,7 @@
         </div>
       </div>
     </div>
-    <!---->
-    <div class="slider-item" style="background-image: url(images/bg_2.jpg);">
+    <div class="slider-item" style="background-image: url(/images/bg_1.jpg);">
       <div class="overlay"></div>
       <div class="container">
         <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
@@ -31,19 +30,16 @@
       </div>
     </div>
 </section>
-
-<section class="ftco-section">
-  <div class="container">
+<hr>
+  <div class="container" sec:authorize="isAuthenticated()">
     <div class="row justify-content-center mb-3 pb-3">
       <div class="col-md-12 heading-section text-center ftco-animate">
-        <span class="subheading">Django</span>
-        <h2 class="mb-4">영수증을 찍어보세요!</h2>
-        <p>Django</p>
-        <p></p><a href="/django/scan" class="btn btn-primary"><i class="icon-camera" for="camera"></i></a></p>
+        <span class="setFont">Django pick!</span>
+        <h2 style="font-family: 'Gaegu', cursive;">[[${#authentication.principal.name}]]님 추천 메뉴</h2>
       </div>
     </div>
   </div>
-</section>
+<hr>
 <div class="container">
   <div class="row">
     <div th:each="list: ${list.dtoList}" class="col-md-6 col-lg-3 ftco-animate">
@@ -65,7 +61,6 @@
   </div>
   <p></p><a href="/recipe/list" class="btn btn-primary">더보기</a></p>
 </div>
-
 
 
 <script th:inline="javascript">
