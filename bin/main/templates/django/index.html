@@ -1,7 +1,7 @@
 <header th:replace="/includes/header.html"></header>
 <section id="home-section" class="hero">
   <div class="home-slider owl-carousel">
-    <div class="slider-item" style="background-image: url();">
+    <div class="slider-item" style="background-image: url(images/bg_1.jpg);">
       <div class="overlay"></div>
       <div class="container">
         <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
@@ -17,8 +17,7 @@
       </div>
     </div>
     <!---->
-
-    <div class="slider-item" style="background-image: url();">
+    <div class="slider-item" style="background-image: url(images/bg_2.jpg);">
       <div class="overlay"></div>
       <div class="container">
         <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
@@ -63,34 +62,9 @@
         </div>
       </div>
     </div>
-
-    <!--Pagination-->
-    <div th:align="center">
-      <ul class="pagination " th:align="center">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active">
-          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </div>
-    <!--END Pagination-->
-
   </div>
 </div>
-<!-- <div sec:authorize="hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')">
-    <input type="text" name="username" th:value="${#authentication.getName()}">
-</div> -->
-<form id="action" action="/django/recipe" method="get">
-  <!-- <input type="hidden" name="username" th:value='sec:authentication="principal.username"'> -->
-  <!-- <input type="text" name="username" th:value="${#authentication.getName()}"> -->
-</form>
+
 <script th:inline="javascript">
   $(function () {
     $('#camera').change(function (e) {
