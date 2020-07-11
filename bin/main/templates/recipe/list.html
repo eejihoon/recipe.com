@@ -22,4 +22,22 @@
 </div>
 </div>
 
+<div class="row mt-5">
+    <div class="col text-center">
+      <div class="block-27">
+        <ul>
+          <li th:if="${list.prev}">
+            <a th:href="@{/recipe/list(page=${list.start-1}, size=${pageDTO.size})}"><</a>
+          </li>
+          <li th:class="${num == pageDTO.page ? 'active' : ''}" th:each=" num:${list.pageList}">
+            <a th:href="@{/recipe/list(page=${num}, size=${pageDTO.size})}"><span>[[${num}]]</span></a>
+        </li>
+        <li th:if="${list.next}">
+            <a th:href="@{/recipe/list(page=${list.end + 1}, size=${pageDTO.size})}">></a>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 <footer th:replace="/includes/footer.html"></footer>

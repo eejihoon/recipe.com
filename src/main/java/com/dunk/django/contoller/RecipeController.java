@@ -25,6 +25,9 @@ public class RecipeController {
     @GetMapping("/list")
     public void getList(@ModelAttribute("pageDTO")PageDTO pageDTO, Model model) {
         log.info("=============/list===========");
+        log.info(pageDTO);
+
+        pageDTO.setSize(40);
 
         model.addAttribute("list", service.getList(pageDTO));
         

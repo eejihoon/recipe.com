@@ -26,7 +26,6 @@ public class BoardController {
 
     @GetMapping("/list")
     public void list(@ModelAttribute("pageDTO")PageDTO pageDTO,Model model) {
-        
         GenericListDTO<BoardDTO, Board> result = 
         service.getList(pageDTO);
         
