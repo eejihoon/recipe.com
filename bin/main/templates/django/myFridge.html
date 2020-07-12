@@ -2,13 +2,10 @@
 
 <header th:replace="/includes/header.html"></header>
 ​
-&nbsp; <h2 style="text-align: center; "> 보유현황 </h2>
+&nbsp; <h2 style="text-align: center;"> 보유현황 </h2>
+<br>
 <form id="fridgeForm">
-
-    <!-- <section class="ftco-section ftco-cart">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 ftco-animate">-->
+    <div class="container">
     <div class="cart-list">
         <table class="table">
             <thead class="thead-primary">
@@ -35,14 +32,10 @@
                   </tbody>
                 </table>
               </div>
-              <!--
-              </div>
-            </div>
-          </div>
-        </section> -->
-        ​<button type="submit" id="saveBtn" class="btn btn-primary">저장</button>
-        <button type="submit" id="selectRemoveBtn" class="btn btn-primary">선택삭제</button>
-        <button type="submit" id="AllRemoveBtn" class="btn btn-primary">전체삭제</button>
+              ​<button type="submit" id="saveBtn" class="btn btn-primary">저장</button>
+              <button type="submit" id="selectRemoveBtn" class="btn btn-primary">선택삭제</button>
+              <button type="submit" id="AllRemoveBtn" class="btn btn-primary">전체삭제</button>
+        </div>
 </form>
       
       <form class="actionForm" action="/django/removeFridge" method="post">

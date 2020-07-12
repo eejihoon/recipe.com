@@ -152,7 +152,7 @@ public class OCRController {
       }
     }
 
-    return "redirect:/django/index";
+    return "redirect:/django/myFridge";
   }
 
   // 특수문자 and 숫자 제거

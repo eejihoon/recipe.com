@@ -4,8 +4,6 @@ import com.dunk.django.domain.Recipe;
 import com.dunk.django.dto.GenericListDTO;
 import com.dunk.django.dto.PageDTO;
 import com.dunk.django.dto.RecipeDTO;
-import com.dunk.django.service.MemberService;
-import com.dunk.django.service.PreferencesService;
 import com.dunk.django.service.RecipeService;
 import com.dunk.django.service.UserFridgeService;
 
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,14 +32,15 @@ import lombok.extern.log4j.Log4j2;
 public class IndexController {
     
     private final RecipeService service;  
-    private final PreferencesService preferencesService;
-    private final MemberService memberService;
+
     //추가
     private final UserFridgeService fridgeService;
 
     @GetMapping("/index")
     public void index(@ModelAttribute("pageDTO")PageDTO pageDTO, Model model) {
         log.info("===============================INDEX==================================");
+
+        pageDTO.setSize(20);
         GenericListDTO<RecipeDTO, Recipe> result =
         service.getList(pageDTO);
 

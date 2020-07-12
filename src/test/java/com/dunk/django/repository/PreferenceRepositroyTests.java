@@ -1,7 +1,6 @@
 package com.dunk.django.repository;
 
 import com.dunk.django.domain.Preferences;
-import com.dunk.django.dto.PreferencesDTO;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

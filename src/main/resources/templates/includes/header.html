@@ -90,7 +90,7 @@
           <li class="nav-item dropdown nav-item">
 
               <!--로그인 아닐 때-->
-              <div class="btn-group setFont" sec:authorize="isAnonymous()">
+              <div class="btn-group" sec:authorize="isAnonymous()">
                 <a th:href="@{/member/login}">
                 <button type="button" class="btn btn-primary" style="margin-top: 13px;">로그인</button></a>
                 <div class="dropdown-divider"></div>

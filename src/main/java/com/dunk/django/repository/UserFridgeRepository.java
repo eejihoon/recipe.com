@@ -1,15 +1,10 @@
 package com.dunk.django.repository;
 
 import java.util.List;
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import com.dunk.django.domain.UserFridge;
-import com.dunk.django.dto.UserFridgeDTO;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

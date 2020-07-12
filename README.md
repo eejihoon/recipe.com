@@ -1,15 +1,20 @@
 # django
 ## 작업내용
 ### view
-- 인덱스 이미지 수정
-- recipe list, get페이지(django에 있던 recipe를 옮김)
+- header.html 인덱스 이미지 수정,
+    && 로그인-아웃 dropdown 변경
+- recipe폴더 recipe list, get페이지(django에 있던 recipe를 옮김)
     &&페이지 정보 가지고 조회, 목록으로
-- 글씨체 약간 수정
-- 로그인-아웃 드랍다운 바꿈
+- django폴더 - recipe.html 삭제 -> recipe폴더 안에 get.html으로 대체
+- index.html 'ooo님 추천 메뉴' 글씨체 수정
+- myFridge.html 컨테이너 씌우기
+
 
 ### controller
-- IndexConroller에서 레시피를 조회할 수 있는 메서드를
- RecipeController로 이동
+- IndexConroller - 레시피 조회 메서드(recipe()) 삭제. RecipeController로 이동.
+&& 레시피 20개씩 나오도록 수정
+- RecipeController - 레시피 조회 메세드 생성
+- OCRController - scan() return값 /django/index -> /django/myFridge로 변경.
 
 
 ## 레시피 조회 페이지 이슈
@@ -18,5 +23,3 @@ index페이지에서 접근했다면 index페이지로
 recipe페이지에서 접근했다면 list페이지로 redirect해줘야 한다.
 
 ## 해야 할 것
-- myFridge페이지 컨테이너 씌우기
--
