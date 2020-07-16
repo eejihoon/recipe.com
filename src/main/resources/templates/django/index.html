@@ -9,9 +9,18 @@
             <h1 class="mb-2">Welcome DJANGO</h1>
             <h2 class="subheading mb-4">TAKE PICTURE YOUR BILL</h2>
             <br>
-            <form class="md-form">
-              <p><a href="/django/scan" class="btn btn-primary"><i class="icon-camera" for="camera"></i></a></p>
-          </div>
+            <form action="/scan/upload" enctype="multipart/form-data" method="post">
+              <img id="pic" style="display: none;" />
+              <div class="filebox">
+              <label for="camera">
+                <i class="icon-camera"></i>
+              </label>
+              <input type="file"  id="camera" capture="camera" accept="image/*" name="files"  multiple>
+              <button
+               id=btn style="display: none;">UPLOAD</button>
+            </div>
+           </div>
+         </form>
 
         </div>
       </div>
@@ -71,5 +80,6 @@
       }
     });
   }); //function
+
 </script>
 <footer th:replace="/includes/footer.html"></footer>

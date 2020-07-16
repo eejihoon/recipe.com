@@ -39,7 +39,6 @@ public class OCRController {
   private final UserFridgeService service;
 
   @PostMapping("/upload")
-  // @ResponseBody
   public String upload(MultipartFile[] files, Authentication auth) {
 
     log.info(files);

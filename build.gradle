@@ -24,7 +24,7 @@ ext {
 }
 
 dependencies {
-		implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -45,11 +45,17 @@ dependencies {
 	}
 	compile 'com.google.cloud:google-cloud-vision:1.99.3'
 	testImplementation 'org.springframework.security:spring-security-test'
+	
 	// https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
-   compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: '5.3.3.RELEASE'
+
+	// https://mvnrepository.com/artifact/org.jsoup/jsoup
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+
+
 }
 
 dependencyManagement {
