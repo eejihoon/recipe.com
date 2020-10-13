@@ -1,5 +1,7 @@
 package com.dunk.django.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import com.dunk.django.domain.Recipe;
@@ -20,6 +22,9 @@ public interface RecipeService {
     Long modify(RecipeDTO dto);
 
     void remove(Long recipe_no);
+
+    // 추천리스트 뽑기
+    List<Recipe> getRecommendList(String userId);
 
     // DTO객체를 Entity(VO)객체로 바꾼다.
     default Recipe bindToEntity(RecipeDTO dto) {

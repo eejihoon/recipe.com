@@ -1,5 +1,10 @@
 package com.dunk.django.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import com.dunk.django.domain.DjangoMember;
 import com.dunk.django.domain.Recipe;
 import com.dunk.django.dto.GenericListDTO;
 import com.dunk.django.dto.PageDTO;
@@ -20,6 +25,10 @@ import lombok.extern.log4j.Log4j2;
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository repository;
+
+    private final RecommendService recommendService;
+
+    private final MemberCheckService checkService;
 
     @Override
     public Long register(RecipeDTO dto) {
@@ -67,6 +76,35 @@ public class RecipeServiceImpl implements RecipeService {
         GenericListDTO<RecipeDTO, Recipe> listDTO = new GenericListDTO<>(result, en -> bindToDTO(en));
 
         return listDTO;
+    }
+
+    
+    @Override
+    public List<Recipe> getRecommendList(String userId) {
+
+        DjangoMember dm = new DjangoMember();
+        List<Recipe> result = new ArrayList<>();
+
+        Optional<DjangoMember> member = checkService.getMno(userId);
+
+        if (member.isPresent()) {
+
+            dm = member.get();
+
+            for (int i = 0; i < recommendService.select(dm.getUserId()).size(); i++) {
+
+                result.add(repository.findByItemId(recommendService.select(dm.getUserId()).get(i).getItemID()));
+
+            } // end for
+        } // end if
+
+        // log.info("======================="+dm.getUserId());
+        // log.info("======================="+checkService.getMno("coco"));
+
+        // 결과값
+        log.info(result);
+
+        return result;
     }
 
 }

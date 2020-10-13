@@ -29,6 +29,9 @@ public interface UserFridgeService {
     // 재료이름를 매개변수로 받아 태그에 재료이름이 들어간 식재료번호를 가져온다.
     Long getCategoryCno(String ingr_name);
 
+    // 식재료를 넣어서 카테고리 가져오기.
+    String searchCategory(String ingrName);
+
     // -------------------
     default UserFridge bindToEntity(UserFridgeDTO dto) {
 

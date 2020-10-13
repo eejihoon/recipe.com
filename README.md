@@ -8,6 +8,8 @@
 - django폴더 - recipe.html 삭제 -> recipe폴더 안에 get.html으로 대체
 - index.html 'ooo님 추천 메뉴' 글씨체 수정
 - myFridge.html 컨테이너 씌우기
+- footer수정
+- index페이지 접속 시, 로그인 아닐 경우 레시피 안 나오게.
 
 
 ### controller

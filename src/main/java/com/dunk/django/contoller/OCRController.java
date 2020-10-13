@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,6 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class OCRController {
-
   private final ResourceLoader resourceLoader;
   // [START spring_vision_autowire]
   private final CloudVisionTemplate cloudVisionTemplate;
@@ -39,7 +39,7 @@ public class OCRController {
   private final UserFridgeService service;
 
   @PostMapping("/upload")
-  public String upload(MultipartFile[] files, Authentication auth) {
+  public String upload(MultipartFile[] files, Authentication auth, RedirectAttributes rttr) {
 
     log.info(files);
     log.info(files.length);
@@ -135,8 +135,8 @@ public class OCRController {
               UserFridgeDTO dto = UserFridgeDTO.builder().username(auth.getName()).ingr_name(arr2.get(i))
                   .cno(service.getCategoryCno(arr2.get(i))) // 추가부분.
                   .build();
-              service.register(dto);
-              // service.scanAndRegist(dto); // 밑의 메서드로 변경.
+              // service.register(dto);
+              service.scanAndRegist(dto); // 밑의 메서드로 변경.
             }
 
             log.info("==============================");
@@ -151,7 +151,9 @@ public class OCRController {
       }
     }
 
-    return "redirect:/django/myFridge";
+    rttr.addAttribute("username", auth.getName());
+
+    return "redirect:http://192.168.1.4:8080/crawling";
   }
 
   // 특수문자 and 숫자 제거

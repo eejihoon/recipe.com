@@ -34,30 +34,30 @@
 
 <script>
   // 바로 새창띄우기
-  var result =""; // 토큰을 받을 변수
-  var tokenURL =""; // 알림을 허용해서 토큰을 받아올 URL
+  var result = ""; // 토큰을 받을 변수
+  var tokenURL = ""; // 알림을 허용해서 토큰을 받아올 URL
   window.onload = () => {
-      // test3 Url을 들어갈 경우 바로 test.html을 호출시킨다.
-      // document.getElementById("tokenURL").click();
-      tokenURL = this.open("https://django-1b7a8.web.app/getToken.html", "_blank");
-      console.log("window.onload");
-     
+    // test3 Url을 들어갈 경우 바로 test.html을 호출시킨다.
+    // document.getElementById("tokenURL").click();
+    tokenURL = this.open("https://django-1b7a8.web.app/getToken.html", "_blank");
+    console.log("window.onload");
+
   }
-     // 메시지 수신 받는 eventListener 등록
-      window.addEventListener( 'message', receiveMsgFromChild );
-      console.log("next");
-      // 
-      function receiveMsgFromChild(e) {
-           // e.data가 전달받은 메시지
-          console.log( "e.data : "+e.data.currentToken );
-          result = e.data.currentToken;
-           // 회원가입시 hidden값으로 토큰을 보내서
-           // 가입한 사람에게 고유의 토큰을 가지게 한다.
-          document.getElementById('token').value = result;
-              if(e.data.permission === "granted") {
-                  tokenURL.close();
-              }
-      }
+  // 메시지 수신 받는 eventListener 등록
+  window.addEventListener('message', receiveMsgFromChild);
+  console.log("next");
+  // 
+  function receiveMsgFromChild(e) {
+    // e.data가 전달받은 메시지
+    console.log("e.data : " + e.data.currentToken);
+    result = e.data.currentToken;
+    // 회원가입시 hidden값으로 토큰을 보내서
+    // 가입한 사람에게 고유의 토큰을 가지게 한다.
+    document.getElementById('token').value = result;
+    if (e.data.permission === "granted") {
+      tokenURL.close();
+    }
+  }
 
 </script>
 

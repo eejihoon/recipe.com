@@ -39,4 +39,8 @@ public interface UserFridgeRepository extends JpaRepository<UserFridge, Long> {
     @Query(value = "select c.cno from tbl_category c where tag like concat('%', :ingr_name, '%')", nativeQuery = true)
     Long getCategoryCno(@Param("ingr_name") String ingr_name);
 
+    // 등록한 식재료를 태그랑 비교해서 태그를 가지고있는 카테고리 뽑아오기.
+    @Query(value = "select c.ingr_category from user_fridge u , tbl_category c "
+            + "where c.tag like concat ('%', :ingr_name, '%') " + "group by c.tag", nativeQuery = true)
+    String searchCategory(@Param("ingr_name") String ingr_name);
 }

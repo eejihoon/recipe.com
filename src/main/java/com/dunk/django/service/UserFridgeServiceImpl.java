@@ -64,4 +64,10 @@ public class UserFridgeServiceImpl implements UserFridgeService {
         // 번호가 추출될것임.
         return repository.getCategoryCno(ingr_name);
     }
+
+    // 태그와 비교한것을 통해 카테고리를 뽑아오기.
+    @Override
+    public String searchCategory(String ingrName) {
+        return repository.searchCategory(ingrName);
+    }
 }
