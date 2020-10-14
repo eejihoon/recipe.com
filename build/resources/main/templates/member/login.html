@@ -1,0 +1,31 @@
+<header th:replace="/includes/header.html"></header>
+
+<div class="col-xl-7 ftco-animate">
+	<form th:action="@{/member/login}" method="post" class="bg-white p-5 contact-form">
+	  <h3 class="mb-4 billing-heading">로그인</h3>
+	  <div class="row align-items-end">
+		<div class="col-md-6">
+		  <div class="form-group">
+			<label for="firstname">아이디</label>
+			<input type="text" name="username" class="form-control" placeholder="아이디를 입력하세요">
+		  </div>
+		</div>
+  
+		<div class="w-100"></div>
+		<div class="col-md-6">
+		  <div class="form-group">
+			<label for="towncity">비밀번호</label>
+			<input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요">
+		  </div>
+		</div>
+  
+		<div class="w-100"></div>
+
+		<div class="w-100"></div>
+		<input type="submit" value="로그인" class="btn btn-primary">
+	</form>
+	<br> &nbsp;
+	<a th:href="@{/member/signup}"<button class="btn btn-primary">회원가입</button></a>
+</div>
+
+<footer th:replace="/includes/footer.html"></footer>

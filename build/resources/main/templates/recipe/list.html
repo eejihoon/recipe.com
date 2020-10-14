@@ -1,0 +1,43 @@
+<header th:replace="/includes/header.html"></header>
+<h1>Recipe</h1>
+<div class="container">
+  <div class="row">
+    <div th:each="list: ${list.dtoList}" class="col-md-6 col-lg-3 ftco-animate">
+      <div class="product">
+        <a th:href="@{/recipe/get(itemId=${list.itemId}, page=${pageDTO.page}, size=${pageDTO.size})}"
+          class="img-prod move"><img class="img-fluid" th:src="${list.img}" style="width:100%; height:100%;"
+            alt="Colorlib Template">
+          <div class="overlay"></div>
+        </a>
+        <div class="text py-3 pb-4 px-3 text-center">
+          <h3> <a class="move" th:href="@{/recipe/get(itemId=${list.itemId})}">[[${list.recipe_name}]]</a></h3>
+          <div class="d-flex">
+            <div class="pricing">
+              <p class="price"><span></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col text-center">
+    <div class="block-27">
+      <ul>
+        <li th:if="${list.prev}">
+          <a th:href="@{/recipe/list(page=${list.start-1}, size=${pageDTO.size})}"></a>
+        </li>
+        <li th:class="${num == pageDTO.page ? 'active' : ''}" th:each=" num:${list.pageList}">
+          <a th:href="@{/recipe/list(page=${num}, size=${pageDTO.size})}"><span>[[${num}]]</span></a>
+        </li>
+        <li th:if="${list.next}">
+          <a th:href="@{/recipe/list(page=${list.end + 1}, size=${pageDTO.size})}">></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer th:replace="/includes/footer.html"></footer>

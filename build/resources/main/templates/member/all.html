@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>ALL</h1>
+
+    <div sec:authorize="hasRole('ROLE_MEMBER')">
+        <h1>User Name - [[${#authentication.principal.name}]]</h1>
+    </div>
+
+    <a href="/sample/login"><button>로그인</button></a>
+
+    <a href="/sample/logout"><button>로그아웃</button></a>
+
+    <br>
+    <a href="/sample/signup"><button>가입</button></a>
+
+
+</body>
+</html>
