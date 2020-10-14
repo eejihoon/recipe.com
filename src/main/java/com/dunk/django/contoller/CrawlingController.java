@@ -25,6 +25,7 @@ import lombok.extern.log4j.Log4j2;
 public class CrawlingController {
 
     private final UserFridgeService fridgeService;
+    private final RecipeService recipeService;
 
     @GetMapping("/crawling")
     public String crawling(@RequestParam("username") String username) {
@@ -66,7 +67,7 @@ public class CrawlingController {
                 RecipeDTO dto = RecipeDTO.builder().recipe_name(recipeNameList.get(i))
                         .ingr_list(getIngredient(urlList.get(i))).recipe(urlList.get(i)).img(imgList.get(i)).build();
                 // log.info(dto);
-                // recipeServie.register(dto);
+                recipeService.register(dto);
             }
         });
         return "redirect:/django/myFridge";

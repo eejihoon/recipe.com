@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 @RequestMapping("/board")
-public class BoardController {
+public abstract class BoardController {
     private final BoardService service;
 
     @GetMapping("/list")

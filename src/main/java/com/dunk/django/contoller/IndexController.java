@@ -43,6 +43,10 @@ public class IndexController {
         // 로그인을 한 상태인 경우 추천리스트를 뽑아 보여준다.
         if (auth != null) {
             model.addAttribute("recommendList", service.getRecommendList(auth.getName()));
+            //추천 데이터가 없다면
+            if(service.getRecommendList(auth.getName()).size() == 0) {
+                model.addAttribute("msg", "영수증을 등록해보세요!");
+            }
         }
     }
 

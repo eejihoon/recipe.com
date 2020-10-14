@@ -33,29 +33,36 @@ public class MemberCheckService implements UserDetailsService, MemberService {
 
     
 
+    /**
+     *  유저 정보를 dto로 변환해서 return한다. 
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
         log.info("load User ..." + username);
-        
+        //아이디가 존재하는 지 체크
         Optional<DjangoMember> result = repository.findById(username);
-        if(result.isPresent()) {
-
+        
+        if(result.isPresent()) {    //아이디가 존재하는 경우
+            //해당 아이디 정보를 가져 온다.
             DjangoMember member = result.get();
-
+            //해당 아이디의 권한을 가져 온다.
             List<SimpleGrantedAuthority> list = member.getRoleSets().stream()
             .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
             .collect(Collectors.toList());
-
+            //DTO로 변환한다.
             DjangoMemberDTO dto = new DjangoMemberDTO(member.getUserId() ,member.getId()
             ,member.getPassword(),member.getName(), list);
-
+            
             return dto;
         }
         
         return null;
     }
 
+    /**
+     *  회원 등록하는 메서드
+     */
     @Override
     public void register(DjangoMember member) {
         log.info("==============================");

@@ -65,7 +65,16 @@
   <div class="row justify-content-center mb-3 pb-3">
     <div class="col-md-12 heading-section text-center ftco-animate">
       <span class="setFont">Django pick!</span>
-      <h2 style="font-family: 'Gaegu', cursive;">[[${#authentication.principal.name}]]님 이런 메뉴는 어떤가요?</h2>
+
+      <h2 style="font-family: 'Gaegu', cursive;">
+        [[${#authentication.principal.name}]]님
+        <span th:if="${msg == null}">
+          이런 메뉴는 어떤가요?
+        </span>
+        <span th:if="${msg != null}">
+          [[${msg}]]
+        </span>
+      </h2>
     </div>
   </div>
 </div>
