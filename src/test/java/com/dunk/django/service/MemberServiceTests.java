@@ -2,6 +2,7 @@ package com.dunk.django.service;
 
 import com.dunk.django.domain.DjangoMember;
 
+import com.dunk.django.member.MemberCheckService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

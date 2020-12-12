@@ -2,6 +2,7 @@ package com.dunk.django.repository;
 
 import com.dunk.django.domain.Board;
 
+import com.dunk.django.post.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

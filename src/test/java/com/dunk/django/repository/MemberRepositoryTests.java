@@ -5,6 +5,7 @@ import java.util.stream.IntStream;
 import com.dunk.django.domain.DjangoMember;
 import com.dunk.django.domain.MemberRole;
 
+import com.dunk.django.member.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

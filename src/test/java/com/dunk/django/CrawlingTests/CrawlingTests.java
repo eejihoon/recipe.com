@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import com.dunk.django.domain.UserFridge;
-import com.dunk.django.dto.RecipeDTO;
-import com.dunk.django.service.RecipeService;
-import com.dunk.django.service.UserFridgeService;
+import com.dunk.django.recipe.RecipeDTO;
+import com.dunk.django.recipe.RecipeService;
+import com.dunk.django.userfridge.UserFridgeService;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,12 +17,8 @@ import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import lombok.extern.log4j.Log4j2;
 
 @SpringBootTest
-@Log4j2
 public class CrawlingTests {
 
     @Autowired
@@ -33,15 +29,15 @@ public class CrawlingTests {
 
     @Test
     public void crawlingTest() {
-        log.info(crawling("moskito"));
+        System.out.println(crawling("moskito"));
     }
 
     public String crawling(String username) {
-        log.info("=================================================");
-        log.info("====================/crawling====================");
+        System.out.println("=================================================");
+        System.out.println("====================/crawling====================");
         List<UserFridge> ingr = fridgeService.get(username);
         ingr.forEach(row -> {
-            log.info(row.getIngr_name());
+            System.out.println(row.getIngr_name());
             /* 크롤링할 URL */
             String URL = "https://www.10000recipe.com/recipe/list.html?q="
                     + fridgeService.searchCategory(row.getIngr_name());
@@ -71,11 +67,11 @@ public class CrawlingTests {
             Elements urlElements = recipeData.select(".common_sp_thumb").select("a");
             urlElements.forEach(
                     element -> urlList.add("https://www.10000recipe.com/" + element.attr("href").substring(1)));
-            log.info("urlList.size() : " + urlList.size());
+            System.out.println("urlList.size() : " + urlList.size());
             for (int i = 0; i < urlList.size(); i++) {
                 RecipeDTO dto = RecipeDTO.builder().recipe_name(recipeNameList.get(i))
                         .ingr_list(getIngredient(urlList.get(i))).recipe(urlList.get(i)).img(imgList.get(i)).build();
-                log.info(dto);
+                System.out.println(dto);
 
                 recipeService.register(dto);
             }
@@ -99,10 +95,10 @@ public class CrawlingTests {
         Elements ingredients = doc.select("div.ready_ingre3").select("li");
         // 구분자 사용을 위해 컬렉션(List)에 각 재료의 데이터를 추가하는 반복문.
         for (int i = 0; i < ingredients.size(); i++) {
-            // log.info("1 : " + ingredients);
+            // System.out.println("1 : " + ingredients);
             list.add(ingredients.get(i).text());
         }
-        // ingredients.forEach(ingredient->log.info(" 2 : " + ingredient));
+        // ingredients.forEach(ingredient->System.out.println(" 2 : " + ingredient));
         // 구분자를 넣기위한 반복분.
         for (int i = 0; i < list.size(); i++) {
             sj.add(list.get(i));

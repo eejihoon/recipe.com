@@ -2,9 +2,10 @@ package com.dunk.django.service;
 
 import java.util.stream.IntStream;
 
-import com.dunk.django.dto.PageDTO;
-import com.dunk.django.dto.RecipeDTO;
+import com.dunk.django.recipe.PageDTO;
+import com.dunk.django.recipe.RecipeDTO;
 
+import com.dunk.django.recipe.RecipeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

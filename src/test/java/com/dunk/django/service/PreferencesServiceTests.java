@@ -1,5 +1,6 @@
 package com.dunk.django.service;
 
+import com.dunk.django.recommand.PreferencesService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

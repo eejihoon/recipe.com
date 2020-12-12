@@ -1,6 +1,6 @@
 package com.dunk.django.config;
 
-import com.dunk.django.service.MemberCheckService;
+import com.dunk.django.member.MemberCheckService;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
