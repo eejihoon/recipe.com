@@ -36,6 +36,9 @@ dependencies {
 
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: '2.3.1.RELEASE'
 
+	//validation
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.3.1.RELEASE'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -46,14 +49,10 @@ dependencies {
 	compile 'com.google.cloud:google-cloud-vision:1.99.3'
 	testImplementation 'org.springframework.security:spring-security-test'
 	
-	// https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
-
-	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: '5.3.3.RELEASE'
-
-	// https://mvnrepository.com/artifact/org.jsoup/jsoup
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+	runtimeOnly 'com.h2database:h2'
 
 
 }

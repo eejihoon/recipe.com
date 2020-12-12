@@ -1,7 +1,5 @@
 package com.dunk.django.recipe;
 
-import com.dunk.django.member.MemberService;
-
 import com.dunk.django.recommand.PreferencesService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 public class RecipeController {
 
     private final RecipeService service;
-    private final MemberService memberService;
+//    private final MemberService memberService;
     private final PreferencesService preferencesService;
 
     @GetMapping("/list")
@@ -43,13 +41,13 @@ public class RecipeController {
         model.addAttribute("get", service.get(itemId));
 
         //로그인 중일 때만
-        if(auth!=null){
-            Long userId = memberService.getMno(auth.getName()).get().getUserId();
-    
-            log.info(userId);
-            //userId와 itemId로 select한다.
-    
-            preferencesService.getAndRegisterOrModify(userId, itemId);
-        }
+//        if(auth!=null){
+//            Long userId = memberService.getMno(auth.getName()).get().getUserId();
+//
+//            log.info(userId);
+//            //userId와 itemId로 select한다.
+//
+//            preferencesService.getAndRegisterOrModify(userId, itemId);
+//        }
     }
 }

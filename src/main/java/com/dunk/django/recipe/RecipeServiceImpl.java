@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.dunk.django.domain.DjangoMember;
+import com.dunk.django.domain.Member;
 import com.dunk.django.domain.Recipe;
-import com.dunk.django.member.MemberCheckService;
 
 import com.dunk.django.recommand.RecommendService;
 import org.springframework.data.domain.Page;
@@ -26,7 +25,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final RecommendService recommendService;
 
-    private final MemberCheckService checkService;
+    //private final MemberCheckService checkService;
 
     @Override
     public Long register(RecipeDTO dto) {
@@ -76,33 +75,33 @@ public class RecipeServiceImpl implements RecipeService {
         return listDTO;
     }
 
-    
+
     @Override
     public List<Recipe> getRecommendList(String userId) {
 
-        DjangoMember dm = new DjangoMember();
-        List<Recipe> result = new ArrayList<>();
+//        Member dm = new Member();
+//        List<Recipe> result = new ArrayList<>();
+//
+//        Optional<Member> member = checkService.getMno(userId);
+//
+//        if (member.isPresent()) {
+//
+//            dm = member.get();
+//
+//            for (int i = 0; i < recommendService.select(dm.getUserId()).size(); i++) {
+//
+//                result.add(repository.findByItemId(recommendService.select(dm.getUserId()).get(i).getItemID()));
+//
+//            } // end for
+//        } // end if
+//
+//        // log.info("======================="+dm.getUserId());
+//        // log.info("======================="+checkService.getMno("coco"));
+//
+//        // 결과값
+//        log.info(result);
 
-        Optional<DjangoMember> member = checkService.getMno(userId);
-
-        if (member.isPresent()) {
-
-            dm = member.get();
-
-            for (int i = 0; i < recommendService.select(dm.getUserId()).size(); i++) {
-
-                result.add(repository.findByItemId(recommendService.select(dm.getUserId()).get(i).getItemID()));
-
-            } // end for
-        } // end if
-
-        // log.info("======================="+dm.getUserId());
-        // log.info("======================="+checkService.getMno("coco"));
-
-        // 결과값
-        log.info(result);
-
-        return result;
+        return null;
     }
 
 }
