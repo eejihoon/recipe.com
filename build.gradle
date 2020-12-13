@@ -43,12 +43,11 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 	compile 'com.google.cloud:google-cloud-vision:1.99.3'
 	testImplementation 'org.springframework.security:spring-security-test'
-	
+
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: '5.3.3.RELEASE'
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'

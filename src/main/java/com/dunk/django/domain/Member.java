@@ -35,4 +35,8 @@ public class Member extends BaseEntity {
         this.name = name;
         this.role = role;
     }
+
+    public String getRoleKey() {
+        return getRole().getKey();
+    }
 }
