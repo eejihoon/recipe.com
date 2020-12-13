@@ -8,3 +8,7 @@
 식재료를 까먹지 않도록 유통기한 알림 서비스를 제공하며, 식재료에 알맞는 레시피를 추천합니다.
 또한 사용자가 자주 조회하는 레시피 데이터를 머신러닝 라이브러리인 Apache Mahout과 조합하여 
 비슷한 레시피를 추천합니다.
+
+## index page prototype
+
+![](https://images.velog.io/images/cocodori/post/8a96568f-8327-4f14-a77d-ff79cc6f7fe0/myjangoPrototype.gif)

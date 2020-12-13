@@ -24,7 +24,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/django")
 @Log4j2
 public class IndexController {
 
@@ -33,8 +32,8 @@ public class IndexController {
     // 추가
     private final UserFridgeService fridgeService;
 
-    @GetMapping("/index")
-    public void index(@ModelAttribute("pageDTO") PageDTO pageDTO, Authentication auth, Model model) {
+    @GetMapping("/")
+    public String index(@ModelAttribute("pageDTO") PageDTO pageDTO, Authentication auth, Model model) {
         log.info("===============================INDEX==================================");
         // 로그인을 한 상태인 경우 추천리스트를 뽑아 보여준다.
         if (auth != null) {
@@ -44,6 +43,8 @@ public class IndexController {
                 model.addAttribute("msg", "영수증을 등록해보세요!");
             }
         }
+
+        return "index";
     }
 
     // ------------------추가-------------------

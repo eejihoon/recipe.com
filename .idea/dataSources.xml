@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="jdbc:mysql://slamdunk.cmehaeupoxla.us-east-2.rds.amazonaws.com/django?serverTimezone=Asia/Seoul" uuid="d783fcfd-443c-47dd-b3ed-a503e5100165">
+    <data-source source="LOCAL" name="myjango" uuid="5bff4f78-66d5-4b77-97a7-abfd474310d0">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://slamdunk.cmehaeupoxla.us-east-2.rds.amazonaws.com/django?serverTimezone=Asia/Seoul</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/myjango?serverTimezone=Asia/Seoul</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
