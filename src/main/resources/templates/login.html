@@ -1,31 +1,40 @@
-<header th:replace="/includes/header.html"></header>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head">
+    <style>
+        body {
+            background-color: #FCFAFA;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="fragments.html :: nav"></nav>
+<div class="container" id="hero">
+    <form th:action="@{/login}" method="post">
+        <h3 class="mb-4">로그인</h3>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="id">아이디</label>
+                <input type="text" name="username" id="id" class="form-control" placeholder="아이디를 입력하세요"
+                value="cocoboy">
+            </div>
+        </div>
 
-<div class="col-xl-7 ftco-animate">
-	<form th:action="@{/login}" method="post" class="bg-white p-5 contact-form">
-	  <h3 class="mb-4 billing-heading">로그인</h3>
-	  <div class="row align-items-end">
-		<div class="col-md-6">
-		  <div class="form-group">
-			<label for="firstname">아이디</label>
-			<input type="text" name="username" class="form-control" placeholder="아이디를 입력하세요">
-		  </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="비밀번호를 입력하세요"
+                value="asdf1234">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="submit" value="로그인" class="btn btn-primary">
+            </div>
 		</div>
-  
-		<div class="w-100"></div>
-		<div class="col-md-6">
-		  <div class="form-group">
-			<label for="towncity">비밀번호</label>
-			<input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요">
-		  </div>
-		</div>
-  
-		<div class="w-100"></div>
 
-		<div class="w-100"></div>
-		<input type="submit" value="로그인" class="btn btn-primary">
+		<a th:href="@{/signup}">아직 회원이 아니신가요?</a>
 	</form>
-	<br> &nbsp;
-	<a th:href="@{/signup}"<button class="btn btn-primary">회원가입</button></a>
 </div>
-
-<footer th:replace="/includes/footer.html"></footer>
+</body>
+</html>
