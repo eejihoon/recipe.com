@@ -8,7 +8,7 @@ import java.util.StringJoiner;
 
 import com.dunk.django.domain.UserFridge;
 import com.dunk.django.recipe.RecipeDTO;
-import com.dunk.django.recipe.RecipeService;
+import com.dunk.django.recipe.RecipesService;
 import com.dunk.django.userfridge.UserFridgeService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +25,7 @@ import lombok.extern.log4j.Log4j2;
 public class CrawlingController {
 
     private final UserFridgeService fridgeService;
-    private final RecipeService recipeService;
+    private final RecipesService recipesService;
 
     @GetMapping("/crawling")
     public String crawling(@RequestParam("username") String username) {
@@ -67,7 +67,7 @@ public class CrawlingController {
                 RecipeDTO dto = RecipeDTO.builder().recipe_name(recipeNameList.get(i))
                         .ingr_list(getIngredient(urlList.get(i))).recipe(urlList.get(i)).img(imgList.get(i)).build();
                 // log.info(dto);
-                recipeService.register(dto);
+                recipesService.register(dto);
             }
         });
         return "redirect:/django/myFridge";

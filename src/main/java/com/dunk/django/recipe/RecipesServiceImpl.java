@@ -1,11 +1,8 @@
 package com.dunk.django.recipe;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import com.dunk.django.domain.Member;
-import com.dunk.django.domain.Recipe;
+import com.dunk.django.domain.Recipes;
 
 import com.dunk.django.recommand.RecommendService;
 import org.springframework.data.domain.Page;
@@ -19,18 +16,16 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class RecipeServiceImpl implements RecipeService {
+public class RecipesServiceImpl implements RecipesService {
 
-    private final RecipeRepository repository;
+    private final RecipesRepository repository;
 
     private final RecommendService recommendService;
-
-    //private final MemberCheckService checkService;
 
     @Override
     public Long register(RecipeDTO dto) {
 
-        Recipe entity = bindToEntity(dto);
+        Recipes entity = bindToEntity(dto);
 
         repository.save(entity);
 
@@ -38,7 +33,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe get(Long bno) {
+    public Recipes get(Long bno) {
 
         return repository.findById(bno).get();
     }
@@ -46,7 +41,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Long modify(RecipeDTO dto) {
 
-        Recipe entity = bindToEntity(dto);
+        Recipes entity = bindToEntity(dto);
 
         repository.save(entity);
 
@@ -61,23 +56,23 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public GenericListDTO<RecipeDTO, Recipe> getList(PageDTO pageDTO) {
+    public GenericListDTO<RecipeDTO, Recipes> getList(PageDTO pageDTO) {
         final Sort sort = Sort.by("itemId").descending();
 
         Pageable pageable = pageDTO.makePageable(sort);
 
-        Page<Recipe> result = repository.findAll(pageable);
+        Page<Recipes> result = repository.findAll(pageable);
 
         log.info(result);
 
-        GenericListDTO<RecipeDTO, Recipe> listDTO = new GenericListDTO<>(result, en -> bindToDTO(en));
+        GenericListDTO<RecipeDTO, Recipes> listDTO = new GenericListDTO<>(result, en -> bindToDTO(en));
 
         return listDTO;
     }
 
 
     @Override
-    public List<Recipe> getRecommendList(String userId) {
+    public List<Recipes> getRecommendList(String userId) {
 
 //        Member dm = new Member();
 //        List<Recipe> result = new ArrayList<>();

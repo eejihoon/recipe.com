@@ -5,16 +5,16 @@ import java.util.stream.IntStream;
 import com.dunk.django.recipe.PageDTO;
 import com.dunk.django.recipe.RecipeDTO;
 
-import com.dunk.django.recipe.RecipeService;
+import com.dunk.django.recipe.RecipesService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class RecipeServiceTests {
+public class RecipesServiceTests {
     
     @Autowired
-    private RecipeService service;
+    private RecipesService service;
 
     @Test
     public void testRegister() {

@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class RecipeController {
 
-    private final RecipeService service;
+    private final RecipesService service;
 //    private final MemberService memberService;
     private final PreferencesService preferencesService;
 

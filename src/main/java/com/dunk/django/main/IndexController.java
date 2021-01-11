@@ -1,7 +1,7 @@
 package com.dunk.django.main;
 
 import com.dunk.django.recipe.PageDTO;
-import com.dunk.django.recipe.RecipeService;
+import com.dunk.django.recipe.RecipesService;
 import com.dunk.django.userfridge.UserFridgeService;
 
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,7 +26,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class IndexController {
 
-    private final RecipeService service;
+    private final RecipesService service;
 
     // 추가
     private final UserFridgeService fridgeService;

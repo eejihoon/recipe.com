@@ -2,9 +2,9 @@ package com.dunk.django.repository;
 
 import java.util.Optional;
 
-import com.dunk.django.domain.Recipe;
+import com.dunk.django.domain.Recipes;
 
-import com.dunk.django.recipe.RecipeRepository;
+import com.dunk.django.recipe.RecipesRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,14 +14,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @SpringBootTest
-public class RecipeRepositoryTests {
+public class RecipesRepositoryTests {
 
     @Autowired
-    private RecipeRepository repository;
+    private RecipesRepository repository;
 
     @Test
     public void testInsert() {
-        Recipe entity = Recipe.builder()
+        Recipes entity = Recipes.builder()
         .recipe_name("치킨마요")
         .ingr_list("치킨,마요네즈,간장,김,밥")
         .recipe("치킨과 마요네즈를 밥에 쏙쏙")
@@ -32,7 +32,7 @@ public class RecipeRepositoryTests {
 
     @Test
     public void testGet() {
-        Optional<Recipe> entity = repository.findById(182L);
+        Optional<Recipes> entity = repository.findById(182L);
 
         System.out.println(entity);
     }
@@ -41,7 +41,7 @@ public class RecipeRepositoryTests {
     public void testGetList() {
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC,"rno");
 
-        Page<Recipe> list = repository.findAll(pageable);
+        Page<Recipes> list = repository.findAll(pageable);
     
         list.forEach(row -> System.out.println(row));
     
@@ -52,7 +52,7 @@ public class RecipeRepositoryTests {
 
     @Test
     public void testUpdate() {
-        Recipe entity = repository.findById(180L).get();
+        Recipes entity = repository.findById(180L).get();
 
         entity.setRecipe_name("한솥 치킨 마요");
         entity.setIngr_list("ingr_list");

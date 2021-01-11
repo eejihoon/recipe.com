@@ -8,7 +8,7 @@ import java.util.StringJoiner;
 
 import com.dunk.django.domain.UserFridge;
 import com.dunk.django.recipe.RecipeDTO;
-import com.dunk.django.recipe.RecipeService;
+import com.dunk.django.recipe.RecipesService;
 import com.dunk.django.userfridge.UserFridgeService;
 
 import org.jsoup.Jsoup;
@@ -25,7 +25,7 @@ public class CrawlingTests {
     private UserFridgeService fridgeService;
 
     @Autowired
-    private RecipeService recipeService;
+    private RecipesService recipesService;
 
     @Test
     public void crawlingTest() {
@@ -73,7 +73,7 @@ public class CrawlingTests {
                         .ingr_list(getIngredient(urlList.get(i))).recipe(urlList.get(i)).img(imgList.get(i)).build();
                 System.out.println(dto);
 
-                recipeService.register(dto);
+                recipesService.register(dto);
             }
         });
         return "redirect:/django/myFridge";
