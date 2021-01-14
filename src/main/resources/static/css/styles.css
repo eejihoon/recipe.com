@@ -131,6 +131,8 @@ a:hover {
 .article-img , .article-meta {
 	display: inline-block;
 	vertical-align: top;
+	height: 100%;
+	width: 100%;
 }
 
 .article-img {
@@ -263,21 +265,21 @@ footer a {
 	}
 }
 
-@media(max-width: 585px){
+/*@media(max-width: 585px){*/
 
-	.article-card .text-left{
-		text-align: center !important;
-	}
+/*	.article-card .text-left{*/
+/*		text-align: center !important;*/
+/*	}*/
 
-	.hero-img {
-		width: 350px;
-		height: 350px;
-	}
-	.hero-title h1 {
-	font-size: 40px;
-	line-height: 50px;
-	}
-}
+/*	.hero-img {*/
+/*		width: 350px;*/
+/*		height: 350px;*/
+/*	}*/
+/*	.hero-title h1 {*/
+/*	font-size: 40px;*/
+/*	line-height: 50px;*/
+/*	}*/
+/*}*/
 
 @media(max-width: 320px){
 	.hero-img {

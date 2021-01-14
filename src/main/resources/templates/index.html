@@ -52,160 +52,23 @@
 
 <div class="container mt-2 mb-2 pt-5 pb-5" id="article-grid">
     <div class="row justify-content-center">
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
+        <div class="col-xl-6 col-lg-12 text-center"
+             th:each="recipe : ${recipes}">
+            <a href="#">
                 <div class="article-card">
                     <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00017_2.png">
+                        <img th:src="${recipe.thumbnail}">
                     </div>
 
                     <div class="article-meta text-left">
-                        <h2>칼륨 듬뿍 고구마죽</h2>
-                        <p>고구마죽 고구마 100g(2/3개), 설탕 2g(1/3작은술), 찹쌀가루 3g(2/3작은술),물 200ml(1컵), 잣 8g(8알)</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-xl-6 col-lg-12  text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00016_2.png">
-                    </div>
-
-                    <div class="article-meta  text-left">
-                        <h2>누룽지 두부 계란죽</h2>
-                        <p>채소준비 애호박 30g(1/6개), 표고버섯 20g(2개), 당근 5g(3×2×1cm) 누룽지 죽 누룽지 70g(1/3컵)...</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00009_2.png">
-                    </div>
-
-                    <div class="article-meta  text-left">
-                        <h2>오색지라시 스시</h2>
-                        <p>초밥 밥 210g(1공기) 배합초 식초 20g(1⅓큰술), 설탕 10g(2작은술), 소금 약간 오색지라시 달걀노른자...</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00010_2.png">
-                    </div>
-
-                    <div class="article-meta text-left">
-                        <h2>두부 곤약 나물 비빔밥</h2>
-                        <p>두부 곤약잡곡밥 두부 110g(⅓모), 흰쌀 15g, 현미쌀 3g, 찹쌀 3g, 실곤약 3g 나물준비 콩나물 15g(15개)...</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00011_2.png">
-                    </div>
-
-                    <div class="article-meta text-left">
-                        <h2>저염 간장을 이용한 닭개장 비빔밥</h2>
-                        <p>흑미밥 쌀 90g, 검은 쌀 10g 닭가슴살 삶기 닭가슴살 40g(1/3개), 월계수 잎 2장, 후추 약간 나물준비 숙주...</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00012_2.png">
-                    </div>
-
-                    <div class="article-meta text-left">
-                        <h2>취나물 비빔밥 & 청국장 쌈장</h2>
-                        <p>And his we not quickly tin, but distance, the best of client would of concise plan past.</p>
+                        <h2 th:text="${recipe.name}">음식명</h2>
+                        <p th:text="${recipe.description}">설명</p>
                     </div>
                 </div>
             </a>
         </div>
 
 
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00013_2.png">
-                    </div>
-
-                    <div class="article-meta text-left">
-                        <h2>해물 채소장을 넣은 곰취 쌈밥</h2>
-                        <p>취나물밥 밥 210g(1공기), 다진 쇠고기 20g(1⅓큰술), 취나물 20g(8줄기), 다진 양파 5g... </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00014_2.png">
-                    </div>
-
-                    <div class="article-meta text-left">
-                        <h2>단호박 케일밥</h2>
-                        <p>잡곡밥 잡곡밥 140g(2/3공기) 곰취쌈 곰취 30g, 소금 약간 해물채소장 조갯살 10g, 새우살 10g, 오징어살 15g...</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00015_2.png">
-                    </div>
-
-                    <div class="article-meta text-left">
-                        <h2>오색영양밥 롤</h2>
-                        <p>단호박찰밥 찹쌀 100g, 밤 30g(3개), 은행 20g(8알), 잣 10g(10알), 단호박 40g(4×8cm), 대추 5g(2개)...</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-
-        <div class="col-xl-6 col-lg-12 text-center">
-            <a href="./single.html">
-                <div class="article-card">
-                    <div class="article-img">
-                        <img src="http://www.foodsafetykorea.go.kr/uploadimg/cook/10_00028_2.png">
-                    </div>
-
-                    <div class="article-meta text-left">
-                        <h2>새우 두부 계란찜</h2>
-                        <p>새우두부계란찜 연두부 75g(3/4모), 칵테일새우 20g(5마리), 달걀 30g(1/2개), 생크림 13g(1큰술)...</p>
-                    </div>
-                </div>
-            </a>
-        </div>
 
     </div> <!-- Article Grid Row Ends -->
 </div> <!-- Article Grid Container Ends -->
@@ -213,7 +76,7 @@
 <!-- More articles button -->
 
 <div class="container text-center pb-3 mb-5">
-    <a href="#" class="btn btn-lg btn-light">More Recipes</a>
+    <a href="#" class="btn btn-lg btn-light">더보기</a>
 </div>
 
 
