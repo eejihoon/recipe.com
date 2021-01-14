@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,8 +23,8 @@ class RecipeRepositoryTest {
     @DisplayName("RecipeRepository - 등록 테스트")
     @Test
     void testSaveRecipe() {
-        List<Ingredient> ingredientList = new ArrayList<>();
-        List<CookingMethod> cookingMethodList = new ArrayList<>();
+        Set<Ingredient> ingredientList = new HashSet<>();
+        Set<CookingMethod> cookingMethodList = new HashSet<>();
 
         ingredientList.add(new Ingredient());
         cookingMethodList.add(new CookingMethod());
@@ -35,7 +37,7 @@ class RecipeRepositoryTest {
                 .thumbnail("http://file.okdab.com/recipe/148299577268400131.jpg")
                 .foodNation(new FoodNation("한식"))
                 .foodType(new FoodType("반찬"))
-                .ingredients(ingredientList)
+                //.ingredients(ingredientList)
                 .cookingMethods(cookingMethodList)
                 .build();
 

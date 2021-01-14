@@ -2,7 +2,6 @@ package com.dunk.django.service;
 
 import com.dunk.django.post.BoardDTO;
 import com.dunk.django.post.BoardService;
-import com.dunk.django.recipe.PageDTO;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

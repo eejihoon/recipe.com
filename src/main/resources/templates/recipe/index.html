@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>레시피</title>
+</head>
+<style>
+    table {
+        border: 1px solid #444444;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #444444;
+    }
+</style>
+<body>
+
+<h1>Recipes</h1>
+
+<div>
+    <div th:each="recipe : ${recipes}">
+        <img th:src="${recipe.thumbnail}">
+        <h1 th:text="${recipe.name}">음식명</h1>
+
+        <div>
+            <h2>분류</h2>
+            <p th:text="${recipe.foodType.type} + '(' + ${recipe.foodNation.nation} +')'")></p>
+        </div>
+</div>
+
+</body>
+</html>

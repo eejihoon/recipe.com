@@ -23,12 +23,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //TODO csrf 활성화 및 각 페이지 권한 설정
+
         http.csrf().disable();
 
         http.authorizeRequests()
                 .mvcMatchers("/", "/login", "/signup").permitAll()
-                .anyRequest()
-                .authenticated();
+                .anyRequest().permitAll();
 
         http.formLogin()
                 .loginPage("/login")

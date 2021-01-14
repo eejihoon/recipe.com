@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Service
+//@Service
 public class RecipeDataInsert {
     private final RecipeRepository recipeRepository;
     private final FoodTypeRepository foodTypeRepository;

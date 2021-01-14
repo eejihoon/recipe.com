@@ -3,8 +3,8 @@ package com.dunk.django.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor @AllArgsConstructor @Builder
 @Getter @Setter
@@ -19,11 +19,12 @@ public class Recipe {
     @Column(columnDefinition = "varchar(255) default ''")
     private String description;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    List<Ingredient> ingredients = new ArrayList<>();
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Ingredient> ingredients = new HashSet<>();
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    List<CookingMethod> cookingMethods = new ArrayList<>();
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("sequence ASC")
+    Set<CookingMethod> cookingMethods = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private FoodNation foodNation; //한중일양식
@@ -44,7 +45,7 @@ public class Recipe {
     private String thumbnail;
 
     @Builder
-    public Recipe(String name, String description, List<Ingredient> ingredients, List<CookingMethod> cookingMethods, FoodNation foodNation, FoodType foodType, int cookingTime, int calorie, int servings, String thumbnail) {
+    public Recipe(String name, String description, Set<Ingredient> ingredients, Set<CookingMethod> cookingMethods, FoodNation foodNation, FoodType foodType, int cookingTime, int calorie, int servings, String thumbnail) {
         this.name = name;
         this.description = description;
         this.ingredients = ingredients;

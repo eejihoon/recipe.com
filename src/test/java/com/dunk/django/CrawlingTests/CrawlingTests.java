@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import com.dunk.django.domain.UserFridge;
-import com.dunk.django.recipe.RecipeDTO;
-import com.dunk.django.recipe.RecipesService;
 import com.dunk.django.userfridge.UserFridgeService;
 
 import org.jsoup.Jsoup;
