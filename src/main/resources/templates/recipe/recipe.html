@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<header th:replace="fragments.html :: header"></header>
+
+<div class="py-5 container">
+    <div class="">
+        <img class="img-thumbnail" th:src="${recipe.thumbnail}">
+    </div>
+    <h4 id="list-item-1">
+        <span th:text="${recipe.name}"></span>
+        <small class="h6">(<span
+                th:text=" ${recipe.foodType.type} + ' / ' + ${recipe.foodNation.nation}"></span>)</small>
+    </h4>
+    <p th:text="${recipe.description}"></p>
+
+    <h4 th:text="'요리 시간 : ' + ${recipe.cookingTime} + '분'"></h4>
+
+    <h4 id="list-item-2">재료</h4>
+    <h6 th:text="${recipe.servings}+'인 기준'"></h6>
+    <th:block th:each="ingredient:${recipe.ingredients}">
+        <span th:text="${ingredient.ingredient} + '('+ ${ingredient.quantity} +')'"></span>,
+    </th:block>
+    <h4 id="list-item-3">요리 과정</h4>
+    <div th:each="method : ${recipe.cookingMethods}">
+        <h4 th:text="${method.sequence}"></h4>
+        <img th:src="${method.image}">
+        <p th:text="${method.description}"></p>
+    </div>
+</div>
+
+<footer th:replace="fragments.html :: footer"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+
+<script>
+    $('body').scrollspy({target: '#navbar-example'})
+</script>
+</body>
+</html>

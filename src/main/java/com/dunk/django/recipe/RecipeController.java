@@ -1,12 +1,10 @@
 package com.dunk.django.recipe;
 
 
+import com.dunk.django.recipe.repository.IngredientRepository;
 import com.dunk.django.recipe.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +14,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class RecipeController {
 
-    private final RecipeService recipeService;
     private final RecipeRepository recipeRepository;
+    private final IngredientRepository ingredientRepository;
 
     @GetMapping("/recipe")
-    public String findAll(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable, Model model) {
-        model.addAttribute("recipes", recipeRepository.findAll(pageable));
-        return "recipe/index";
+    public String findAll(Long id, Model model) {
+
+        log.info("id : {}", id);
+        model.addAttribute("recipe", recipeRepository.findWithAllById(id));
+
+        return "recipe/recipe";
     }
 }

@@ -8,8 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional(readOnly = true)
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @EntityGraph(attributePaths = {"foodNation", "foodType"})
     Page<Recipe> findAll(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"foodNation", "foodType", "ingredients", "cookingMethods"})
+    Recipe findWithAllById(Long id);
 }

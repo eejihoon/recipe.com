@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments.html :: head">
-    <style>
-        body {
-            background-color: #FCFAFA;
-        }
-    </style>
-</head>
+<head th:replace="fragments.html :: head"></head>
 <body>
-<nav th:replace="fragments.html :: nav"></nav>
+<header th:replace="fragments.html :: header"></header>
 <div class="container" id="hero">
     <form th:action="@{/login}" method="post">
         <h3 class="mb-4">로그인</h3>
@@ -36,5 +30,7 @@
 		<a th:href="@{/signup}">아직 회원이 아니신가요?</a>
 	</form>
 </div>
+
+<footer th:replace="fragments.html :: footer"></footer>
 </body>
 </html>
