@@ -14,14 +14,6 @@ public class Ingredient {
     @Id @GeneratedValue
     Long id;
 
-    @Builder
-    public Ingredient(Recipe recipe, String ingredient, String quantity, IngredientType ingredientType) {
-        this.recipe = recipe;
-        this.ingredient = ingredient;
-        this.quantity = quantity;
-        this.ingredientType = ingredientType;
-    }
-
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
@@ -32,4 +24,12 @@ public class Ingredient {
 
     @ManyToOne
     IngredientType ingredientType;
+
+    @Builder
+    public Ingredient(Recipe recipe, String ingredient, String quantity, IngredientType ingredientType) {
+        this.recipe = recipe;
+        this.ingredient = ingredient;
+        this.quantity = quantity;
+        this.ingredientType = ingredientType;
+    }
 }

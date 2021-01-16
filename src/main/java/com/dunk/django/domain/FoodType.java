@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
 public class FoodType {
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     @Column(nullable = false)

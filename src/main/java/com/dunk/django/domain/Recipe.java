@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter @Setter
 @Entity
 public class Recipe {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)

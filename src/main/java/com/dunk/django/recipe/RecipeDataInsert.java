@@ -120,23 +120,23 @@ public class RecipeDataInsert {
             cookingMethodRepository.saveAll(cookingMethodList);
         }
 
-        if (ingredientTypeRepository.count() == 0) {
-            Resource resource = new ClassPathResource("IngredientType.csv");
-
-            List<IngredientType> ingredientTypes = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-                    .stream()
-                    .map(foodTypeCsv -> {
-                        String[] split = foodTypeCsv.split(",");
-
-                        return IngredientType.builder()
-                                .id(Long.parseLong(split[0]))
-                                .ingredientType(split[1])
-                                .build();
-
-                    }).collect(Collectors.toList());
-
-            ingredientTypeRepository.saveAll(ingredientTypes);
-        }
+//        if (ingredientTypeRepository.count() == 0) {
+//            Resource resource = new ClassPathResource("IngredientType.csv");
+//
+//            List<IngredientType> ingredientTypes = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
+//                    .stream()
+//                    .map(foodTypeCsv -> {
+//                        String[] split = foodTypeCsv.split(",");
+//
+//                        return IngredientType.builder()
+//                                .id(Long.parseLong(split[0]))
+//                                .ingredientType(split[1])
+//                                .build();
+//
+//                    }).collect(Collectors.toList());
+//
+//            ingredientTypeRepository.saveAll(ingredientTypes);
+//        }
 
         if (ingredientRepository.count() == 0) {
             Resource resource = new ClassPathResource("ingredient.csv");
