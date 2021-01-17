@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -30,15 +28,10 @@ class RecipeRepositoryTest {
         cookingMethodList.add(new CookingMethod());
 
         Recipe newRecipe = Recipe.builder()
-                .name("콩비지동그랑땡")
+                .title("콩비지동그랑땡")
                 .description("두부대신 콩비지를 넣어 만든 동그랑땡 맛도 좋아요!")
                 .cookingTime(30)
-                .servings(3)
                 .thumbnail("http://file.okdab.com/recipe/148299577268400131.jpg")
-                .foodNation(new FoodNation("한식"))
-                .foodType(new FoodType("반찬"))
-                //.ingredients(ingredientList)
-                .cookingMethods(cookingMethodList)
                 .build();
 
         Recipe saveRecipe = recipeRepository.save(newRecipe);

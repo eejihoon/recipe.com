@@ -63,30 +63,30 @@ public class RecipeDataInsert {
             foodTypeRepository.saveAll(foodTypes);
         }
 
-        if (recipeRepository.count() == 0) {
-            Resource resource = new ClassPathResource("Recipe.csv");
-
-            List<Recipe> recipes = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-                    .stream()
-                    .map(line -> {
-                        String[] split = line.split(",", 9);
-
-                        return Recipe.builder()
-                                .id(Long.parseLong(split[0]))
-                                .name(split[1])
-                                .foodNation(foodNationRepository.findById(Long.parseLong(split[2])).get())
-                                .foodType(foodTypeRepository.findById(Long.parseLong(split[3])).get())
-                                .cookingTime(Integer.parseInt(split[4].replaceAll("분", "")))
-                                .calorie(Integer.parseInt(split[5].replaceAll("Kcal", "")))
-                                .servings(Integer.parseInt(split[6].replaceAll("인분", "")))
-                                .thumbnail(split[7])
-                                .description(split[8])
-                                .build();
-
-                    }).collect(Collectors.toList());
-
-            recipeRepository.saveAll(recipes);
-        }
+//        if (recipeRepository.count() == 0) {
+//            Resource resource = new ClassPathResource("Recipe.csv");
+//
+//            List<Recipe> recipes = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
+//                    .stream()
+//                    .map(line -> {
+//                        String[] split = line.split(",", 9);
+//
+//                        return Recipe.builder()
+//                                .id(Long.parseLong(split[0]))
+//                                .name(split[1])
+//                                .foodNation(foodNationRepository.findById(Long.parseLong(split[2])).get())
+//                                .foodType(foodTypeRepository.findById(Long.parseLong(split[3])).get())
+//                                .cookingTime(Integer.parseInt(split[4].replaceAll("분", "")))
+//                                .calorie(Integer.parseInt(split[5].replaceAll("Kcal", "")))
+//                                .servings(Integer.parseInt(split[6].replaceAll("인분", "")))
+//                                .thumbnail(split[7])
+//                                .description(split[8])
+//                                .build();
+//
+//                    }).collect(Collectors.toList());
+//
+//            recipeRepository.saveAll(recipes);
+//        }
 
         if (cookingMethodRepository.count() == 0) {
             Resource resource = new ClassPathResource("Cooking-Method.csv");
@@ -105,7 +105,7 @@ public class RecipeDataInsert {
                         System.out.println("split[0] : " + split[0]);
                         System.out.println("recipe : " + recipe);
                         System.out.println("id : " + recipe.getId());
-                        System.out.println("name : " + recipe.getName());
+                        System.out.println("name : " + recipe.getTitle());
                         System.out.println("description : " + recipe.getDescription());
                         System.out.println("***************************************************************");
 
@@ -138,24 +138,24 @@ public class RecipeDataInsert {
 //            ingredientTypeRepository.saveAll(ingredientTypes);
 //        }
 
-        if (ingredientRepository.count() == 0) {
-            Resource resource = new ClassPathResource("ingredient.csv");
-
-            List<Ingredient> ingredients = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-                    .stream()
-                    .map(line -> {
-                        String[] split = line.split(",", 4);
-
-                        return Ingredient.builder()
-                                .recipe(recipeRepository.findById(Long.parseLong(split[0])).get())
-                                .quantity(split[1])
-                                .ingredientType(ingredientTypeRepository.findById(Long.parseLong(split[2])).get())
-                                .ingredient(split[3])
-                                .build();
-
-                    }).collect(Collectors.toList());
-
-            ingredientRepository.saveAll(ingredients);
-        }
+//        if (ingredientRepository.count() == 0) {
+//            Resource resource = new ClassPathResource("ingredient.csv");
+//
+//            List<Ingredient> ingredients = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
+//                    .stream()
+//                    .map(line -> {
+//                        String[] split = line.split(",", 4);
+//
+//                        return Ingredient.builder()
+//                                .recipe(recipeRepository.findById(Long.parseLong(split[0])).get())
+//                                .quantity(split[1])
+//                                .ingredientType(ingredientTypeRepository.findById(Long.parseLong(split[2])).get())
+//                                .ingredient(split[3])
+//                                .build();
+//
+//                    }).collect(Collectors.toList());
+//
+//            ingredientRepository.saveAll(ingredients);
+//        }
     }
 }

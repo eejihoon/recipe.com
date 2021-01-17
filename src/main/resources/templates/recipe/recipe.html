@@ -11,10 +11,7 @@
                 <img class="rounded mx-auto d-block img-thumbnail w-50 h-50" th:src="${recipe.thumbnail}" alt="">
                 <div class="card-body">
                     <h3 class="card-title">
-                        <span th:text="${recipe.name}"></span>
-                        <small class="h6">(<span
-                            th:text=" ${recipe.foodType.type} + ' / ' + ${recipe.foodNation.nation}"></span>)
-                        </small>
+                        <span th:text="${recipe.title}"></span>
                     </h3>
                     <h6 th:text="${recipe.description}"></h6>
                     <span class="text-warning">★ ★ ★ ★ ☆</span>
@@ -40,11 +37,14 @@
                     <h4>과정</h4>
                 </div>
                 <div class="card-body">
-                    <div th:each="method : ${recipe.cookingMethods}">
+                    <div th:if="${!recipe.cookingMethods.isEmpty()}" th:each="method : ${recipe.cookingMethods}">
                         <h6 th:text="${method.sequence} + '. '+ ${method.description}"></h6>
                         <img th:src="${method.image}">
                         <hr>
                     </div>
+                    <div th:if="${recipe.cookingMethods.isEmpty()}">
+                        <div class="col-10 pt-3" th:utext="${recipe.fullDescription}"></div>
+                    </div>S
                 </div>
             </div>
             <!-- /.card -->

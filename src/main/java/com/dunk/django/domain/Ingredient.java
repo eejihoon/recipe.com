@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 public class Ingredient {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id;
 
     @ManyToOne
@@ -25,11 +25,11 @@ public class Ingredient {
     @ManyToOne
     IngredientType ingredientType;
 
-    @Builder
-    public Ingredient(Recipe recipe, String ingredient, String quantity, IngredientType ingredientType) {
-        this.recipe = recipe;
+    public Ingredient(String ingredient) {
         this.ingredient = ingredient;
-        this.quantity = quantity;
-        this.ingredientType = ingredientType;
+    }
+
+    public void add(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

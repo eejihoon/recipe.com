@@ -4,6 +4,7 @@ import com.dunk.django.recipe.repository.RecipeRepository;
 import com.dunk.django.userfridge.UserFridgeService;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,8 +31,7 @@ public class IndexController {
     private final RecipeRepository recipeRepository;
 
     @GetMapping("/")
-    public String index(@PageableDefault(size = 9, value = 9) Pageable pageable, Model model) {
-
+    public String index(@PageableDefault(size = 9, value = 9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
         model.addAttribute("recipes", recipeRepository.findAll(pageable));
         model.addAttribute("maxPage" , 9);
         return "index";

@@ -22,7 +22,7 @@
                     <a th:href="@{'/recipe?id='+${recipe.id} + '&page=' +${recipes.number}}" class="text-decoration-none text-reset">
                     <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${recipe.thumbnail}">
                     <div class="card-body">
-                        <h3 th:text="${recipe.name}"></h3>
+                        <h3 th:text="${recipe.title}"></h3>
                         <p class="card-text" th:text="${recipe.description}">text</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">9 mins</small>

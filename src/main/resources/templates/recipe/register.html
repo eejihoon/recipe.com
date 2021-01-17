@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css" />
 
     <!-- summernote-->
     <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -11,59 +12,144 @@
     <script src="/node_modules/summernote/dist/summernote.js"></script>
 
     <title>레시피</title>
+
 </head>
 <body>
 <header th:replace="fragments.html :: header"></header>
-
 <div class="container">
-    <div class="row">
-        <div class="col-lg-3">
-            <h1 class="my-4">Shop Name</h1>
-            <div class="list-group">
-                <a href="#" class="list-group-item active">Category 1</a>
-                <a href="#" class="list-group-item">Category 2</a>
-                <a href="#" class="list-group-item">Category 3</a>
+    <div>
+        <div class="py-5 text-center">
+            <h2>레시피 등록</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="needs-validation col-sm-10">
+            <div class="form-group">
+                <label for="title">레시피</label>
+                <input id="title" type="text" class="form-control" placeholder="음식 이름" aria-describedby="titleHelp" required min="1">
+                <small id="titleHelp" class="form-text text-muted">
+                    어떤 음식인지 입력하세요.
+                </small>
+                <small class="invalid-feedback">음식 이름을 입력하세요</small>
+            </div>
+            <div class="form-group">
+                <label for="ingredients">재료</label>
+                <input id="ingredients" type="text" class="form-control" placeholder="재료를 입력하세요." name='basic'
+                       aria-describedby="ingredientsHelp" required min="1">
+                <small id="ingredientsHelp" class="form-text text-muted">
+                    재료는 콤마(,)로 구분하세요.
+                </small>
+                <small class="invalid-feedback">재료를 입력하세요.</small>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="cooking-time">요리 시간(분)</label>
+                    <input id="cooking-time" type="number" class="form-control" placeholder="0"
+                           aria-describedby="cooking-time-help" value="10">
+                    <small id="cooking-time-help" class="form-text text-muted">
+                        숫자만 입력 가능합니다.
+                    </small>
+                    <small class="invalid-feedback">숫자만 입력 가능합니다.</small>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="food-nation">유형</label>
+                    <select class="custom-select mr-sm-2" id="food-nation" aria-describedby="foot-nation-help">
+                        <th:block th:each="nation : ${foodNation}">
+                            <option th:value="${nation.id}" selected="selected"><span th:text="${nation.nation}"></span></option>
+                        </th:block>
+                    </select>
+                    <small id="foot-nation-help" class="form-text text-muted">
+                        어느 나라 음식인지 선택하세요.
+                    </small>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="food-type">분류</label>
+                    <select class="custom-select mr-sm-2" id="food-type" aria-describedby="food-type-help" name="eventType">
+                        <th:block th:each="type : ${foodType}">
+                            <option th:value="${type.id}" th:text="${type.type}" selected="selected"></option>
+                        </th:block>
+                    </select>
+                    <small id="food-type-help" class="form-text text-muted">
+                        음식을 분류해주세요.
+                    </small>
+                </div>
+            </div>
+                <div class="form-group">
+                    <label for="description">모임 설명</label>
+                    <textarea id="description" type="textarea" class="editor form-control"
+                              placeholder="모임을 자세히 설명해 주세요." aria-describedby="descriptionHelp" required></textarea>
+                    <small id="descriptionHelp" class="form-text text-muted">
+                        모임에서 다루는 주제, 장소, 진행 방식 등을 자세히 적어 주세요.
+                    </small>
+                    <small class="invalid-feedback">모임 설명을 입력하세요.</small>
+                    <small class="form-text text-danger">Error</small>
+                </div>
+            <div class="form-group">
+                <button id="btn-submit" class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">모임 만들기</button>
             </div>
         </div>
-        <div class="col-lg-9">
-
-            <div class="card mt-4">
-                <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
-                <div class="card-body">
-                    <h3 class="card-title">Product Name</h3>
-                    <h4>$24.99</h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores, sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure, ducimus!</p>
-                    <span class="text-warning">★ ★ ★ ★ ☆</span>
-                    4.0 stars
-                </div>
-            </div>
-            <!-- /.card -->
-
-            <div class="card card-outline-secondary my-4">
-                <div class="card-header">
-                    Product Reviews
-                </div>
-                <div class="card-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                    <hr>
-                    <a href="#" class="btn btn-success">Leave a Review</a>
-                </div>
-            </div>
-            <!-- /.card -->
-
-        </div>
-        <!-- /.col-lg-9 -->
 
     </div>
-
+    </div>
 </div>
+<script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+<script>
+    window.onload = function () {
+        // The DOM element you wish to replace with Tagify
+        var input = document.querySelector('input[name=basic]');
 
+        var tagify = new Tagify(input, {
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(',')
+        })
+
+        input.addEventListener('change', onChange)
+
+        let ingredients;
+
+        function onChange(e) {
+            // outputs a String
+            console.log(e.target.value)
+            ingredients = e.target.value;
+        }
+
+        const submitBtn = document.getElementById('btn-submit');
+
+        submitBtn.addEventListener('click', requestSave);
+
+        function requestSave() {
+            console.log(ingredients)
+            const xhr = new XMLHttpRequest();
+            const data = {
+                title           :   document.querySelector('#title').value,
+                ingredients     :   ingredients,
+                cookingTime     :   document.getElementById('cooking-time').value,
+                fullDescription :   document.getElementById('description').value
+            }
+
+            xhr.onload = function () {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    console.log(xhr.responseText)
+                } else {
+                    console.log(xhr.responseText)
+                }
+            }
+
+            xhr.open('POST', '/register')
+            xhr.setRequestHeader('Content-type','application/json')
+            xhr.send(JSON.stringify(data))
+        }
+
+
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('.editor').summernote({
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+            placeholder: '스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.',
+            tabsize: 2,
+            height: 300
+        })
+    });
+</script>
 </body>
 </html>

@@ -2,6 +2,8 @@ package com.dunk.django.recipe;
 
 
 import com.dunk.django.domain.Recipe;
+import com.dunk.django.recipe.repository.FoodNationRepository;
+import com.dunk.django.recipe.repository.FoodTypeRepository;
 import com.dunk.django.recipe.repository.IngredientRepository;
 import com.dunk.django.recipe.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,17 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 public class RecipeController {
-
     private final RecipeRepository recipeRepository;
-    private final IngredientRepository ingredientRepository;
+    private final FoodNationRepository foodNationRepository;
+    private final FoodTypeRepository foodTypeRepository;
 
     @GetMapping("/recipe")
     public String findAll(Long id, Model model) {
@@ -31,16 +30,12 @@ public class RecipeController {
     }
 
     @GetMapping("/register")
-    public String save() {
+    public String save(Model model) {
+        model.addAttribute("foodType", foodTypeRepository.findAll());
+        model.addAttribute("foodNation", foodNationRepository.findAll());
+
         return "recipe/register";
     }
 
-    @ResponseBody
-    @PostMapping("/register")
-    public ResponseEntity<Long> savePost(@RequestBody RecipeSaveForm recipeSaveForm) {
-        log.info("recipeSaveForm : {}", recipeSaveForm);
-        Recipe saveRecipe = recipeRepository.save(recipeSaveForm.toEntity());
 
-        return ResponseEntity.ok(saveRecipe.getId());
-    }
 }

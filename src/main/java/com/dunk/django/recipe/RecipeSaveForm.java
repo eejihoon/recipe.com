@@ -3,32 +3,39 @@ package com.dunk.django.recipe;
 import com.dunk.django.domain.*;
 import lombok.Data;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class RecipeSaveForm {
-    private String name;
-    private String description;
-    Set<Ingredient> ingredients = new HashSet<>();
-    Set<CookingMethod> cookingMethods = new HashSet<>();
-    private FoodNation foodNation; //한중일양식
-    private FoodType foodType;  //국, 반찬, 찌개...
-    private Integer cookingTime;
-    private int servings;
     private String thumbnail;
+    private String title;
+    private String description;
+    private String fullDescription;
+    private String ingredients;
+    private Integer cookingTime;
 
     public Recipe toEntity() {
-        return Recipe.builder()
+
+        String[] ingrSplit = ingredients.split(",");
+
+        Set<Ingredient> ingredientSet = Arrays.stream(ingrSplit)
+                                            .map(Ingredient::new)
+                                            .collect(Collectors.toSet());
+
+        Recipe recipe = Recipe.builder()
                 .thumbnail(thumbnail)
-                .name(name)
+                .title(title)
                 .description(description)
+                .fullDescription(fullDescription)
                 .cookingTime(cookingTime)
-                .servings(servings)
-                .foodType(foodType)
-                .foodNation(foodNation)
-                .cookingMethods(cookingMethods)
-                .ingredients(ingredients)
                 .build();
+
+        ingredientSet.forEach(row -> row.add(recipe));
+
+        recipe.setIngredients(ingredientSet);
+
+        return recipe;
     }
 }

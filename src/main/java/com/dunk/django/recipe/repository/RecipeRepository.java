@@ -5,12 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-@Transactional(readOnly = true)
+@Transactional
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @EntityGraph(attributePaths = {"foodNation", "foodType"})
     Page<Recipe> findAll(Pageable pageable);

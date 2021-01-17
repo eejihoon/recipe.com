@@ -73,33 +73,28 @@ class RecipeControllerTest {
         Set<Ingredient> ingredients = new HashSet<>();
         Set<CookingMethod> cookingMethods = new HashSet<>();
 
-        for (int i=0; i < 10; i++) {
-            Ingredient ingredient = Ingredient.builder()
-                    .ingredient(i+"-test")
-                    .quantity(i+"g")
-                    .ingredientType(allIngredientTypes.get(0))
-                    .build();
-
-            CookingMethod cookingMethod = CookingMethod.builder()
-                    .description(i+" method des")
-                    .image(i+" method Image")
-                    .sequence(i)
-                    .build();
-
-            ingredients.add(ingredient);
-            cookingMethods.add(cookingMethod);
-        }
+//        for (int i=0; i < 10; i++) {
+//            Ingredient ingredient = Ingredient.builder()
+//                    .ingredient(i+"-test")
+//                    .quantity(i+"g")
+//                    .ingredientType(allIngredientTypes.get(0))
+//                    .build();
+//
+//            CookingMethod cookingMethod = CookingMethod.builder()
+//                    .description(i+" method des")
+//                    .image(i+" method Image")
+//                    .sequence(i)
+//                    .build();
+//
+//            ingredients.add(ingredient);
+//            cookingMethods.add(cookingMethod);
+//        }
 
         RecipeSaveForm recipeSaveForm = new RecipeSaveForm();
-        recipeSaveForm.setName("Test Recipe!!");
+        recipeSaveForm.setTitle("Test Recipe!!");
         recipeSaveForm.setDescription("Test Description");
         recipeSaveForm.setThumbnail("image URL");
         recipeSaveForm.setCookingTime(20);
-        recipeSaveForm.setServings(2);
-        recipeSaveForm.setFoodType(allTypes.get(0));
-        recipeSaveForm.setFoodNation(allNation.get(0));
-        recipeSaveForm.setIngredients(ingredients);
-        recipeSaveForm.setCookingMethods(cookingMethods);
 
         String requesetJson = objectMapper.writeValueAsString(recipeSaveForm);
         System.out.println("requesetJson : " + requesetJson);
@@ -112,9 +107,12 @@ class RecipeControllerTest {
 
         List<Recipe> recipes = recipeRepository.findAll();
 
+        System.out.println(recipes.get(0).getCookingMethods().isEmpty());
+        recipes.get(0).getCookingMethods().forEach(row -> System.out.println(row.getDescription()));
+
         assertTrue(!recipes.get(0).getCookingMethods().isEmpty());
         assertTrue(!recipes.get(0).getIngredients().isEmpty());
-        assertEquals(recipes.get(0).getName(), recipeSaveForm.getName());
+        assertEquals(recipes.get(0).getTitle(), recipeSaveForm.getTitle());
 
     }
 

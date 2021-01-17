@@ -14,10 +14,15 @@ public class Recipe {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
-    @Column(columnDefinition = "varchar(255) default ''")
+    @Lob
+    private String thumbnail;
+
     private String description;
+
+    @Lob
+    private String fullDescription;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Ingredient> ingredients = new HashSet<>();
@@ -32,29 +37,17 @@ public class Recipe {
     @ManyToOne(fetch = FetchType.LAZY)
     private FoodType foodType;  //국, 반찬, 찌개...
 
-    @Column(columnDefinition = "integer default 0")
     private Integer cookingTime;
 
-    @Column(columnDefinition = "integer default 0")
-    private int calorie;
-
-    @Column(columnDefinition = "integer default 0")
     private int servings;
 
-    @Column(columnDefinition = "varchar(255) default ''")
-    private String thumbnail;
-
     @Builder
-    public Recipe(String name, String description, Set<Ingredient> ingredients, Set<CookingMethod> cookingMethods, FoodNation foodNation, FoodType foodType, int cookingTime, int calorie, int servings, String thumbnail) {
-        this.name = name;
-        this.description = description;
-        this.ingredients = ingredients;
-        this.cookingMethods = cookingMethods;
-        this.foodNation = foodNation;
-        this.foodType = foodType;
-        this.cookingTime = cookingTime;
-        this.calorie = calorie;
-        this.servings = servings;
+    public Recipe(String title, String thumbnail, String description, String fullDescription, Set<Ingredient> ingredients, Integer cookingTime) {
+        this.title = title;
         this.thumbnail = thumbnail;
+        this.description = description;
+        this.fullDescription = fullDescription;
+        this.ingredients = ingredients;
+        this.cookingTime = cookingTime;
     }
 }
