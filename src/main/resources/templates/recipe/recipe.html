@@ -8,14 +8,13 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card mt-4">
-                <img class="rounded mx-auto d-block img-thumbnail w-50 h-50" th:src="${recipe.thumbnail}" alt="">
+                <img class="rounded mx-auto d-block img-thumbnail w-50 h-50"
+                     th:if="${recipe.thumbnail != null}" th:src="${recipe.thumbnail}" alt="">
                 <div class="card-body">
                     <h3 class="card-title">
                         <span th:text="${recipe.title}"></span>
                     </h3>
                     <h6 th:text="${recipe.description}"></h6>
-                    <span class="text-warning">★ ★ ★ ★ ☆</span>
-                    4.0 stars
                 </div>
             </div>
             <!-- /.card -->
@@ -27,7 +26,9 @@
                 <div class="card-body">
                     <h6 th:text="${recipe.servings}+'인 기준'"></h6>
                     <th:block th:each="ingredient:${recipe.ingredients}">
-                        <span th:text="${ingredient.ingredient} + '('+ ${ingredient.quantity} +')'"></span>,
+                        <span th:text="${ingredient.ingredient}"></span>
+                        <span th:if="${ingredient.quantity != null}" th:text="'('+ ${ingredient.quantity} +')'"></span>
+                        <span>,</span>
                     </th:block>
                 </div>
             </div>

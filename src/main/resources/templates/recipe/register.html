@@ -3,7 +3,9 @@
 <head>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css" />
+
+    <!-- tag -->
+    <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css"/>
 
     <!-- summernote-->
     <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -11,8 +13,11 @@
     <link href="/node_modules/summernote/dist/summernote-bs4.min.css" rel="stylesheet">
     <script src="/node_modules/summernote/dist/summernote.js"></script>
 
-    <title>레시피</title>
+    <!-- cropper js-->
+    <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet">
+    <script src="/node_modules/cropperjs/dist/cropper.js"></script>
 
+    <title>레시피</title>
 </head>
 <body>
 <header th:replace="fragments.html :: header"></header>
@@ -23,72 +28,74 @@
         </div>
         <div class="row justify-content-center">
             <div class="needs-validation col-sm-10">
-            <div class="form-group">
-                <label for="title">레시피</label>
-                <input id="title" type="text" class="form-control" placeholder="음식 이름" aria-describedby="titleHelp" required min="1">
-                <small id="titleHelp" class="form-text text-muted">
-                    어떤 음식인지 입력하세요.
-                </small>
-                <small class="invalid-feedback">음식 이름을 입력하세요</small>
-            </div>
-            <div class="form-group">
-                <label for="ingredients">재료</label>
-                <input id="ingredients" type="text" class="form-control" placeholder="재료를 입력하세요." name='basic'
-                       aria-describedby="ingredientsHelp" required min="1">
-                <small id="ingredientsHelp" class="form-text text-muted">
-                    재료는 콤마(,)로 구분하세요.
-                </small>
-                <small class="invalid-feedback">재료를 입력하세요.</small>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label for="cooking-time">요리 시간(분)</label>
-                    <input id="cooking-time" type="number" class="form-control" placeholder="0"
-                           aria-describedby="cooking-time-help" value="10">
-                    <small id="cooking-time-help" class="form-text text-muted">
-                        숫자만 입력 가능합니다.
+                <div class="form-group">
+                    <label for="thumbnail">대표 사진</label>
+                    <br>
+                    <input type="file" id="thumbnail" />
+                    <img id="image" />
+                    <small id="thumbnail-help" class="form-text text-muted">
+                        대표 사진을 등록하세요.
                     </small>
-                    <small class="invalid-feedback">숫자만 입력 가능합니다.</small>
+                    <small class="invalid-feedback">이미지만 선택할 수 있습니다.</small>
                 </div>
-                <div class="form-group col-md-3">
-                    <label for="food-nation">유형</label>
-                    <select class="custom-select mr-sm-2" id="food-nation" aria-describedby="foot-nation-help">
-                        <th:block th:each="nation : ${foodNation}">
-                            <option th:value="${nation.id}" selected="selected"><span th:text="${nation.nation}"></span></option>
-                        </th:block>
-                    </select>
-                    <small id="foot-nation-help" class="form-text text-muted">
-                        어느 나라 음식인지 선택하세요.
+                <div class="form-group">
+                    <label for="title">레시피</label>
+                    <input id="title" type="text" class="form-control" placeholder="음식 이름" aria-describedby="titleHelp"
+                           required min="1">
+                    <small id="titleHelp" class="form-text text-muted">
+                        어떤 음식인지 입력하세요.
                     </small>
+                    <small class="invalid-feedback">음식 이름을 입력하세요</small>
                 </div>
-                <div class="form-group col-md-3">
-                    <label for="food-type">분류</label>
-                    <select class="custom-select mr-sm-2" id="food-type" aria-describedby="food-type-help" name="eventType">
-                        <th:block th:each="type : ${foodType}">
-                            <option th:value="${type.id}" th:text="${type.type}" selected="selected"></option>
-                        </th:block>
-                    </select>
-                    <small id="food-type-help" class="form-text text-muted">
-                        음식을 분류해주세요.
+                <div class="form-group">
+                    <label for="title">짧은 설명</label>
+                    <input id="description" type="text" class="form-control" placeholder="짧은 소개"
+                           aria-describedby="descriptionHelp" required min="1">
+                    <small id="descriptionHelp" class="form-text text-muted">
+                        음식을 짧게 소개 해주세요.
                     </small>
+                    <small class="invalid-feedback">음식 이름을 입력하세요</small>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="ingredients">재료</label>
+                    <input id="ingredients" type="text" class="form-control" placeholder="재료를 입력하세요." name='basic'
+                           aria-describedby="ingredientsHelp" required min="1">
+                    <small id="ingredientsHelp" class="form-text text-muted">
+                        재료는 콤마(,)로 구분하세요.
+                    </small>
+                    <small class="invalid-feedback">재료를 입력하세요.</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="cooking-time">요리 시간(분)</label>
+                        <input id="cooking-time" type="number" class="form-control" placeholder="0"
+                               aria-describedby="cooking-time-help" value="10">
+                        <small id="cooking-time-help" class="form-text text-muted">
+                            숫자만 입력 가능합니다.
+                        </small>
+                        <small class="invalid-feedback">숫자만 입력 가능합니다.</small>
+                    </div>
+
+                </div>
                 <div class="form-group">
                     <label for="description">모임 설명</label>
-                    <textarea id="description" type="textarea" class="editor form-control"
-                              placeholder="모임을 자세히 설명해 주세요." aria-describedby="descriptionHelp" required></textarea>
-                    <small id="descriptionHelp" class="form-text text-muted">
+                    <textarea id="full-description" type="textarea" class="editor form-control"
+                              placeholder="모임을 자세히 설명해 주세요." aria-describedby="full-description-help"
+                              required></textarea>
+                    <small id="full-description-help" class="form-text text-muted">
                         모임에서 다루는 주제, 장소, 진행 방식 등을 자세히 적어 주세요.
                     </small>
                     <small class="invalid-feedback">모임 설명을 입력하세요.</small>
                     <small class="form-text text-danger">Error</small>
                 </div>
-            <div class="form-group">
-                <button id="btn-submit" class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">모임 만들기</button>
+                <div class="form-group">
+                    <button id="btn-submit" class="btn btn-primary btn-block" type="submit"
+                            aria-describedby="submitHelp">모임 만들기
+                    </button>
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     </div>
 </div>
 <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
@@ -116,13 +123,17 @@
         submitBtn.addEventListener('click', requestSave);
 
         function requestSave() {
-            console.log(ingredients)
+            console.log('----------------------------------')
+            console.log(document.getElementById("image").src)
+            console.log('----------------------------------')
             const xhr = new XMLHttpRequest();
             const data = {
-                title           :   document.querySelector('#title').value,
+                thumbnail       :   document.getElementById("image").src,
+                title           :   document.getElementById('title').value,
+                description     :   document.getElementById('description').value,
                 ingredients     :   ingredients,
                 cookingTime     :   document.getElementById('cooking-time').value,
-                fullDescription :   document.getElementById('description').value
+                fullDescription :   document.getElementById('full-description').value
             }
 
             xhr.onload = function () {
@@ -134,9 +145,32 @@
             }
 
             xhr.open('POST', '/register')
-            xhr.setRequestHeader('Content-type','application/json')
+            xhr.setRequestHeader('Content-Type', 'application/json')
             xhr.send(JSON.stringify(data))
         }
+
+        const fileInput = document.getElementById('thumbnail');
+
+        fileInput.addEventListener('change', function () {
+            console.dir(fileInput.files[0])
+            console.log(JSON.stringify(fileInput.files[0]))
+            console.log(JSON.stringify(fileInput.value))
+
+        })
+
+
+        document.getElementById("thumbnail").onchange = function () {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                // get loaded data and render thumbnail.
+                document.getElementById("image").src = e.target.result;
+                console.log(e.target.result);
+            };
+
+            // read the image file as a data URL.
+            reader.readAsDataURL(this.files[0]);
+        };
 
 
     }

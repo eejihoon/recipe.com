@@ -69,7 +69,6 @@ class RecipeControllerTest {
 
         assertTrue(recipes.get(0).getIngredients().size() > 0);
         assertEquals(recipes.get(0).getTitle(), recipeSaveForm.getTitle());
-
     }
 
 
