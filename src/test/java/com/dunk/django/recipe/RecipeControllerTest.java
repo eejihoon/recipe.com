@@ -3,10 +3,6 @@ package com.dunk.django.recipe;
 import com.dunk.django.domain.*;
 import com.dunk.django.recipe.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import net.minidev.json.JSONUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.swing.text.LayoutQueue;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -40,11 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RecipeControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired RecipeRepository recipeRepository;
-    @Autowired FoodNationRepository foodNationRepository;
-    @Autowired FoodTypeRepository foodTypeRepository;
     @Autowired IngredientTypeRepository ingredientTypeRepository;
     @Autowired IngredientRepository ingredientRepository;
-    @Autowired CookingMethodRepository cookingMethodRepository;
     @Autowired ObjectMapper objectMapper;
 
     @DisplayName("recipe index page")
@@ -56,42 +43,13 @@ class RecipeControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("레시피 등록 스트")
+    @DisplayName("레시피 등록 테스트")
     @Test
     void testRecipeSave() throws Exception {
-        FoodType foodType = new FoodType("test food type");
-        FoodNation foodNation = new FoodNation("test nation");
-        IngredientType ingredientType = new IngredientType("test ingredient type");
-
-        ingredientTypeRepository.save(ingredientType);
-        foodNationRepository.save(foodNation);
-        foodTypeRepository.save(foodType);
-
-        List<FoodNation> allNation = foodNationRepository.findAll();
-        List<FoodType> allTypes = foodTypeRepository.findAll();
-        List<IngredientType> allIngredientTypes = ingredientTypeRepository.findAll();
-        Set<Ingredient> ingredients = new HashSet<>();
-        Set<CookingMethod> cookingMethods = new HashSet<>();
-
-//        for (int i=0; i < 10; i++) {
-//            Ingredient ingredient = Ingredient.builder()
-//                    .ingredient(i+"-test")
-//                    .quantity(i+"g")
-//                    .ingredientType(allIngredientTypes.get(0))
-//                    .build();
-//
-//            CookingMethod cookingMethod = CookingMethod.builder()
-//                    .description(i+" method des")
-//                    .image(i+" method Image")
-//                    .sequence(i)
-//                    .build();
-//
-//            ingredients.add(ingredient);
-//            cookingMethods.add(cookingMethod);
-//        }
-
         RecipeSaveForm recipeSaveForm = new RecipeSaveForm();
         recipeSaveForm.setTitle("Test Recipe!!");
+        recipeSaveForm.setFullDescription("full Description!");
+        recipeSaveForm.setIngredients("재료,이렇게,들어와,콤마로,구문해,태그를,썼기,때문이야");
         recipeSaveForm.setDescription("Test Description");
         recipeSaveForm.setThumbnail("image URL");
         recipeSaveForm.setCookingTime(20);
@@ -107,11 +65,9 @@ class RecipeControllerTest {
 
         List<Recipe> recipes = recipeRepository.findAll();
 
-        System.out.println(recipes.get(0).getCookingMethods().isEmpty());
-        recipes.get(0).getCookingMethods().forEach(row -> System.out.println(row.getDescription()));
+        recipes.get(0).getIngredients().forEach(row -> System.out.println(row.getIngredient()));
 
-        assertTrue(!recipes.get(0).getCookingMethods().isEmpty());
-        assertTrue(!recipes.get(0).getIngredients().isEmpty());
+        assertTrue(recipes.get(0).getIngredients().size() > 0);
         assertEquals(recipes.get(0).getTitle(), recipeSaveForm.getTitle());
 
     }
