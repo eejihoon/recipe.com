@@ -17,21 +17,11 @@ import java.io.File;
 public class RecipeApiController {
     private final RecipeService recipeService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Long> savePost(@RequestBody RecipeSaveForm recipeSaveForm) {
+    @PostMapping("/recipe")
+    public ResponseEntity<Long> save(@RequestBody RecipeSaveForm recipeSaveForm) {
         log.info("recipeSaveForm : {}", recipeSaveForm);
         Long id = recipeService.save(recipeSaveForm);
 
         return ResponseEntity.ok(id);
-    }
-
-    @PostMapping("/recipe")
-    public ResponseEntity<String> savePost(@RequestBody File thumbnail) {
-
-        log.info(thumbnail.getName());
-        log.info(thumbnail.getPath());
-        log.info(thumbnail.toString());
-
-        return ResponseEntity.ok().build();
     }
 }

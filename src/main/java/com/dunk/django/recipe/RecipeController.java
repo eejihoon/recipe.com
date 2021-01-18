@@ -37,5 +37,11 @@ public class RecipeController {
         return "recipe/register";
     }
 
+    @GetMapping("/recipe/{id}")
+    public String modifiy() {
+
+        return "recipe/modify";
+    }
+
 
 }

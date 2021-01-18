@@ -32,7 +32,7 @@
                     <label for="thumbnail">대표 사진</label>
                     <br>
                     <input type="file" id="thumbnail" />
-                    <img id="image" />
+                    <img class="img-thumbnail" id="image" />
                     <small id="thumbnail-help" class="form-text text-muted">
                         대표 사진을 등록하세요.
                     </small>
@@ -78,23 +78,19 @@
 
                 </div>
                 <div class="form-group">
-                    <label for="description">모임 설명</label>
+                    <label for="description">요리 과정</label>
                     <textarea id="full-description" type="textarea" class="editor form-control"
-                              placeholder="모임을 자세히 설명해 주세요." aria-describedby="full-description-help"
+                              placeholder="레시피를 소개해주세요." aria-describedby="full-description-help"
                               required></textarea>
                     <small id="full-description-help" class="form-text text-muted">
-                        모임에서 다루는 주제, 장소, 진행 방식 등을 자세히 적어 주세요.
+                        요리 과정, 주의할 사항에 대해 써주세요.
                     </small>
-                    <small class="invalid-feedback">모임 설명을 입력하세요.</small>
-                    <small class="form-text text-danger">Error</small>
                 </div>
                 <div class="form-group">
                     <button id="btn-submit" class="btn btn-primary btn-block" type="submit"
-                            aria-describedby="submitHelp">모임 만들기
-                    </button>
+                            aria-describedby="submitHelp">레시피 등록</button>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -136,29 +132,21 @@
                 fullDescription :   document.getElementById('full-description').value
             }
 
+            xhr.open('POST', '/recipe')
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.send(JSON.stringify(data))
+
             xhr.onload = function () {
                 if (xhr.status === 200 || xhr.status === 201) {
                     console.log(xhr.responseText)
+                    window.location.href='recipe?id='+xhr.responseText;
                 } else {
                     console.log(xhr.responseText)
                 }
             }
-
-            xhr.open('POST', '/register')
-            xhr.setRequestHeader('Content-Type', 'application/json')
-            xhr.send(JSON.stringify(data))
         }
 
-        const fileInput = document.getElementById('thumbnail');
-
-        fileInput.addEventListener('change', function () {
-            console.dir(fileInput.files[0])
-            console.log(JSON.stringify(fileInput.files[0]))
-            console.log(JSON.stringify(fileInput.value))
-
-        })
-
-
+        //file upload
         document.getElementById("thumbnail").onchange = function () {
             var reader = new FileReader();
 
@@ -171,15 +159,13 @@
             // read the image file as a data URL.
             reader.readAsDataURL(this.files[0]);
         };
-
-
     }
 </script>
 <script>
     $(document).ready(function () {
         $('.editor').summernote({
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
-            placeholder: '스터디의 목표, 일정, 진행 방식, 사용할 교재 또는 인터넷 강좌 그리고 모집중인 스터디원 등 스터디에 대해 자세히 적어 주세요.',
+            placeholder: '레시피를 소개해주세요.',
             tabsize: 2,
             height: 300
         })
