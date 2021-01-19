@@ -28,4 +28,10 @@ public class RecipeApiController {
 
         return ResponseEntity.ok(id);
     }
+
+    @DeleteMapping("/recipe/{id}")
+    public ResponseEntity<String> remove(@PathVariable Long id) {
+        recipeService.remove(id);
+        return ResponseEntity.ok().build();
+    }
 }

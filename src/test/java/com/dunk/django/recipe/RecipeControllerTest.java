@@ -17,8 +17,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -122,8 +121,21 @@ class RecipeControllerTest {
         assertEquals(updatedRecipe.getThumbnail(), recipeUpdateForm.getThumbnail());
         assertEquals(updatedRecipe.getFullDescription(), recipeUpdateForm.getFullDescription());
         assertEquals(updatedRecipe.getIngredients().size(), recipeUpdateForm.toEntity().getIngredients().size());
+    }
 
+    @DisplayName("레시피 삭제")
+    @Test
+    void testRemoveRecipe() throws Exception {
+        Recipe recipe = addRecipe();
 
+        assertTrue(recipeRepository.findById(recipe.getId()).isPresent());
+
+        mockMvc.perform(delete("/recipe/"+recipe.getId())
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk());
+
+        assertFalse(recipeRepository.findById(recipe.getId()).isPresent());
     }
 
     private Recipe addRecipe() {

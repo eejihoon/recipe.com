@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -45,5 +46,10 @@ public class RecipeService {
                 .ingredients(findedRecipe.getIngredientsString())
                 .cookingTime(findedRecipe.getCookingTime())
                 .build();
+    }
+
+    public void remove(Long id) {
+        Recipe removeTarget = recipeRepository.findById(id).orElseThrow();
+        recipeRepository.delete(removeTarget);
     }
 }
