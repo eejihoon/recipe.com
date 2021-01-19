@@ -3,6 +3,7 @@ package com.dunk.django.recipe;
 import com.dunk.django.domain.*;
 import com.dunk.django.recipe.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +13,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @Transactional
@@ -33,6 +34,11 @@ class RecipeControllerTest {
     @Autowired IngredientTypeRepository ingredientTypeRepository;
     @Autowired IngredientRepository ingredientRepository;
     @Autowired ObjectMapper objectMapper;
+
+    @BeforeEach
+    void deleteAll() {
+        recipeRepository.deleteAll();
+    }
 
     @DisplayName("recipe index page")
     @Test
@@ -71,6 +77,69 @@ class RecipeControllerTest {
         assertEquals(recipes.get(0).getTitle(), recipeSaveForm.getTitle());
     }
 
+    @DisplayName("레시피 수정 폼")
+    @Test
+    void testRecipeModify() throws Exception {
+        Recipe recipe = addRecipe();
+
+        mockMvc.perform(get("/modify/"+recipe.getId()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("recipe"));
+    }
+
+    @DisplayName("레시피 수정 처리")
+    @Test
+    void testRecipeModifyPut() throws Exception {
+        Recipe recipe = addRecipe();
+
+        recipe.getIngredients().forEach(ingredient -> System.out.println(ingredient.getIngredient()));
+
+        RecipeSaveForm recipeUpdateForm = RecipeSaveForm.builder()
+                .thumbnail("recipe-thumbnail")
+                .title("recipe-title")
+                .description("recipe-description")
+                .fullDescription("recipe-full-description")
+                .ingredients("tag1,tag2,tag3,tag4,tag5")
+                .cookingTime(22)
+                .build();
+
+        mockMvc.perform(put("/recipe/"+recipe.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(recipeUpdateForm))
+                .with(csrf()))
+                .andExpect(status().isOk());
+
+        Recipe updatedRecipe = recipeRepository.findWithAllById(recipe.getId());
+
+        updatedRecipe.getIngredients().forEach(ingredient -> System.out.println(ingredient.getIngredient()));
+        System.out.println("-----------------------");
+        Recipe withAllById = recipeRepository.findWithAllById(updatedRecipe.getId());
+        withAllById.getIngredients().forEach(i-> System.out.println(i));
+        System.out.println("------------------------");
+        System.out.println(withAllById.getIngredientsString());
+
+        assertEquals(updatedRecipe.getTitle(), recipeUpdateForm.getTitle());
+        assertEquals(updatedRecipe.getThumbnail(), recipeUpdateForm.getThumbnail());
+        assertEquals(updatedRecipe.getFullDescription(), recipeUpdateForm.getFullDescription());
+        assertEquals(updatedRecipe.getIngredients().size(), recipeUpdateForm.toEntity().getIngredients().size());
+
+
+    }
+
+    private Recipe addRecipe() {
+        Recipe recipe = Recipe.builder()
+                .thumbnail("test")
+                .title("test")
+                .fullDescription("test")
+                .description("test")
+                .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))
+                .cookingTime(11)
+                .build();
+
+        Recipe save = recipeRepository.save(recipe);
+
+        return save;
+    }
 
 
 }

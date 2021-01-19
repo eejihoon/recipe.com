@@ -1,25 +1,19 @@
 package com.dunk.django.recipe;
 
-
-import com.dunk.django.domain.Recipe;
-import com.dunk.django.recipe.repository.FoodNationRepository;
-import com.dunk.django.recipe.repository.FoodTypeRepository;
-import com.dunk.django.recipe.repository.IngredientRepository;
 import com.dunk.django.recipe.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 public class RecipeController {
     private final RecipeRepository recipeRepository;
-    private final FoodNationRepository foodNationRepository;
-    private final FoodTypeRepository foodTypeRepository;
+    private final RecipeService recipeService;
 
     @GetMapping("/recipe")
     public String findAll(Long id, Model model) {
@@ -31,15 +25,14 @@ public class RecipeController {
 
     @GetMapping("/register")
     public String save(Model model) {
-        model.addAttribute("foodType", foodTypeRepository.findAll());
-        model.addAttribute("foodNation", foodNationRepository.findAll());
-
         return "recipe/register";
     }
 
-    @GetMapping("/recipe/{id}")
-    public String modifiy() {
-
+    @GetMapping("/modify/{id}")
+    public String modifiy(@PathVariable Long id, RecipeSaveForm recipeSaveForm, Model model) {
+        log.info("id : {}" , id);
+        model.addAttribute("recipe", recipeService.getRecipeForm(id));
+        
         return "recipe/modify";
     }
 

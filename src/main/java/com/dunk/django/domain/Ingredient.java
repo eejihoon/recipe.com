@@ -11,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 public class Ingredient {
+
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id;
 
@@ -31,5 +32,9 @@ public class Ingredient {
 
     public void add(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public void removeId() {
+        this.recipe = null;
     }
 }
