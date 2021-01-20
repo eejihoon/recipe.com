@@ -138,10 +138,22 @@ class RecipeControllerTest {
         assertFalse(recipeRepository.findById(recipe.getId()).isPresent());
     }
 
+    @DisplayName("레시피 검색")
+    @Test
+    void testFindByTitle() throws Exception {
+       for (int i=0;i<10;i++) recipeRepository.save(addRecipe());
+
+       mockMvc.perform(get("/")
+       .param("title","recipe"))
+               .andExpect(status().isOk())
+               .andExpect(model().attributeExists("recipes"));
+
+    }
+
     private Recipe addRecipe() {
         Recipe recipe = Recipe.builder()
                 .thumbnail("test")
-                .title("test")
+                .title("test-recipe")
                 .fullDescription("test")
                 .description("test")
                 .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))

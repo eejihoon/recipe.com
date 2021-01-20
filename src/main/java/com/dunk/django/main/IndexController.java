@@ -28,14 +28,6 @@ import lombok.extern.log4j.Log4j2;
 public class IndexController {
 
     private final UserFridgeService fridgeService;
-    private final RecipeRepository recipeRepository;
-
-    @GetMapping("/")
-    public String index(@PageableDefault(size = 9, value = 9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-        model.addAttribute("recipes", recipeRepository.findAll(pageable));
-        model.addAttribute("maxPage" , 9);
-        return "index";
-    }
 
     // ------------------추가-------------------
     @GetMapping("/myFridge")
