@@ -42,7 +42,7 @@ class RecipeControllerTest {
     @DisplayName("recipe index page")
     @Test
     void testRecipeIndex() throws Exception {
-        mockMvc.perform(get("/recipe"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipes"))
                 .andDo(print());
@@ -62,7 +62,7 @@ class RecipeControllerTest {
         String requesetJson = objectMapper.writeValueAsString(recipeSaveForm);
         System.out.println("requesetJson : " + requesetJson);
 
-        mockMvc.perform(post("/register")
+        mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .with(csrf())
                 .content(requesetJson))
