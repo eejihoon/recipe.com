@@ -11,6 +11,10 @@
         <div class="row justify-content-center">
             <div class="needs-validation col-sm-10">
                 <div class="form-group">
+                    <label for="id">게시물 번호</label>
+                    <p id="id" th:text="${recipe.id}"></p>
+                </div>
+                <div class="form-group">
                     <label for="thumbnail">대표 사진</label>
                     <br>
                     <input type="file" id="thumbnail" />
@@ -73,6 +77,10 @@
                     <button id="btn-submit" class="btn btn-primary btn-block" type="submit"
                             aria-describedby="submitHelp">레시피 수정</button>
                 </div>
+                <div class="form-group">
+                    <button id="btn-remove" class="btn btn-danger btn-block" type="submit"
+                            aria-describedby="submitHelp">레시피 삭제</button>
+                </div>
             </div>
         </div>
     </div>
@@ -80,5 +88,37 @@
 <footer th:replace="fragments.html :: footer"></footer>
 <th:block th:replace="fragments.html :: tagify('/recipe/'+${recipe.id}, 'PUT')"></th:block>
 <th:block th:replace="fragments.html :: summernote"></th:block>
+<script>
+    const btnHandle = {
+        init : function() {
+            document.getElementById('btn-remove').addEventListener('click', ()=>{
+                this.remove();
+            });
+        },
+
+        remove : function () {
+            if (confirm('정말 삭제하겠습니까?')) {
+                const xhr = new XMLHttpRequest();
+                const removeTargetId = document.getElementById('id').innerText;
+
+                xhr.open('delete', '/recipe/' + removeTargetId);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send();
+
+                xhr.onload = function () {
+                    if (xhr.status === 200 || xhr.status === 201) {
+                        window.location.href = '/';
+                        alert('삭제되었습니다.');
+                        return;
+                    }
+                    console.log(xhr.responseText);
+                }
+            }
+        }
+    }
+
+    btnHandle.init();
+
+</script>
 </body>
 </html>

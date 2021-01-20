@@ -31,8 +31,9 @@ public class RecipeController {
     @GetMapping("/modify/{id}")
     public String modifiy(@PathVariable Long id, RecipeSaveForm recipeSaveForm, Model model) {
         log.info("id : {}" , id);
+
         model.addAttribute("recipe", recipeService.getRecipeForm(id));
-        
+
         return "recipe/modify";
     }
 
