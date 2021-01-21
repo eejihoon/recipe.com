@@ -13,30 +13,30 @@ public class SignupRequestValidator implements Validator {
     //어떤 타입 인스턴스를 검증할 것인지 명시
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(SignupRequestDto.class);
+        return clazz.isAssignableFrom(SignupRequest.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        SignupRequestDto signupRequestDto = (SignupRequestDto) target;
+        SignupRequest signupRequest = (SignupRequest) target;
 
         //아이디 중복 체크
-        if (existAccount(signupRequestDto)) {
-            errors.rejectValue("account", "invalid.account", new Object[]{signupRequestDto.getAccount()},"이미 가입한 사용자입니다.");
+        if (existEmail(signupRequest)) {
+            errors.rejectValue("email", "invalid.email", new Object[]{signupRequest.getEmail()},"이미 가입한 사용자입니다.");
         }
 
         //비밀번호 일치하는지 체크
-        if (!equalsPassword(signupRequestDto)) {
+        if (!equalsPassword(signupRequest)) {
             errors.rejectValue("confirmPassword", "wrong.value", "비밀번호가 일치하지 않습니다.");
         }
     }
 
-    private boolean equalsPassword(SignupRequestDto signupRequestDto) {
-        return signupRequestDto.password.equals(signupRequestDto.getConfirmPassword());
+    private boolean equalsPassword(SignupRequest signupRequest) {
+        return signupRequest.password.equals(signupRequest.getConfirmPassword());
     }
 
-    private boolean existAccount(SignupRequestDto signupRequestDto) {
-        return memberRepository.existsByAccount(signupRequestDto.getAccount());
+    private boolean existEmail(SignupRequest signupRequest) {
+        return memberRepository.existsByEmail(signupRequest.getEmail());
     }
 
 

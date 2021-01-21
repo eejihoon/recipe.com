@@ -24,17 +24,18 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
-        Member loginMember = memberRepository.findByAccount(account).orElseThrow();
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member loginMember =
+                memberRepository.findByEmail(email).orElseThrow();
 
         return new MemberAccount(loginMember);
     }
 
-    public String signup(SignupRequestDto signupRequestDto) {
+    public String signup(SignupRequest signupRequest) {
         Member member = Member.builder()
-                .account(signupRequestDto.account)
-                .password(encoded(signupRequestDto.getPassword()))
-                .name(signupRequestDto.getName())
+                .email(signupRequest.email)
+                .nickname(signupRequest.getNickname())
+                .password(encoded(signupRequest.getPassword()))
                 .role(Role.USER)
                 .build();
 
@@ -42,7 +43,7 @@ public class MemberService implements UserDetailsService {
 
         login(newMember);
         
-        return newMember.getName();
+        return newMember.getNickname();
 
     }
 

@@ -14,9 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -28,19 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 class MemberApiControllerTest {
+    @Autowired MockMvc mockMvc;
+    @Autowired ObjectMapper objectMapper;
+    @Autowired MemberRepository memberRepository;
 
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
-    MemberRepository memberRepository;
-
-    final static String TEST_ACCOUNT = "cocodori";
+    final static String TEST_EMAIL = "cocodori@naver.com";
     final static String TEST_PASSWORD = "asdf1234";
-    final static String TEST_NAME = "kimong";
+    final static String TEST_NICKNAME = "kimong";
     final static ResultMatcher HTTP_OK = status().isOk();
 
     @AfterEach
@@ -51,67 +43,69 @@ class MemberApiControllerTest {
     @DisplayName("회원가입 처리 - 성공")
     @Test
     void signupSubmit() throws Exception {
-        SignupRequestDto signupRequestDto = getSignupRequestDto(TEST_ACCOUNT, TEST_PASSWORD, TEST_PASSWORD);
+        SignupRequest signupRequest = getSignupRequestDto(TEST_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
 
-        signupRequest(signupRequestDto, status().isOk())
-                .andExpect(authenticated().withUsername(signupRequestDto.getAccount()));
+        signupRequest(signupRequest, status().isOk())
+                .andExpect(authenticated().withUsername(signupRequest.getEmail()));
 
         List<Member> allMember = memberRepository.findAll();
 
-        assertTrue(memberRepository.existsByAccount(TEST_ACCOUNT));
+        assertTrue(memberRepository.existsByEmail(TEST_EMAIL));
+
         assertNotNull(allMember);
-        assertEquals(allMember.get(0).getName(), TEST_NAME);
+        assertEquals(allMember.get(0).getNickname(), TEST_NICKNAME);
         assertEquals(allMember.get(0).getRole(), Role.USER);
     }
 
     @DisplayName("회원가입 실패 - 아이디 중복")
     @Test
     void signupDuplicateAccount() throws Exception {
-        SignupRequestDto signupRequestDto = getSignupRequestDto(TEST_ACCOUNT, TEST_PASSWORD, TEST_PASSWORD);
+        SignupRequest signupRequest = getSignupRequestDto(TEST_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
 
-        signupRequest(signupRequestDto, status().isOk());
-        signupRequest(signupRequestDto, status().isInternalServerError());
+        signupRequest(signupRequest, status().isOk());
+        signupRequest(signupRequest, status().isInternalServerError());
     }
 
     @DisplayName("회원가입 실패 - 비밀번호 재입력 다를 경우")
     @Test
     void signupDifferentPassword() throws Exception {
-        SignupRequestDto differentPasswordRequest =
-                getSignupRequestDto(TEST_ACCOUNT, TEST_PASSWORD, "zzzz1234");
+        SignupRequest differentPasswordRequest =
+                getSignupRequestDto(TEST_EMAIL, TEST_PASSWORD, "zzzz1234");
 
         signupRequest(differentPasswordRequest, status().is5xxServerError());
     }
 
+    @DisplayName("로그인 테스트")
     @Test
     void testLoginSubmit() throws Exception{
-        SignupRequestDto signupRequestDto =
-                getSignupRequestDto(TEST_ACCOUNT, TEST_PASSWORD, TEST_PASSWORD);
+        SignupRequest signupRequest =
+                getSignupRequestDto(TEST_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
 
-        signupRequest(signupRequestDto, status().isOk());
+        signupRequest(signupRequest, status().isOk());
 
         mockMvc.perform(post("/login")
             .with(csrf())
-            .param("username", TEST_ACCOUNT)
+            .param("username", TEST_EMAIL)
             .param("password", TEST_PASSWORD))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
-                .andExpect(authenticated().withUsername(TEST_ACCOUNT));
+                .andExpect(authenticated().withUsername(TEST_EMAIL));
     }
 
-    private SignupRequestDto getSignupRequestDto(String account, String password, String confirmPassword) {
-        return SignupRequestDto.builder()
-                .account(account)
+    private SignupRequest getSignupRequestDto(String account, String password, String confirmPassword) {
+        return SignupRequest.builder()
+                .email(account)
                 .password(password)
                 .confirmPassword(confirmPassword)
-                .name(TEST_NAME)
+                .nickname(TEST_NICKNAME)
                 .build();
     }
 
-    private ResultActions signupRequest(SignupRequestDto signupRequestDto, ResultMatcher status) throws Exception{
+    private ResultActions signupRequest(SignupRequest signupRequest, ResultMatcher status) throws Exception{
         return mockMvc.perform(post("/signup")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(signupRequestDto)))
+                .content(objectMapper.writeValueAsString(signupRequest)))
                 .andExpect(status);
     }
 

@@ -13,7 +13,7 @@ public class MemberAccount extends User implements Serializable {
     private Member member;
 
     public MemberAccount(Member member) {
-        super(member.getAccount(), member.getPassword(), List.of(new SimpleGrantedAuthority(member.getRoleKey())));
+        super(member.getEmail(), member.getPassword(), List.of(new SimpleGrantedAuthority(member.getRoleKey())));
         this.member = member;
     }
 }

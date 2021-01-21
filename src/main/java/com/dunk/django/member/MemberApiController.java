@@ -1,8 +1,10 @@
 package com.dunk.django.member;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -11,38 +13,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class MemberApiController {
     private final MemberService memberService;
     private final SignupRequestValidator signupRequestValidator;
 
-    @InitBinder("signupRequestDto")
+    @InitBinder("signupRequest")
     public void signupInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(signupRequestValidator);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signupSubmit(@RequestBody @Valid SignupRequestDto signupRequestDto, Errors errors) {
+    public ResponseEntity<String> signupSubmit(@RequestBody @Valid SignupRequest signupRequest, Errors errors) {
         if (errors.hasErrors()) {
-            return failResponse();
+            log.info(errors.getFieldError().getField());
+            return new ResponseEntity<>(errors.getFieldError().getField(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        String name = memberService.signup(signupRequestDto);
+        String nickname = memberService.signup(signupRequest);
 
-        return successResponse(name);
-    }
-
-    private ResponseEntity successResponse(String body) {
-        return ResponseEntity
-                .ok(body);
-    }
-
-    private ResponseEntity failResponse() {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .build();
+        return new ResponseEntity<>(nickname, HttpStatus.OK);
     }
 }

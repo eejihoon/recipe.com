@@ -15,24 +15,22 @@ public class Member extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String account;
+    private String email;
+
+    @Column(nullable = false)
+    private String nickname;
 
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
-    private String name;
-
-    private String token; // 변경
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    public Member(String account, String password, String name, Role role) {
-        this.account = account;
+    public Member(String email, String password, String nickname, Role role) {
+        this.email = email;
         this.password = password;
-        this.name = name;
+        this.nickname = nickname;
         this.role = role;
     }
 
