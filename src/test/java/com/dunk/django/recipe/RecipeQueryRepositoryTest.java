@@ -2,6 +2,7 @@ package com.dunk.django.recipe;
 
 import com.dunk.django.domain.Ingredient;
 import com.dunk.django.domain.Recipe;
+import com.dunk.django.recipe.repository.IngredientRepository;
 import com.dunk.django.recipe.repository.RecipeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,12 +31,17 @@ class RecipeQueryRepositoryTest {
     @BeforeEach
     void addRecipe() {
         for (int i = 0; i < 100; i++) {
+            Set<Ingredient> ingredients = new HashSet();
+            ingredients.add(new Ingredient("ingr1"));
+            ingredients.add(new Ingredient("ingr2"));
+            ingredients.add(new Ingredient("ingr3"));
+
             Recipe recipe = Recipe.builder()
                     .thumbnail("test")
                     .title("recipe-title!!!!!")
                     .fullDescription("test")
                     .description("test")
-                    .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))
+                    .ingredients(ingredients)
                     .cookingTime(11)
                     .build();
 
@@ -58,7 +66,9 @@ class RecipeQueryRepositoryTest {
     }
 
     private void testFindByKeyword(String keyword) {
-        Page<Recipe> test = recipeQueryRepository.findByRecipeTitle(null, PageRequest.of(0, 10, Sort.by("id").descending()));
+        System.out.println("======================================");
+        Page<Recipe> test = recipeQueryRepository.findByRecipeTitle(keyword, PageRequest.of(0, 10, Sort.by("id").descending()));
+        System.out.println("======================================");
 
         Recipe recipe = recipeRepository.findAll().get(0);
 

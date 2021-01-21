@@ -16,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,8 +33,14 @@ public class RecipeQueryRepository extends QuerydslRepositorySupport {
 
         JPQLQuery<Recipe> query = from(recipe);
 
-        if (Objects.nonNull(keyword))
-            query.where(recipe.title.containsIgnoreCase(keyword));
+        if (Objects.nonNull(keyword)) {
+            if (!keyword.equals("")) {
+                QIngredient ingredient = QIngredient.ingredient1;
+                query.leftJoin(recipe.ingredients, ingredient)
+                        .on(ingredient.ingredient.containsIgnoreCase(keyword))
+                        .where(recipe.title.containsIgnoreCase(keyword));
+            }
+        }
 
         JPQLQuery<Recipe> recipeJPQLQuery = getQuerydsl().applyPagination(pageable, query);
 

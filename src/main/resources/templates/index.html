@@ -3,12 +3,17 @@
 <head th:replace="fragments.html :: head"></head>
 <body>
 <header th:replace="fragments.html :: header"></header>
+
 <section class="py-5 text-center container">
     <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
             <div class="container d-flex align-items-center flex-column">
                 <img src="img/mac.gif" class="img-fluid">
                 <h1><strong>Recipe.com</strong></h1>
+                <div class="form-inline">
+                    <input class="form-control mr-sm-2" id="keyword" type="search" placeholder="레시피를 검색하세요." aria-label="Search">
+                    <button class="btn btn-outline-warning my-2 my-sm-0" id="search-btn" type="submit">찾기</button>
+                </div>
             </div>
         </div>
     </div>
@@ -19,7 +24,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <div class="col" th:each="recipe : ${recipes}">
                 <div class="card shadow-sm">
-                    <a th:href="@{'/recipe?id='+${recipe.id} + '&page=' +${recipes.number}}" class="text-decoration-none text-reset">
+                    <a th:href="@{/recipe(id=${recipe.id}, page=${recipes.number}, keyword=${param.keyword})}" class="text-decoration-none text-reset">
                     <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${recipe.thumbnail}">
                     <div class="card-body">
                         <h3 th:text="${recipe.title}"></h3>
@@ -42,7 +47,7 @@
                     </li>
                     <li class="page-item" th:classappend="${page-1 == recipes.number}? active"
                         th:each="page : ${#numbers.sequence(start, end)}">
-                        <a class="page-link" th:href="@{'?page='+${page-1}}"><span th:text="${page}"></span></a>
+                        <a class="page-link" th:href="@{/(page=${page-1}, keyword=${param.keyword})}"><span th:text="${page}"></span></a>
                     </li>
                     <li class="page-item" th:if="${end < recipes.totalPages}">
                         <a class="page-link" th:href="@{'?page='+${start+maxPage - 1}}">다음</a>
@@ -55,6 +60,21 @@
 
 <footer th:replace="fragments.html :: footer"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</script>
+
+<script>
+    const event = {
+        init : function () {
+            document.getElementById('search-btn').addEventListener('click', () => {
+                if (keyword.length != 0 || keyword.trim() === '') {
+                    const keyword = document.getElementById('keyword').value;
+                    window.location.href='/?keyword='+keyword;
+                }
+            });
+        }
+    }
+
+    event.init();
 </script>
 </body>
 </html>

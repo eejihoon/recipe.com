@@ -74,7 +74,11 @@
                     </small>
                 </div>
                 <div class="form-group">
-                    <button id="btn-submit" class="btn btn-primary btn-block" type="submit"
+                    <a class="btn btn-success btn-block" th:href="@{/recipe(id=${recipe.id}, page=${param.page}, keyword=${param.keyword})}"
+                            aria-describedby="submitHelp">취소</a>
+                </div>
+                <div class="form-group">
+                    <button id="btn-submit" class="btn btn-warning btn-block" type="submit"
                             aria-describedby="submitHelp">레시피 수정</button>
                 </div>
                 <div class="form-group">
