@@ -3,34 +3,51 @@
 <head th:replace="fragments.html :: head"></head>
 <body>
 <header th:replace="fragments.html :: header"></header>
-<div class="container" id="hero">
-    <form th:action="@{/login}" method="post">
-        <h3 class="mb-4">로그인</h3>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="id">아이디</label>
-                <input type="text" name="username" id="id" class="form-control" placeholder="아이디를 입력하세요"
-                value="cocoboy">
-            </div>
+<div class="container">
+    <div class="py-5 text-center">
+        <h5>장고!</h5>
+        <h1>로그인</h1>
+    </div>
+    <div class="row justify-content-center">
+        <div th:if="${param.error != null}" class="alert alert-danger" role="alert">
+            <p>아이디 또는 비밀번호가 다릅니다.</p>
+            <p>비밀번호를 잊으셨나요? <a href="#">여기</a>로 이동하세요.</p>
         </div>
-
-        <div class="col-md-6">
+        <form class="needs-validation col-sm-6" action="#" th:action="@{/login}" method="post" novalidate>
+            <div class="form-group">
+                <label for="username">이메일</label>
+                <input id="username" type="text" name="username" class="form-control"
+                       placeholder="your@email.com" aria-describedby="emailHelp" required>
+                <small id="emailHelp" class="form-text text-muted">
+                    가입할 때 사용한 이메일 또는 닉네임을 입력하세요.
+                </small>
+                <small class="invalid-feedback">이메일을 입력하세요.</small>
+            </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="비밀번호를 입력하세요"
-                value="asdf1234">
+                <input id="password" type="password" name="password" class="form-control"
+                       aria-describedby="passwordHelp" required>
+                <small id="passwordHelp" class="form-text text-muted">이
+                    비밀번호를 잊으셨나요? <a href="#">비밀번호 없이 로그인하기</a>
+                </small>
+                <small class="invalid-feedback">패스워드를 입력하세요.</small>
             </div>
-        </div>
-        <div class="col-md-6">
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>
+                <label class="form-check-label" for="rememberMe" aria-describedby="rememberMeHelp">로그인 유지</label>
+            </div>
+
             <div class="form-group">
-                <input type="submit" value="로그인" class="btn btn-primary">
+                <button class="btn btn-warning btn-block" type="submit"
+                        aria-describedby="submitHelp">로그인</button>
+                <small id="submitHelp" class="form-text text-muted">
+                   처음이라면 <a href="#" th:href="@{/signup}">계정을 먼저 만드세요.</a>
+                </small>
             </div>
-		</div>
-
-		<a th:href="@{/signup}">아직 회원이 아니신가요?</a>
-	</form>
+        </form>
+    </div>
 </div>
-
 <footer th:replace="fragments.html :: footer"></footer>
 </body>
 </html>
