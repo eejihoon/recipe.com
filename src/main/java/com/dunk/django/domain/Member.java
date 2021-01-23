@@ -23,6 +23,10 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
+    private String authenticationKey;
+
+    private boolean verified;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -32,9 +36,21 @@ public class Member extends BaseEntity {
         this.password = password;
         this.nickname = nickname;
         this.role = role;
+        this.verified = false;
     }
 
     public String getRoleKey() {
         return getRole().getKey();
+    }
+
+    public void setAuthenticationKey(String authenticationKey) {
+        this.authenticationKey = authenticationKey;
+    }
+
+    public boolean checkKey(String authenticationKey) {
+        if (this.authenticationKey.equals(authenticationKey))
+            this.verified = true;
+
+        return isVerified();
     }
 }

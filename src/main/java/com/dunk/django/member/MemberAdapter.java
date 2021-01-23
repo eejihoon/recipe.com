@@ -9,10 +9,10 @@ import java.io.Serializable;
 import java.util.List;
 
 @Getter
-public class MemberAccount extends User implements Serializable {
+public class MemberAdapter extends User implements Serializable {
     private Member member;
 
-    public MemberAccount(Member member) {
+    public MemberAdapter(Member member) {
         super(member.getEmail(), member.getPassword(), List.of(new SimpleGrantedAuthority(member.getRoleKey())));
         this.member = member;
     }
