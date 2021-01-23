@@ -4,9 +4,9 @@
 <body>
 <header th:replace="fragments.html :: header"></header>
 
-<div th:if="${member != null && !member.verified}"
-     class="alert alert-warning" role="alert">
-    <p><span th:text="${member.nickname}"></span> 님 이메일 인증 후 이용해주세요.</p>
+<div th:if="${member != null && member.roleKey == 'TEMPORARY'}"
+     class="alert alert-warning text-center" role="alert">
+    <h5><span th:text="${member.nickname}"></span> 님 이메일 인증 후 이용해주세요.</h5>
 </div>
 
 <section class="py-5 text-center container">
@@ -17,7 +17,7 @@
 <!--                <h1><strong>Recipe.com</strong></h1>-->
                 <div class="form-inline">
                     <input class="form-control mr-sm-2" id="keyword" type="search" placeholder="레시피를 검색하세요." aria-label="Search">
-                    <button class="btn btn-outline-warning my-2 my-sm-0" id="search-btn" type="submit">찾기</button>
+                    <button class="btn btn-warning my-2 my-sm-0 text-light" id="search-btn" type="submit">찾기</button>
                 </div>
             </div>
         </div>

@@ -48,9 +48,11 @@ public class Member extends BaseEntity {
     }
 
     public boolean checkKey(String authenticationKey) {
-        if (this.authenticationKey.equals(authenticationKey))
-            this.verified = true;
+        if (this.authenticationKey.equals(authenticationKey)) {
+            role = Role.USER;
+            return true;
+        }
 
-        return isVerified();
+        return false;
     }
 }

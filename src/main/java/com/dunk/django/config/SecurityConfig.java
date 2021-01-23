@@ -25,17 +25,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final DataSource dataSource;
 
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //TODO csrf 활성화 및 각 페이지 권한 설정
-
         http.csrf().disable();
 
         http.authorizeRequests()
-                .mvcMatchers("/", "/login", "/signup").permitAll()
-                .anyRequest().permitAll();
+                .mvcMatchers("/node_modules/**", "/img/**",
+                        "/", "/login", "/signup", "/recipe").permitAll()
+                .mvcMatchers("/register", "modify").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
+                .anyRequest().authenticated();
 
         http.formLogin()
                 .loginPage("/login")
@@ -53,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+
     }
 
 

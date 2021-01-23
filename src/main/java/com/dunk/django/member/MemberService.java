@@ -47,7 +47,7 @@ public class MemberService implements UserDetailsService {
                 .email(signupRequest.email)
                 .nickname(signupRequest.getNickname())
                 .password(encoded(signupRequest.getPassword()))
-                .role(Role.USER)
+                .role(Role.TEMPORARY)
                 .build();
 
         sendMail(member);
@@ -84,11 +84,8 @@ public class MemberService implements UserDetailsService {
         context.setAuthentication(token);
     }
 
-    @Transactional
     public void checkAuthenticationKey(String authenticationKey, Member member) {
         member.checkKey(authenticationKey);
-
-        System.out.println(member.isVerified());
 
         memberRepository.save(member);
     }
