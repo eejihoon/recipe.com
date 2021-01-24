@@ -48,13 +48,14 @@ public class Recipe extends BaseEntity {
     private Member member;
 
     @Builder
-    public Recipe(String title, String thumbnail, String description, String fullDescription, Set<Ingredient> ingredients, Integer cookingTime) {
+    public Recipe(Member member, String title, String thumbnail, String description, String fullDescription, Set<Ingredient> ingredients, Integer cookingTime) {
         this.title = title;
         this.thumbnail = thumbnail;
         this.description = description;
         this.fullDescription = fullDescription;
         this.ingredients = ingredients;
         this.cookingTime = cookingTime;
+        this.member = member;
     }
 
     public void update(Recipe recipe) {

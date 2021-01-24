@@ -19,9 +19,11 @@ public class RecipeSaveForm {
     private String fullDescription;
     private String ingredients;
     private Integer cookingTime;
+    private Member member;
 
     @Builder
-    public RecipeSaveForm(Long id, String thumbnail, String title, String description, String fullDescription, String ingredients, Integer cookingTime) {
+    public RecipeSaveForm(Long id, String thumbnail, String title,
+                          String description, String fullDescription, String ingredients, Integer cookingTime) {
         this.id = id;
         this.ingredients = "";
         this.thumbnail = thumbnail;
@@ -42,6 +44,7 @@ public class RecipeSaveForm {
                 .fullDescription(fullDescription)
                 .cookingTime(cookingTime)
                 .ingredients(ingredientSet)
+                .member(member)
                 .build();
 
         return recipe;
@@ -57,5 +60,9 @@ public class RecipeSaveForm {
                 .map(Ingredient::new)
                 .collect(Collectors.toSet());
         return ingredientSet;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

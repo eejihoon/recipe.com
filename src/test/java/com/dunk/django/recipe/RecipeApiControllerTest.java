@@ -71,6 +71,7 @@ public class RecipeApiControllerTest {
 
         assertTrue(recipes.get(0).getIngredients().size() > 0);
         assertEquals(recipes.get(0).getTitle(), recipeSaveForm.getTitle());
+        assertEquals(recipes.get(0).getMember().getEmail(), "test@email.com");
     }
 
     @DisplayName("레시피 수정 처리")

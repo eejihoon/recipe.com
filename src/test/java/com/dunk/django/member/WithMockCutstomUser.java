@@ -10,10 +10,9 @@ import java.lang.annotation.RetentionPolicy;
 *   https://docs.spring.io/spring-security/site/docs/5.2.x/reference/html/test.html#test-method-withsecuritycontext
 *
 * */
-
 @Retention(RetentionPolicy.RUNTIME)
 @WithSecurityContext(factory = WithMockCutstomUserSecurityContextFactory.class)
 public @interface WithMockCutstomUser {
-    String email() default "test@@email.com";
+    String email() default "test@email.com";
     String nickname() default "testNick";
 }

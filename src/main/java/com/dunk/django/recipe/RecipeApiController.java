@@ -19,7 +19,7 @@ public class RecipeApiController {
         log.info("recipeSaveForm : {}", recipeSaveForm);
         log.info("member : {}", memberAdapter);
 
-        Long id = recipeService.save(recipeSaveForm);
+        Long id = recipeService.save(recipeSaveForm, memberAdapter.getMember());
 
         return ResponseEntity.ok(id);
     }

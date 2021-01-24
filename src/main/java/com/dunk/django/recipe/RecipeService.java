@@ -1,6 +1,7 @@
 package com.dunk.django.recipe;
 
 import com.dunk.django.domain.Ingredient;
+import com.dunk.django.domain.Member;
 import com.dunk.django.domain.Recipe;
 import com.dunk.django.recipe.repository.IngredientRepository;
 import com.dunk.django.recipe.repository.RecipeRepository;
@@ -22,7 +23,8 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
 
-    public Long save(RecipeSaveForm recipeSaveForm) {
+    public Long save(RecipeSaveForm recipeSaveForm, Member member) {
+        recipeSaveForm.setMember(member);
         Recipe saveRecipe = recipeRepository.save(recipeSaveForm.toEntity());
 
         return saveRecipe.getId();
