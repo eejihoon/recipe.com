@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor @AllArgsConstructor @Builder
 @Getter @Setter
 @Entity
-public class Recipe {
+public class Recipe extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -43,6 +43,9 @@ public class Recipe {
     private Integer cookingTime;
 
     private int servings;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
     @Builder
     public Recipe(String title, String thumbnail, String description, String fullDescription, Set<Ingredient> ingredients, Integer cookingTime) {

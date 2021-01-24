@@ -30,10 +30,14 @@ public class RecipeController {
                         Model model,
                         @AuthenticationPrincipal MemberAdapter memberAdapter) {
         log.info("keyword : {} ", keyword);
+
         if (Objects.nonNull(memberAdapter))
             model.addAttribute("member", memberAdapter.getMember());
-        model.addAttribute("recipes", recipeQueryRepository.findByRecipeTitle(keyword, pageable));
+
+        model.addAttribute("recipes",
+                recipeQueryRepository.findByRecipeTitle(keyword, pageable));
         model.addAttribute("maxPage" , 9);
+
         return "index";
     }
 
@@ -46,18 +50,18 @@ public class RecipeController {
     }
 
     @GetMapping("/register")
-    public String save(Model model) {
+    public String save(@AuthenticationPrincipal MemberAdapter memberAdapter, Model model) {
+        model.addAttribute("member", memberAdapter.getMember());
+
         return "recipe/register";
     }
 
     @GetMapping("/modify/{id}")
-    public String modifiy(@PathVariable Long id, RecipeSaveForm recipeSaveForm, Model model) {
+    public String modifiy(@PathVariable Long id, Model model) {
         log.info("id : {}" , id);
 
         model.addAttribute("recipe", recipeService.getRecipeForm(id));
 
         return "recipe/modify";
     }
-
-
 }
