@@ -5,15 +5,18 @@
 <header th:replace="fragments.html :: header"></header>
 <div class="container">
     <div class="py-5 text-center">
-        <h5>장고!</h5>
+        <img src="img/login.png" class="col-sm-2">
+        <br>
+        <h6><b>RECIPE</b></h6>
         <h1>로그인</h1>
     </div>
     <div class="row justify-content-center">
         <div th:if="${param.error != null}" class="alert alert-danger" role="alert">
             <p>아이디 또는 비밀번호가 다릅니다.</p>
             <p>비밀번호를 잊으셨나요? <a href="#">여기</a>로 이동하세요.</p>
+            <p><strong>준비 중입니다...</strong></p>
         </div>
-        <form class="needs-validation col-sm-6" action="#" th:action="@{/login}" method="post" novalidate>
+        <form class="needs-validation col-sm-5" action="#" th:action="@{/login}" method="post" novalidate>
             <div class="form-group">
                 <label for="username">이메일</label>
                 <input id="username" type="text" name="username" class="form-control"
@@ -47,8 +50,9 @@
             </div>
         </form>
     </div>
+    <footer th:replace="fragments.html :: footer"></footer>
 </div>
-<footer th:replace="fragments.html :: footer"></footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
 </body>

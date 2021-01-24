@@ -54,7 +54,7 @@ class MemberApiControllerTest {
 
         assertNotNull(allMember);
         assertEquals(allMember.get(0).getNickname(), TEST_NICKNAME);
-        assertEquals(allMember.get(0).getRole(), Role.USER);
+        assertEquals(allMember.get(0).getRole(), Role.TEMPORARY);
     }
 
     @DisplayName("회원가입 실패 - 아이디 중복")

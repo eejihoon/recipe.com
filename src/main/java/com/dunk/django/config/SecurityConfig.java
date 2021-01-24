@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -31,8 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .mvcMatchers("/node_modules/**", "/img/**",
+                .mvcMatchers("/node_modules/**", "/error", "/img/**",
                         "/", "/login", "/signup", "/recipe").permitAll()
+                //.mvcMatchers(HttpMethod.POST, "/signup").permitAll()
                 .mvcMatchers("/register", "modify").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
                 .anyRequest().authenticated();
 
