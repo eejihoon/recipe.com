@@ -1,11 +1,14 @@
 package com.dunk.django.recipe;
 
 import com.dunk.django.member.MemberAdapter;
+import com.dunk.django.recipe.utils.AuthorVerification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.AccessDeniedException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,18 +28,20 @@ public class RecipeApiController {
     }
 
     @PutMapping("/recipe/{id}")
-    public ResponseEntity<Long> update(@RequestBody RecipeSaveForm recipeSaveForm, @PathVariable Long id) {
+    public ResponseEntity<Long> update(@RequestBody RecipeSaveForm recipeSaveForm,
+                                       @PathVariable Long id,
+                                       @AuthenticationPrincipal MemberAdapter memberAdapter) throws AccessDeniedException {
         log.info("recipeSaveForm : {}", recipeSaveForm);
-        log.info(recipeSaveForm.getIngredients());
 
-        recipeService.update(recipeSaveForm, id);
+        recipeService.update(recipeSaveForm, id, memberAdapter.getMember());
 
         return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/recipe/{id}")
-    public ResponseEntity<String> remove(@PathVariable Long id) {
-        recipeService.remove(id);
+    public ResponseEntity<String> remove(@PathVariable Long id,
+                                         @AuthenticationPrincipal MemberAdapter memberAdapter) throws AccessDeniedException {
+        recipeService.remove(id, memberAdapter.getMember());
         return ResponseEntity.ok().build();
     }
 }

@@ -15,6 +15,10 @@
                     <p id="id" th:text="${recipe.id}"></p>
                 </div>
                 <div class="form-group">
+                    <label for="cooking-time">글쓴이</label>
+                    <h3><span th:text="${recipe.member.nickname}"></span></h3>
+                </div>
+                <div class="form-group">
                     <label for="thumbnail">대표 사진</label>
                     <br>
                     <input type="file" id="thumbnail" />
@@ -92,7 +96,7 @@
 <footer th:replace="fragments.html :: footer"></footer>
 <th:block th:replace="fragments.html :: tagify('/recipe/'+${recipe.id}, 'PUT')"></th:block>
 <th:block th:replace="fragments.html :: summernote"></th:block>
-<script>
+<script th:inline="javascript">
     const btnHandle = {
         init : function() {
             document.getElementById('btn-remove').addEventListener('click', ()=>{

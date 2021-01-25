@@ -9,9 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    //@EntityGraph(attributePaths = {"foodNation", "foodType"})
     Page<Recipe> findAll(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"foodNation", "foodType", "ingredients", "cookingMethods"})
+    @EntityGraph(attributePaths = {"foodNation", "foodType", "ingredients", "cookingMethods", "member"})
     Recipe findWithAllById(Long id);
 }

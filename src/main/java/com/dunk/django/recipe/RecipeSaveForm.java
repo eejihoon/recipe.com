@@ -22,7 +22,7 @@ public class RecipeSaveForm {
     private Member member;
 
     @Builder
-    public RecipeSaveForm(Long id, String thumbnail, String title,
+    public RecipeSaveForm(Long id, Member member,String thumbnail, String title,
                           String description, String fullDescription, String ingredients, Integer cookingTime) {
         this.id = id;
         this.ingredients = "";
@@ -32,6 +32,7 @@ public class RecipeSaveForm {
         this.fullDescription = fullDescription;
         this.ingredients = ingredients;
         this.cookingTime = cookingTime;
+        this.member = member;
     }
 
     public Recipe toEntity() {

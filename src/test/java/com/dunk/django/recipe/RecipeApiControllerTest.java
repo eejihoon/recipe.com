@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +27,14 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/*
+*   TODO
+*    RecipeControllerTest, RecipeApiControllerTest
+*       중복되는 부분 리팩토링 하기
+*       @WithMockCustomUser랑 addRecipe()!!
+* */
+
+@WithMockCutstomUser
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -75,12 +82,9 @@ public class RecipeApiControllerTest {
     }
 
     @DisplayName("레시피 수정 처리")
-    @WithMockUser
     @Test
     void testRecipeModifyPut() throws Exception {
         Recipe recipe = addRecipe();
-
-        recipe.getIngredients().forEach(ingredient -> System.out.println(ingredient.getIngredient()));
 
         RecipeSaveForm recipeUpdateForm = RecipeSaveForm.builder()
                 .thumbnail("recipe-thumbnail")
@@ -89,6 +93,7 @@ public class RecipeApiControllerTest {
                 .fullDescription("recipe-full-description")
                 .ingredients("tag1,tag2,tag3,tag4,tag5")
                 .cookingTime(22)
+                .member(memberRepository.findAll().get(0))
                 .build();
 
         mockMvc.perform(put("/recipe/"+recipe.getId())
@@ -99,21 +104,15 @@ public class RecipeApiControllerTest {
 
         Recipe updatedRecipe = recipeRepository.findWithAllById(recipe.getId());
 
-        updatedRecipe.getIngredients().forEach(ingredient -> System.out.println(ingredient.getIngredient()));
-        System.out.println("-----------------------");
-        Recipe withAllById = recipeRepository.findWithAllById(updatedRecipe.getId());
-        withAllById.getIngredients().forEach(i-> System.out.println(i));
-        System.out.println("------------------------");
-        System.out.println(withAllById.getIngredientsString());
-
         assertEquals(updatedRecipe.getTitle(), recipeUpdateForm.getTitle());
         assertEquals(updatedRecipe.getThumbnail(), recipeUpdateForm.getThumbnail());
         assertEquals(updatedRecipe.getFullDescription(), recipeUpdateForm.getFullDescription());
         assertEquals(updatedRecipe.getIngredients().size(), recipeUpdateForm.toEntity().getIngredients().size());
+        assertEquals(recipe.getMember().getEmail(), "test@email.com");
+
     }
 
     @DisplayName("레시피 삭제")
-    @WithMockUser
     @Test
     void testRemoveRecipe() throws Exception {
         Recipe recipe = addRecipe();
@@ -126,6 +125,7 @@ public class RecipeApiControllerTest {
                 .andExpect(status().isOk());
 
         assertFalse(recipeRepository.findById(recipe.getId()).isPresent());
+        assertEquals(recipe.getMember().getEmail(), "test@email.com");
     }
 
     private Recipe addRecipe() {
@@ -136,6 +136,7 @@ public class RecipeApiControllerTest {
                 .description("test")
                 .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))
                 .cookingTime(11)
+                .member(memberRepository.findAll().get(0))
                 .build();
 
         Recipe save = recipeRepository.save(recipe);

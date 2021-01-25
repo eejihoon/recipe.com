@@ -1,6 +1,8 @@
 package com.dunk.django.recipe;
 
 import com.dunk.django.domain.*;
+import com.dunk.django.member.MemberRepository;
+import com.dunk.django.member.WithMockCutstomUser;
 import com.dunk.django.recipe.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,17 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,6 +31,7 @@ class RecipeControllerTest {
     @Autowired IngredientTypeRepository ingredientTypeRepository;
     @Autowired IngredientRepository ingredientRepository;
     @Autowired ObjectMapper objectMapper;
+    @Autowired MemberRepository memberRepository;
 
     @BeforeEach
     void deleteAll() {
@@ -50,7 +48,7 @@ class RecipeControllerTest {
     }
 
     @DisplayName("레시피 수정 폼")
-    @WithMockUser
+    @WithMockCutstomUser
     @Test
     void testRecipeModify() throws Exception {
         Recipe recipe = addRecipe();
@@ -62,6 +60,7 @@ class RecipeControllerTest {
 
 
     @DisplayName("레시피 검색")
+    @WithMockCutstomUser
     @Test
     void testFindByTitle() throws Exception {
        for (int i=0;i<10;i++) recipeRepository.save(addRecipe());
@@ -81,6 +80,7 @@ class RecipeControllerTest {
                 .description("test")
                 .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))
                 .cookingTime(11)
+                .member(memberRepository.findAll().get(0))
                 .build();
 
         Recipe save = recipeRepository.save(recipe);
