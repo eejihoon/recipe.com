@@ -40,6 +40,46 @@ class MemberApiControllerTest {
         memberRepository.deleteAll();
     }
 
+    @DisplayName("비밀번호 변경 처리")
+    @WithMockCutstomUser
+    @Test
+    void testChangePassword() throws Exception {
+        Member member = memberRepository.findByEmail("test@email.com").orElseThrow();
+
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
+        changePasswordRequest.setPassword("aaaabbbb");
+        changePasswordRequest.setConfirmPassword("aaaabbbb");
+
+        mockMvc.perform(put("/api/member/password")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(changePasswordRequest)))
+                .andExpect(status().isOk());
+
+        Member changedMember = memberRepository.findById(member.getId()).orElseThrow();
+
+        assertNotEquals(member.getPassword(), changedMember.getPassword());
+    }
+
+    @DisplayName("비밀번호 변경 처리 - 비밀번호 다를 경우")
+    @WithMockCutstomUser
+    @Test
+    void testChangePasswordfailure() throws Exception {
+        Member member = memberRepository.findByEmail("test@email.com").orElseThrow();
+
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
+        changePasswordRequest.setPassword("aaa11123");
+        changePasswordRequest.setConfirmPassword("asdf1234");
+
+        mockMvc.perform(put("/api/member/password")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(changePasswordRequest)))
+                .andExpect(status().isInternalServerError());
+
+        Member changedMember = memberRepository.findById(member.getId()).orElseThrow();
+
+        assertEquals(member.getPassword(), changedMember.getPassword());
+    }
+
     @DisplayName("회원가입 처리 - 성공")
     @Test
     void signupSubmit() throws Exception {

@@ -92,6 +92,28 @@ public class MemberService implements UserDetailsService {
         emailService.sendEmail(emailMessage);
     }
 
+    public boolean checkAuthenticationKey(String authenticationKey, Member member) {
+        boolean result = member.checkKey(authenticationKey);
+
+        memberRepository.save(member);
+
+        return result;
+    }
+
+    public void withoutPasswordLogin(String certification, String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow();
+        if(isEquals(certification, member)) {
+            login(member);
+
+        }
+    }
+
+    public void changePassword(ChangePasswordRequest changePasswordRequest, Member member) {
+        member.changePassword(encoded(changePasswordRequest.getPassword()));
+
+        memberRepository.save(member);
+    }
+
     private EmailMessage getEmailMessage(Member member, String message) {
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(member.getEmail())
@@ -123,24 +145,8 @@ public class MemberService implements UserDetailsService {
         context.setAuthentication(token);
     }
 
-    public boolean checkAuthenticationKey(String authenticationKey, Member member) {
-        boolean result = member.checkKey(authenticationKey);
-
-        memberRepository.save(member);
-
-        return result;
-    }
-
     private String encoded(String password) {
         return passwordEncoder.encode(password);
-    }
-
-    public void withoutPasswordLogin(String certification, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow();
-        if(isEquals(certification, member)) {
-            login(member);
-
-        }
     }
 
     private boolean isEquals(String certification, Member member) {

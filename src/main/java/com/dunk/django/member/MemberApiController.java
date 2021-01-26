@@ -19,10 +19,16 @@ import javax.validation.Valid;
 public class MemberApiController {
     private final MemberService memberService;
     private final SignupRequestValidator signupRequestValidator;
+    private final ChangePasswordRequestValidator changePasswordRequestValidator;
 
     @InitBinder("signupRequest")
     public void signupInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(signupRequestValidator);
+    }
+
+    @InitBinder("changePasswordRequest")
+    public void changePasswordInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(changePasswordRequestValidator);
     }
 
     @PostMapping("/signup")
@@ -48,6 +54,20 @@ public class MemberApiController {
         log.info("email : {} ",email);
 
         memberService.loginSendMail(email);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/api/member/password")
+    public ResponseEntity<String> changePassword(@AuthenticationPrincipal MemberAdapter memberAdapter,
+                                                 @RequestBody @Valid ChangePasswordRequest changePasswordRequest,
+                                                 Errors errors) {
+        if (errors.hasErrors()) {
+            log.error("errors : {} ", errors);
+            return new ResponseEntity<>(errors.getFieldError().getField(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        memberService.changePassword(changePasswordRequest, memberAdapter.getMember());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -63,4 +63,8 @@ public class Member extends BaseEntity {
     public void setCertificationNumber() {
         this.certification = UUID.randomUUID().toString();
     }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
