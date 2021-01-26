@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments.html :: head"></head>
 <body>
 <header th:replace="fragments.html :: header"></header>
-
-<div th:if="${member != null && member.roleKey == 'TEMPORARY'}"
-     class="alert alert-warning text-center" role="alert">
+<div th:if="${member!=null && !member.verified}" class="alert alert-warning text-center" role="alert">
     <h5><span th:text="${member.nickname}"></span> 님 이메일 인증 후 이용해주세요.</h5>
+    <h6><a id="re-sendmail" href="/">인증 메일 재발송</a></h6>
+</div>
+
+<div th:if="${error != null}" class="alert alert-danger text-center" role="alert">
+    <h5 th:text="${error}"></h5>
+</div>
+
+<div th:if="${verified != null}" class="alert alert-primary text-center" role="alert">
+    <h5><p th:text="${verified}"></p></h5>
 </div>
 
 <section class="py-5 text-center container">
@@ -75,6 +84,28 @@
                     window.location.href='/?keyword='+keyword;
                 }
             });
+
+            document.getElementById('re-sendmail').addEventListener('click', (e) => {
+                e.preventDefault()
+                this.reSendmail();
+            });
+        },
+
+        reSendmail : function () {
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('PUT', '/re-sendmail');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send();
+
+            xhr.onload = function () {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    alert('메일을 재발송했습니다.');
+                    return;
+                }
+                console.error(xhr.responseText);
+            }
+
         }
     }
     event.init();

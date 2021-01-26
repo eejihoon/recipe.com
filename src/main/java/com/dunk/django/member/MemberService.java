@@ -1,5 +1,6 @@
 package com.dunk.django.member;
 
+import com.dunk.django.config.AppProperty;
 import com.dunk.django.domain.Member;
 import com.dunk.django.domain.Role;
 import com.dunk.django.mail.EmailMessage;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +29,9 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final AppProperty appProperty;
+    private final TemplateEngine templateEngine;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -47,7 +53,8 @@ public class MemberService implements UserDetailsService {
                 .email(signupRequest.email)
                 .nickname(signupRequest.getNickname())
                 .password(encoded(signupRequest.getPassword()))
-                .role(Role.TEMPORARY)
+                .authenticationKey(UUID.randomUUID().toString())
+                .role(Role.USER)
                 .build();
 
         sendMail(member);
@@ -59,16 +66,24 @@ public class MemberService implements UserDetailsService {
         return newMember.getNickname();
     }
 
-    private void sendMail(Member member) {
-        String authenticationKey = UUID.randomUUID().toString();
+    public void sendMail(Member member) {
+        Context context = new Context();
+        String authKey = UUID.randomUUID().toString();
+
+        member.setAuthenticationKey(authKey);
+
+        context.setVariable("link", "/member/auth/"+member.getAuthenticationKey());
+        context.setVariable("username", member.getNickname());
+        context.setVariable("link-description", "이메일 인증");
+        context.setVariable("host", appProperty.getHost());
+
+        String message = templateEngine.process("mail/authentication-link", context);
 
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(member.getEmail())
-                .subject(member.getNickname()+" 님 가입을 축하합니다.")
-                .message(authenticationKey)
+                .subject("레시피 회원가입 인증 메일입니다.")
+                .message(message)
                 .build();
-
-        member.setAuthenticationKey(authenticationKey);
 
         emailService.sendEmail(emailMessage);
     }
@@ -84,10 +99,12 @@ public class MemberService implements UserDetailsService {
         context.setAuthentication(token);
     }
 
-    public void checkAuthenticationKey(String authenticationKey, Member member) {
-        member.checkKey(authenticationKey);
+    public boolean checkAuthenticationKey(String authenticationKey, Member member) {
+        boolean result = member.checkKey(authenticationKey);
 
         memberRepository.save(member);
+
+        return result;
     }
 
     private String encoded(String password) {

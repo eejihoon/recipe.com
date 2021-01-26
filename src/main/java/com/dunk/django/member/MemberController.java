@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
 
@@ -28,10 +29,16 @@ public class MemberController {
     }
 
     @GetMapping("/member/auth/{key}")
-    public String authenticationKeyCheck(@PathVariable String key, @AuthenticationPrincipal
-            MemberAdapter memberAdapter) {
+    public String authenticationKeyCheck(@PathVariable String key,
+                                         @AuthenticationPrincipal MemberAdapter memberAdapter,
+                                         RedirectAttributes redirect) {
         if (Objects.nonNull(memberAdapter)) {
-            memberService.checkAuthenticationKey(key, memberAdapter.getMember());
+            boolean result = memberService.checkAuthenticationKey(key, memberAdapter.getMember());
+            if (result == false) {
+                redirect.addFlashAttribute("error", "잘못된 인증입니다.");
+            } else {
+                redirect.addFlashAttribute("verified", "인증되었습니다. 이제 레시피를 등록할 수 있습니다.");
+            }
         }
 
         return "redirect:/";
