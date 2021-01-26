@@ -2,11 +2,13 @@
 src/main/resources/static/node_modules
 src/main/resources/static/node
 
+### properties ###
 src/main/resources/application-mail.properties
 
 HELP.md
 .gradle
 build/
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
