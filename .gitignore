@@ -3,6 +3,10 @@ src/main/resources/static/node_modules
 src/main/resources/static/node
 
 ### properties ###
+<<<<<<< HEAD
+=======
+src/main/resources/application-mail.**
+>>>>>>> d2917bc522a18ff440e646a794b9dc1309cee305
 application-mail.properties
 
 HELP.md
