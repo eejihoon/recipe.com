@@ -36,4 +36,11 @@ public class MemberApiController {
 
         return new ResponseEntity<>(nickname, HttpStatus.OK);
     }
+
+    @PutMapping("/re-sendmail")
+    public ResponseEntity<String> reSendMail(@AuthenticationPrincipal MemberAdapter memberAdapter) {
+        memberService.sendMail(memberAdapter.getMember());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>레시피북</title>
 </head>
 <body>
-$END$
+<div>
+    <p>안녕하세요. <span th:text="${username}"></span>님</p>
+    <h2>인증하려면 <a th:href="${host + link}">링크</a>를 클릭하세요.</h2>
+</div>
+
+<footer>
+    <small>레시피&copy; 2021</small>
+</footer>
 </body>
 </html>
