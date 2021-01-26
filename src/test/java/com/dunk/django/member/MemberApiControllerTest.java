@@ -20,8 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
@@ -77,6 +76,58 @@ class MemberApiControllerTest {
         signupRequest(differentPasswordRequest, status().is5xxServerError());
     }
 
+    @DisplayName("인증 메일 재전송 테스트")
+    @WithMockCutstomUser
+    @Test
+    void testResendMail() throws Exception {
+
+        Member member = memberRepository.findByEmail("test@email.com").orElseThrow();
+
+        String beforeAuthKey = member.getAuthenticationKey();
+
+        mockMvc.perform(put("/re-sendmail"))
+                .andExpect(status().isOk());
+
+        Member member2 = memberRepository.findById(member.getId()).orElseThrow();
+
+        String resendedAuthKey = member2.getAuthenticationKey();
+
+        assertNotEquals(beforeAuthKey, resendedAuthKey);
+    }
+
+    @DisplayName("비밀번호 분실 메일 전송")
+    @Test
+    void testWithoutPasswordLoginSendMail() throws Exception {
+        Member member = memberRepository.save(Member.builder()
+                .email("test@test.com")
+                .password("12345678")
+                .role(Role.USER)
+                .nickname("testNick")
+                .build());
+
+        assertNull(member.getCertification());
+
+        mockMvc.perform(put("/withoutPasswordLogin")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(member.getEmail()))
+                .andExpect(status().isOk());
+
+        Member afterMember = memberRepository.findById(member.getId()).orElseThrow();
+
+        assertNotNull(afterMember.getCertification());
+        assertNotEquals(afterMember.getCertification(), member.getCertification());
+    }
+
+
+    private SignupRequest getSignupRequestDto(String account, String password, String confirmPassword) {
+        return SignupRequest.builder()
+                .email(account)
+                .password(password)
+                .confirmPassword(confirmPassword)
+                .nickname(TEST_NICKNAME)
+                .build();
+    }
+
     @DisplayName("로그인 테스트")
     @Test
     void testLoginSubmit() throws Exception{
@@ -92,49 +143,6 @@ class MemberApiControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(authenticated().withUsername(TEST_EMAIL));
-    }
-
-    @DisplayName("이메일 인증 테스트")
-    @WithMockCutstomUser
-    @Test
-    void testCheckEmail() throws Exception {
-        Member member = memberRepository.findAll().get(0);
-
-        assertFalse(member.isVerified());
-
-        mockMvc.perform(get("/member/auth/"+member.getAuthenticationKey()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
-                .andExpect(flash().attributeExists("verified"));
-
-        Member verifiedMember = memberRepository.findById(member.getId()).orElseThrow();
-        assertTrue(verifiedMember.isVerified());
-    }
-
-    @DisplayName("이메일 인증 실패 테스트")
-    @WithMockCutstomUser
-    @Test
-    void testCheckEmailFailure() throws Exception {
-        Member member = memberRepository.findAll().get(0);
-
-        assertFalse(member.isVerified());
-
-        mockMvc.perform(get("/member/auth/"+"wrong-auth-key"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
-                .andExpect(flash().attributeExists("error"));
-
-        Member verifiedMember = memberRepository.findById(member.getId()).orElseThrow();
-        assertFalse(verifiedMember.isVerified());
-    }
-
-    private SignupRequest getSignupRequestDto(String account, String password, String confirmPassword) {
-        return SignupRequest.builder()
-                .email(account)
-                .password(password)
-                .confirmPassword(confirmPassword)
-                .nickname(TEST_NICKNAME)
-                .build();
     }
 
     private ResultActions signupRequest(SignupRequest signupRequest, ResultMatcher status) throws Exception{

@@ -43,4 +43,13 @@ public class MemberApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/withoutPasswordLogin")
+    public ResponseEntity<String> withoutPasswordLoginSendMail(@RequestBody String email) {
+        log.info("email : {} ",email);
+
+        memberService.loginSendMail(email);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

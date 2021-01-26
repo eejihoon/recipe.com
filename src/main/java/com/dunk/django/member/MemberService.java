@@ -66,26 +66,50 @@ public class MemberService implements UserDetailsService {
         return newMember.getNickname();
     }
 
+    public void loginSendMail(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow();
+        member.setCertificationNumber();
+
+        Context context = getContext(member,
+                "/member/withoutPasswordLogin?certification="+member.getCertification()+"&email="+member.getEmail());
+        String message = templateEngine.process("mail/withoutPasswordLogin", context);
+        EmailMessage emailMessage = getEmailMessage(member, message);
+
+        emailService.sendEmail(emailMessage);
+    }
+
     public void sendMail(Member member) {
-        Context context = new Context();
         String authKey = UUID.randomUUID().toString();
-
         member.setAuthenticationKey(authKey);
+        memberRepository.save(member);
 
-        context.setVariable("link", "/member/auth/"+member.getAuthenticationKey());
+        Context context = getContext(member, "/member/auth/"+ member.getAuthenticationKey());
+
+        String message = templateEngine.process("mail/authentication-link", context);
+
+        EmailMessage emailMessage = getEmailMessage(member, message);
+
+        emailService.sendEmail(emailMessage);
+    }
+
+    private EmailMessage getEmailMessage(Member member, String message) {
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(member.getEmail())
+                .subject("레시피북 인증 메일입니다.")
+                .message(message)
+                .build();
+        return emailMessage;
+    }
+
+    private Context getContext(Member member, String path) {
+        Context context = new Context();
+
+        context.setVariable("link", path);
         context.setVariable("username", member.getNickname());
         context.setVariable("link-description", "이메일 인증");
         context.setVariable("host", appProperty.getHost());
 
-        String message = templateEngine.process("mail/authentication-link", context);
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(member.getEmail())
-                .subject("레시피 회원가입 인증 메일입니다.")
-                .message(message)
-                .build();
-
-        emailService.sendEmail(emailMessage);
+        return context;
     }
 
     private void login(Member loginMember) {
@@ -109,5 +133,17 @@ public class MemberService implements UserDetailsService {
 
     private String encoded(String password) {
         return passwordEncoder.encode(password);
+    }
+
+    public void withoutPasswordLogin(String certification, String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow();
+        if(isEquals(certification, member)) {
+            login(member);
+
+        }
+    }
+
+    private boolean isEquals(String certification, Member member) {
+        return member.getCertification().equals(certification);
     }
 }

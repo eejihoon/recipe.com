@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -29,6 +30,8 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String certification; //비밀번호 분실 시 사용
 
     @Builder
     public Member(String email, String password, String nickname, String authenticationKey, Role role) {
@@ -55,5 +58,9 @@ public class Member extends BaseEntity {
         }
 
         return this.verified;
+    }
+
+    public void setCertificationNumber() {
+        this.certification = UUID.randomUUID().toString();
     }
 }

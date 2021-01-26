@@ -1,13 +1,13 @@
 package com.dunk.django.member;
 
-import com.dunk.django.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
@@ -41,6 +41,24 @@ public class MemberController {
             }
         }
 
+        return "redirect:/";
+    }
+
+    @GetMapping("/withoutPasswordLogin")
+    public String withoutpasswordLoginForm() {
+        return "member/withoutPasswordLogin";
+    }
+
+    @GetMapping("/member/withoutPasswordLogin")
+    public String withoutPasswordLogin(String certification, String email) {
+        log.info("certification : {}", certification);
+        log.info("email : {} ", email);
+
+        memberService.withoutPasswordLogin(certification, email);
+
+        /*
+        * TODO 비밀번호 변경 페이지로 redirect 하도록 변경
+        * */
         return "redirect:/";
     }
 }

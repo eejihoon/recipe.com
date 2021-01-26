@@ -84,11 +84,14 @@
                     window.location.href='/?keyword='+keyword;
                 }
             });
+            const reSendmailLink = document.getElementById('re-sendmail');
+            if (reSendmailLink !== null) {
+                reSendmailLink.addEventListener('click', (e) => {
+                    e.preventDefault()
+                    this.reSendmail();
+                });
+            }
 
-            document.getElementById('re-sendmail').addEventListener('click', (e) => {
-                e.preventDefault()
-                this.reSendmail();
-            });
         },
 
         reSendmail : function () {
