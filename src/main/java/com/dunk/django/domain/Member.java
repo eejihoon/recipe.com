@@ -31,10 +31,11 @@ public class Member extends BaseEntity {
     private Role role;
 
     @Builder
-    public Member(String email, String password, String nickname, Role role) {
+    public Member(String email, String password, String nickname, String authenticationKey, Role role) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+        this.authenticationKey = authenticationKey;
         this.role = role;
         this.verified = false;
     }
@@ -50,9 +51,9 @@ public class Member extends BaseEntity {
     public boolean checkKey(String authenticationKey) {
         if (this.authenticationKey.equals(authenticationKey)) {
             role = Role.USER;
-            return true;
+            this.verified = true;
         }
 
-        return false;
+        return this.verified;
     }
 }

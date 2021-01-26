@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 *
 * */
 @Slf4j
-@Profile({"local", "runtime"})
+@Profile({"local"})
 @Component
 public class ConsoleEmailServiceImpl implements EmailService{
 
