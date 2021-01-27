@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -53,8 +54,12 @@ public class MemberApiController {
     public ResponseEntity<String> withoutPasswordLoginSendMail(@RequestBody String email) {
         log.info("email : {} ",email);
 
-        memberService.loginSendMail(email);
-
+        try {
+            memberService.loginSendMail(email);
+        } catch (UsernameNotFoundException e) {
+            log.error("error : {} ", e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

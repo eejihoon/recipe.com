@@ -105,4 +105,12 @@ public class MemberControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @WithMockCutstomUser
+    @DisplayName("비밀번호 변경 폼")
+    void testChangePasswordForm() throws Exception {
+        mockMvc.perform(get("/setting/password"))
+                .andExpect(status().isOk());
+    }
+
 }

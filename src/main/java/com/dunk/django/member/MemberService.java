@@ -20,6 +20,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -66,14 +67,19 @@ public class MemberService implements UserDetailsService {
         return newMember.getNickname();
     }
 
-    public void loginSendMail(String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow();
-        member.setCertificationNumber();
+    public void loginSendMail(String email) throws UsernameNotFoundException{
 
-        Context context = getContext(member,
-                "/member/withoutPasswordLogin?certification="+member.getCertification()+"&email="+member.getEmail());
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (member.isEmpty()) {
+            throw new UsernameNotFoundException("존재하지 않는 사용자입니다.");
+        }
+
+        member.get().setCertificationNumber();
+
+        Context context = getContext(member.get(),
+                "/member/withoutPasswordLogin?certification="+member.get().getCertification()+"&email="+member.get().getEmail());
         String message = templateEngine.process("mail/withoutPasswordLogin", context);
-        EmailMessage emailMessage = getEmailMessage(member, message);
+        EmailMessage emailMessage = getEmailMessage(member.get(), message);
 
         emailService.sendEmail(emailMessage);
     }

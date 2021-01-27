@@ -61,4 +61,9 @@ public class MemberController {
         * */
         return "redirect:/";
     }
+
+    @GetMapping("/setting/password")
+    public String changePassword() {
+        return "member/setting/password";
+    }
 }
