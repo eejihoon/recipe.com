@@ -3,7 +3,25 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id "com.github.node-gradle.node" version "2.2.3"
 }
+
+/**
+ * npm install start
+ */
+node {
+	version = '12.13.1'
+	download = true
+	nodeModulesDir = file("${projectDir}/src/main/resources/static")
+}
+
+task copyFrontLib(type: Copy) {
+	from "${projectDir}/src/main/resources/static"
+	into "${projectDir}/build/resources/main/static/."
+}
+
+copyFrontLib.dependsOn npmInstall
+compileJava.dependsOn copyFrontLib
 
 group = 'com.django'
 version = '0.0.1-SNAPSHOT'
