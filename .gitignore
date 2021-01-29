@@ -3,7 +3,8 @@ src/main/resources/static/node_modules
 src/main/resources/static/node
 
 ### properties ###
-src/main/resources/application-mail.**
+src/main/resources/application-mail.properties
+src/main/resources/application-runtime.properties
 src/main/resources/**.csv
 
 HELP.md
