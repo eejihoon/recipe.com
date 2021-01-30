@@ -86,7 +86,6 @@ class RecipeControllerTest {
        .param("title","recipe"))
                .andExpect(status().isOk())
                .andExpect(model().attributeExists("recipes"));
-
     }
 
     private Recipe addRecipe() {

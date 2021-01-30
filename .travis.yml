@@ -11,6 +11,7 @@ cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
+
 script: "./gradlew clean build"
 
 # CI 실행 완료 시 이메일
