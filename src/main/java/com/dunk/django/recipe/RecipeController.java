@@ -1,5 +1,6 @@
 package com.dunk.django.recipe;
 
+import com.dunk.django.domain.Member;
 import com.dunk.django.member.MemberAdapter;
 import com.dunk.django.recipe.repository.RecipeRepository;
 import com.dunk.django.recipe.utils.AuthorVerification;
@@ -11,9 +12,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
@@ -44,9 +48,12 @@ public class RecipeController {
     }
 
     @GetMapping("/recipe")
-    public String findAll(Long id, Model model) {
+    public String findAll(Long id,
+                          @AuthenticationPrincipal MemberAdapter memberAdapter,
+                          Model model) {
         log.info("id : {}", id);
-        model.addAttribute("recipe", recipeRepository.findWithAllById(id));
+
+        model.addAttribute("recipe", recipeService.findRecipe(id, memberAdapter));
 
         return "recipe/recipe";
     }

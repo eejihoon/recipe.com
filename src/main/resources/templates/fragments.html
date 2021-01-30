@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>레시피닷컴</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-</head>
-<head th:fragment="save-form-head">
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- tag -->
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css"/>
 
     <!-- summernote-->
-    <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <link href="/node_modules/summernote/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="/node_modules/summernote/dist/summernote.js"></script>
 
     <!-- cropper js-->
     <link href="/node_modules/cropperjs/dist/cropper.css" rel="stylesheet">
@@ -95,16 +90,16 @@
                 </div>
             </div>
         </div>
-        <div class="navbar navbar-dark bg-dark shadow-sm">
+        <nav class="navbar navbar-dark bg-dark shadow-sm">
             <div class="container d-flex">
                 <a href="/" class="navbar-brand mr-auto p-2">
                     <strong><i class="bi bi-journal-album"></i> 레시피북</strong>
                 </a>
-                <button class="navbar-toggler p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <button id="toggle-btn" class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-controls="navbarToggleExternalContent" data-bs-target="#navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
-        </div>
+        </nav>
     </header>
 
     <!-- footer -->
@@ -188,6 +183,7 @@
         </script>
     </th:block>
     <th:block th:fragment="summernote">
+        <script src="/node_modules/summernote/dist/summernote.js"></script>
         <script>
             $(document).ready(function () {
                 $('.editor').summernote({

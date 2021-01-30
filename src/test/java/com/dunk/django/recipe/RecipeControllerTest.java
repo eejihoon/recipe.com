@@ -17,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+@WithMockCutstomUser
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -38,6 +40,23 @@ class RecipeControllerTest {
         recipeRepository.deleteAll();
     }
 
+    @DisplayName("자신의 게시물 조회하기 - 조회수 안 오름")
+    @Test
+    void testMineRecipeView() throws Exception {
+        Recipe newRecipe = addRecipe();
+
+        assertEquals(newRecipe.getViewCount(),0);
+
+        for (int i=0; i<10; i++) {
+            mockMvc.perform(get("/recipe?id="+ newRecipe.getId()))
+                    .andExpect(status().isOk());
+
+            Recipe recipe = recipeRepository.findById(newRecipe.getId()).orElseThrow();
+
+            assertEquals(recipe.getViewCount(),0);
+        }
+    }
+
     @DisplayName("레시피 메인 폼")
     @Test
     void testRecipeIndex() throws Exception {
@@ -48,7 +67,6 @@ class RecipeControllerTest {
     }
 
     @DisplayName("레시피 수정 폼")
-    @WithMockCutstomUser
     @Test
     void testRecipeModify() throws Exception {
         Recipe recipe = addRecipe();
@@ -60,7 +78,6 @@ class RecipeControllerTest {
 
 
     @DisplayName("레시피 검색")
-    @WithMockCutstomUser
     @Test
     void testFindByTitle() throws Exception {
        for (int i=0;i<10;i++) recipeRepository.save(addRecipe());

@@ -66,4 +66,19 @@ public class RecipeService {
 
         recipeRepository.delete(removeTarget);
     }
+
+    public Recipe findRecipe(Long id, MemberAdapter memberAdapter) {
+        Recipe findedRecipe = recipeRepository.findWithAllById(id);
+
+        if (memberAdapter != null) {
+            boolean isNotMine = !memberAdapter.getMember().getEmail().equals(findedRecipe.getMember().getEmail());
+            if (isNotMine) {
+                findedRecipe.viewCount();
+            }
+        } else {
+            findedRecipe.viewCount();
+        }
+
+        return findedRecipe;
+    }
 }

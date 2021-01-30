@@ -47,6 +47,8 @@ public class Recipe extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+    private int viewCount;
+
     @Builder
     public Recipe(Member member, String title, String thumbnail, String description, String fullDescription, Set<Ingredient> ingredients, Integer cookingTime) {
         this.title = title;
@@ -59,7 +61,6 @@ public class Recipe extends BaseEntity {
     }
 
     public void update(Recipe recipe) {
-
         this.thumbnail = recipe.thumbnail;
         this.title = recipe.title;
         this.description = recipe.getDescription();
@@ -79,5 +80,9 @@ public class Recipe extends BaseEntity {
             result += ingredient.getIngredient() + ",";
 
         return result;
+    }
+
+    public void viewCount() {
+        this.viewCount++;
     }
 }

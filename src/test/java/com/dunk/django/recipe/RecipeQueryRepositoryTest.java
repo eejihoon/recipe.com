@@ -62,6 +62,9 @@ class RecipeQueryRepositoryTest {
     @DisplayName("QueryDSL 레시피 null 검색")
     @Test
     void testFindByKeywordFailure() {
+        /*
+         *   키워드가 null이면 아무것도 검색하지 않는다.
+         * */
         testFindByKeyword(null);
     }
 
@@ -76,7 +79,4 @@ class RecipeQueryRepositoryTest {
         assertEquals(test.getContent().size(), 10);
         assertEquals(test.getContent().get(0).getTitle(), recipe.getTitle());
     }
-
-
-
 }

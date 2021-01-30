@@ -18,6 +18,9 @@
                 <img class="rounded mx-auto d-block img-thumbnail w-50 h-50"
                      th:if="${recipe.thumbnail != null}" th:src="${recipe.thumbnail}" alt="">
                 <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">조회수 <span th:text="${recipe.viewCount}"></span>회</small>
+                    </div>
                     <h3 class="card-title">
                         <span th:text="${recipe.title}"></span>
                     </h3>
@@ -47,7 +50,7 @@
                 <div class="card-body">
                     <div th:if="${!recipe.cookingMethods.isEmpty()}" th:each="method : ${recipe.cookingMethods}">
                         <h6 th:text="${method.sequence} + '. '+ ${method.description}"></h6>
-                        <img th:src="${method.image}">
+                        <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${method.image}">
                         <hr>
                     </div>
                     <div th:if="${recipe.cookingMethods.isEmpty()}">
@@ -55,19 +58,11 @@
                     </div>S
                 </div>
             </div>
-            <!-- /.card -->
-
         </div>
-        <!-- /.col-lg-9 -->
-
     </div>
-
 </div>
 
 <footer th:replace="fragments.html :: footer"></footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
 
 <script>
     $('body').scrollspy({target: '#navbar-example'})
