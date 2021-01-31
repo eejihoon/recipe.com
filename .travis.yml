@@ -15,9 +15,9 @@ cache:
 script: "./gradlew clean build"
 
 before_deploy:
-  - zip -r recipe.com *
+  - zip -r recipe *
   - mkdir -p deploy
-  - mv recipe.com.zip deploy/recipe.com.zip
+  - mv recipe.zip deploy/recipe.zip
 
 deploy:
   - provider: s3
