@@ -29,6 +29,8 @@ deploy:
     acl: private
     local_dir: deploy
     wait-until-deployed: true
+    on:
+      all_branches: true
 
 # CI 실행 완료 시 이메일
 notifications:
