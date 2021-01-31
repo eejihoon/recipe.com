@@ -1,5 +1,5 @@
-# _마이장고_
-
+# _레시피북_
+[![Build Status](https://travis-ci.org/cocodori/recipe.com.svg?branch=main)](https://travis-ci.org/cocodori/recipe.com)
 > _식재료 관리, 레시피 추천, 깨끗한 냉장고 유지까지 영수증 한 장으로 해결_ 
 
 ---

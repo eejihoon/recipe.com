@@ -14,6 +14,22 @@ cache:
 
 script: "./gradlew clean build"
 
+before_deploy:
+  - zip -r recipe.com *
+  - mkdir -p deploy
+  - mv recipe.com.zip deploy/recipe.com.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: recipe-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
+
 # CI 실행 완료 시 이메일
 notifications:
   email:
