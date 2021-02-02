@@ -16,7 +16,7 @@ do
 
   # $UP_COUNT >= 1 ('runtime'이라는 문자열이 있는 지 검증한다.)
   if [ ${UP_COUNT} -ge 1 ]
-g  then
+  then
     echo "> Heath check 성공"
     switch_proxy
     break
