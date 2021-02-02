@@ -6,6 +6,10 @@ plugins {
 	id "com.github.node-gradle.node" version "2.2.3"
 }
 
+group = 'com.django'
+version = '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
+sourceCompatibility = '11'
+
 /**
  * npm install start
  */
@@ -22,10 +26,6 @@ task copyFrontLib(type: Copy) {
 
 copyFrontLib.dependsOn npmInstall
 compileJava.dependsOn copyFrontLib
-
-group = 'com.django'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 configurations {
 	compileOnly {

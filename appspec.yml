@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/app/step2/zip/
+    destination: /home/ec2-user/app/step3/zip/
     overwrite: yes
 
 permissions:
@@ -12,7 +12,15 @@ permissions:
     group: ec2-user
 
 hooks:
+  AfterInstall:
+    - location: stop.sh # Nginx와 연결되지 않은 프로젝트 종료
+      timeout: 60
+      runas: ec2-user
   ApplicationStart:
-    - location: deploy.sh
+    - location: start.sh # Nginx와 연결되어 있지 않은 Port로 새버전 프로젝트 실행
+      timeout: 60
+      runas: ec2-user
+  ValidateService:
+    - location: health.sh # 새 프로젝트가 정상 실행되었는지 확인
       timeout: 60
       runas: ec2-user
