@@ -11,7 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Slf4j
-@Profile("runtime")
+@Profile({"runtime", "runtime2"})
 @RequiredArgsConstructor
 @Component
 public class HtmlEmailServiceImpl implements EmailService {
