@@ -1,7 +1,10 @@
 package com.dunk.django.recipe;
 
 import com.dunk.django.domain.Ingredient;
+import com.dunk.django.domain.Like;
+import com.dunk.django.domain.Member;
 import com.dunk.django.domain.Recipe;
+import com.dunk.django.member.LikeRepository;
 import com.dunk.django.member.MemberRepository;
 import com.dunk.django.member.WithMockCutstomUser;
 import com.dunk.django.recipe.repository.IngredientRepository;
@@ -45,6 +48,7 @@ public class RecipeApiControllerTest {
     @Autowired IngredientRepository ingredientRepository;
     @Autowired ObjectMapper objectMapper;
     @Autowired MemberRepository memberRepository;
+    @Autowired LikeRepository likeRepository;
 
     @BeforeEach
     void deleteAll() {

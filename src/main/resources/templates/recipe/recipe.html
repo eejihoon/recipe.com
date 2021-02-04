@@ -15,16 +15,35 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card mt-4">
-                <img class="rounded mx-auto d-block img-thumbnail w-50 h-50"
-                     th:if="${recipe.thumbnail != null}" th:src="${recipe.thumbnail}" alt="">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">조회수 <span th:text="${recipe.viewCount}"></span>회</small>
-                    </div>
+                    <p>게시물 번호 <span id="id" th:text="${recipe.id}"></span></p>
                     <h3 class="card-title">
                         <span th:text="${recipe.title}"></span>
                     </h3>
-                    <h6 th:text="${recipe.description}"></h6>
+                    <figure class="figure m-0">
+                        <img th:if="${recipe.thumbnail != null}" th:src="${recipe.thumbnail}"
+                             class="figure-img img-fluid rounded p-3" alt="...">
+                        <p class="m-1" th:text="${recipe.description}"></p>
+                    </figure>
+                    <div id="is-not-already-like">
+                        <h3 class="text-muted">
+                            <a href="#" id="like" class="text-decoration-none text-secondary">
+                                <i id="like-logo" class="bi bi-bookmark-heart"></i>
+                                <span class="like-count"></span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="is-already-like" style="display: none">
+                        <h3 class="text-muted">
+                            <a href="#" id="cancel-like" class="text-decoration-none text-warning">
+                                <i class="bi bi-bookmark-heart-fill"></i>
+                                <span class="like-count">99</span>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">조회수 <span th:text="${recipe.viewCount}"></span>회</small>
+                    </div>
                 </div>
             </div>
             <!-- /.card -->
@@ -55,7 +74,8 @@
                     </div>
                     <div th:if="${recipe.cookingMethods.isEmpty()}">
                         <div class="col-10 pt-3" th:utext="${recipe.fullDescription}"></div>
-                    </div>S
+                    </div>
+                    S
                 </div>
             </div>
         </div>
@@ -64,8 +84,7 @@
 
 <footer th:replace="fragments.html :: footer"></footer>
 
-<script>
-    $('body').scrollspy({target: '#navbar-example'})
+<script src="/js/like.js">
 </script>
 </body>
 </html>

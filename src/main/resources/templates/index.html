@@ -44,6 +44,10 @@
                         <h3 th:text="${recipe.title}"></h3>
                         <p class="card-text" th:text="${recipe.description}">text</p>
                         <div class="d-flex justify-content-between align-items-center">
+                            <small class="badge bg-warning text-dark">
+                                <i id="like-logo" class="bi bi-bookmark-heart"></i>
+                                <span th:text="${recipe.likeCount}"></span>
+                            </small>
                             <small class="text-muted">조회수 <span th:text="${recipe.viewCount}"></span>회</small>
                         </div>
                     </div>
@@ -106,7 +110,6 @@
                 }
                 console.error(xhr.responseText);
             }
-
         }
     }
     event.init();

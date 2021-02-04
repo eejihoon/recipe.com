@@ -4,9 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
@@ -48,6 +46,9 @@ public class Recipe extends BaseEntity {
     private Member member;
 
     private int viewCount;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    Set<Like> likes = new HashSet<>();
 
     @Builder
     public Recipe(Member member, String title, String thumbnail, String description, String fullDescription, Set<Ingredient> ingredients, Integer cookingTime) {

@@ -1,10 +1,9 @@
 package com.dunk.django.recipe;
 
-import com.dunk.django.domain.Ingredient;
 import com.dunk.django.domain.Member;
 import com.dunk.django.domain.Recipe;
+import com.dunk.django.member.LikeRepository;
 import com.dunk.django.member.MemberAdapter;
-import com.dunk.django.recipe.repository.IngredientRepository;
 import com.dunk.django.recipe.repository.RecipeRepository;
 import com.dunk.django.recipe.utils.AuthorVerification;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @Transactional

@@ -1,8 +1,6 @@
 package com.dunk.django.recipe;
 
-import com.dunk.django.domain.Member;
 import com.dunk.django.member.MemberAdapter;
-import com.dunk.django.recipe.repository.RecipeRepository;
 import com.dunk.django.recipe.utils.AuthorVerification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +10,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
@@ -25,7 +20,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Controller
 public class RecipeController {
-    private final RecipeRepository recipeRepository;
     private final RecipeService recipeService;
     private final RecipeQueryRepository recipeQueryRepository;
     private final AuthorVerification authorVerification;
@@ -37,18 +31,21 @@ public class RecipeController {
                         @AuthenticationPrincipal MemberAdapter memberAdapter) {
         log.info("keyword : {} ", keyword);
 
+        /*
+        *   이메일 인증 안된 사용자에게 알림 띄워주기 위함
+        * */
         if (Objects.nonNull(memberAdapter))
             model.addAttribute("member", memberAdapter.getMember());
 
         model.addAttribute("recipes",
-                recipeQueryRepository.findByRecipeTitle(keyword, pageable));
+                recipeQueryRepository.findAllRecipeAndSearchWithPaging(keyword, pageable));
         model.addAttribute("maxPage" , 9);
 
         return "index";
     }
 
     @GetMapping("/recipe")
-    public String findAll(Long id,
+    public String findRecipe(Long id,
                           @AuthenticationPrincipal MemberAdapter memberAdapter,
                           Model model) {
         log.info("id : {}", id);
