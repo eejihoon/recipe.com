@@ -16,4 +16,12 @@ public class RecipeDto {
     private String nickname;
     private Long likeCount;
 
+    public RecipeDto(Long id, String title, String thumbnail, String description, int viewCount, String nickname) {
+        this.id = id;
+        this.title = title;
+        this.thumbnail = thumbnail;
+        this.description = description;
+        this.viewCount = viewCount;
+        this.nickname = nickname;
+    }
 }

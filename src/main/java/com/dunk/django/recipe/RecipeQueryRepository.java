@@ -22,15 +22,22 @@ import java.util.Objects;
 @Repository
 public class RecipeQueryRepository extends QuerydslRepositorySupport {
     private JPAQueryFactory queryFactory;
-    QRecipe recipe = QRecipe.recipe;
-    QLike like = QLike.like;
-    QMember member = QMember.member;
+    private QRecipe recipe;
+    private QLike like;
+    private QMember member;
 
     public RecipeQueryRepository(JPAQueryFactory queryFactory) {
         super(Recipe.class);
         this.queryFactory = queryFactory;
+        recipe = QRecipe.recipe;
+        like = QLike.like;
+        member = QMember.member;
     }
 
+    /*
+    *   TODO
+    *   삭제 예정
+    * */
     public Page<Recipe> findByRecipeTitle(String keyword, Pageable pageable) {
         QRecipe recipe = QRecipe.recipe;
 
@@ -78,11 +85,6 @@ public class RecipeQueryRepository extends QuerydslRepositorySupport {
 
         return new PageImpl<>(content, pageable, total);
     }
-
-    private BooleanExpression memberContains(String keyword) {
-        return keyword == null ? null : recipe.member.nickname.containsIgnoreCase(keyword);
-    }
-
 
     private BooleanExpression titleContains(String keyword) {
         return keyword == null ? null : recipe.title.containsIgnoreCase(keyword);

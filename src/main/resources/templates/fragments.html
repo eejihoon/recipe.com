@@ -66,6 +66,7 @@
 
     <!-- nav bar -->
     <header th:fragment="header">
+        <nav class="">
         <div class="collapse bg-dark" id="navbarHeader">
             <div class="container">
                 <div class="row">
@@ -82,9 +83,9 @@
                     <div sec:authorize="isAuthenticated()" class="col-sm-4 offset-md-1 py-4">
                         <h4 class="text-white"><strong><span th:text="${#authentication.name}"></span></strong></h4>
                         <ul class="list-unstyled">
-                            <li><a href="/register" class="text-white">레시피 등록</a></li>
-                            <li><a href="/setting/password" class="text-white">회원정보</a></li>
-                            <li><a href="/logout" class="text-white">로그아웃</a></li>
+                            <li><a href="/register" class="text-white text-decoration-none mt-3">레시피 등록</a></li>
+                            <li><a href="/setting/password" class="text-white text-decoration-none mt-3">회원정보</a></li>
+                            <li><a href="/logout" class="text-white text-decoration-none mt-3">로그아웃</a></li>
                         </ul>
                     </div>
                 </div>
@@ -95,10 +96,17 @@
                 <a href="/" class="navbar-brand mr-auto p-2">
                     <strong><i class="bi bi-journal-album"></i> 레시피북</strong>
                 </a>
+                <div class="inline-block">
+                    <span sec:authorize="isAuthenticated()" class="d-inline-block" tabindex="0" data-toggle="tooltip" title="내가 스크랩한 레시피">
+                        <a class="text-warning p-2 h4" href="/scrap">
+                            <i class="bi bi-bookmark-heart-fill"></i></a>
+                    </span>
                 <button id="toggle-btn" class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-controls="navbarToggleExternalContent" data-bs-target="#navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                </div>
             </div>
+        </nav>
         </nav>
     </header>
 
