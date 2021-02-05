@@ -29,7 +29,9 @@ public class RecipeController {
                         String keyword,
                         Model model,
                         @AuthenticationPrincipal MemberAdapter memberAdapter) {
-        log.info("keyword : {} ", keyword);
+        log.info("keyword       : {} ", keyword);
+        log.info("pageable      : {}", pageable);
+        log.info("memberAdapter : {} ", memberAdapter);
 
         /*
         *   이메일 인증 안된 사용자에게 알림 띄워주기 위함
@@ -57,7 +59,9 @@ public class RecipeController {
 
     @GetMapping("/register")
     public String save(@AuthenticationPrincipal MemberAdapter memberAdapter, Model model) {
-        model.addAttribute("member", memberAdapter.getMember());
+        if (Objects.nonNull(memberAdapter)) {
+            model.addAttribute("member", memberAdapter.getMember());
+        }
 
         return "recipe/register";
     }

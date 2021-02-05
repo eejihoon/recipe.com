@@ -19,13 +19,16 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/signup")
-    public void signupForm(Model model) {
+    public String signupForm(Model model) {
         SignupRequest signupRequest = new SignupRequest();
         model.addAttribute("signupForm", signupRequest);
+
+        return "member/signup";
     }
 
     @GetMapping("/login")
-    public void loginForm() {
+    public String loginForm() {
+        return "member/login";
     }
 
     @GetMapping("/member/auth/{key}")

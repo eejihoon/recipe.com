@@ -14,7 +14,6 @@
         <div th:if="${param.error != null}" class="alert alert-danger" role="alert">
             <p>아이디 또는 비밀번호가 다릅니다.</p>
             <p>비밀번호를 잊으셨나요? <a href="/withoutPasswordLogin">여기</a>로 이동하세요.</p>
-            <p><strong>준비 중입니다...</strong></p>
         </div>
         <form class="needs-validation col-sm-5" action="#" th:action="@{/login}" method="post" novalidate>
             <div class="form-group">

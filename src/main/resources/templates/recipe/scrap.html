@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments.html :: head"></head>
 <body>
 <header th:replace="fragments.html :: header"></header>
@@ -23,57 +24,60 @@
             <div class="container d-flex align-items-center flex-column">
                 <img src="img/scrap.png" class="img-fluid">
                 <h1><strong>내가 스크랩한 레시피</strong></h1>
+                <h5 sec:authorize="isAnonymous()" class="text-muted">로그인 후 이용해보세요!</h5>
                 <button class="btn btn-success"><a href="/" class="text-decoration-none text-white">홈으로</a></button>
             </div>
         </div>
     </div>
 </section>
 
-<div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="col" th:each="recipe : ${recipes}">
-                <div class="card shadow-sm">
-                    <a th:href="@{/recipe(id=${recipe.id}, page=${recipes.number}, keyword=${param.keyword})}" class="text-decoration-none text-reset">
-                        <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${recipe.thumbnail}">
-                        <div class="card-body">
-                            <h3 th:text="${recipe.title}"></h3>
-                            <p class="card-text" th:text="${recipe.description}">text</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <small class="badge bg-warning text-dark">
-                                        <i id="like-logo" class="bi bi-bookmark-heart"></i>
-                                        <span th:text="${recipe.likeCount}"></span>
-                                    </small><br>
-                                    <small class="text-muted">조회수 <span th:text="${recipe.viewCount}"></span>회</small>
-                                </div>
-                                <div>
-                                    <small class="text-muted">작성자 <span th:text="${recipe.nickname}"></span></small><br>
-                                    <small class="text-muted">작성일 <span>2021.02.05</span></small><br>
+<div sec:authorize="isAuthenticated()">
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="col" th:each="recipe : ${recipes}">
+                    <div class="card shadow-sm">
+                        <a th:href="@{/recipe(id=${recipe.id}, page=${recipes.number}, keyword=${param.keyword})}" class="text-decoration-none text-reset">
+                            <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${recipe.thumbnail}">
+                            <div class="card-body">
+                                <h3 th:text="${recipe.title}"></h3>
+                                <p class="card-text" th:text="${recipe.description}">text</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="badge bg-warning text-dark">
+                                            <i id="like-logo" class="bi bi-bookmark-heart"></i>
+                                            <span th:text="${recipe.likeCount}"></span>
+                                        </small><br>
+                                        <small class="text-muted">조회수 <span th:text="${recipe.viewCount}"></span>회</small>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted">작성자 <span th:text="${recipe.nickname}"></span></small><br>
+                                        <small class="text-muted">작성일 <span>2021.02.05</span></small><br>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-4"
-             th:with="start=${(recipes.number/maxPage)*maxPage + 1},
-                  end=(${(recipes.totalPages == 0) ? 1 : (start + (maxPage - 1) < recipes.totalPages ? start + (maxPage - 1) : recipes.totalPages)})" >
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" th:if="${start > 1}">
-                        <a class="page-link" th:href="@{'/scrap?page='+${start - maxPage - 1}}">이전</a>
-                    </li>
-                    <li class="page-item" th:classappend="${page-1 == recipes.number}? active"
-                        th:each="page : ${#numbers.sequence(start, end)}">
-                        <a class="page-link" th:href="@{/scrap(page=${page-1})}"><span th:text="${page}"></span></a>
-                    </li>
-                    <li class="page-item" th:if="${end < recipes.totalPages}">
-                        <a class="page-link" th:href="@{'/scrap?page='+${start+maxPage - 1}}">다음</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="mt-4"
+                 th:with="start=${(recipes.number/maxPage)*maxPage + 1},
+                      end=(${(recipes.totalPages == 0) ? 1 : (start + (maxPage - 1) < recipes.totalPages ? start + (maxPage - 1) : recipes.totalPages)})" >
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:if="${start > 1}">
+                            <a class="page-link" th:href="@{'/scrap?page='+${start - maxPage - 1}}">이전</a>
+                        </li>
+                        <li class="page-item" th:classappend="${page-1 == recipes.number}? active"
+                            th:each="page : ${#numbers.sequence(start, end)}">
+                            <a class="page-link" th:href="@{/scrap(page=${page-1})}"><span th:text="${page}"></span></a>
+                        </li>
+                        <li class="page-item" th:if="${end < recipes.totalPages}">
+                            <a class="page-link" th:href="@{'/scrap?page='+${start+maxPage - 1}}">다음</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>

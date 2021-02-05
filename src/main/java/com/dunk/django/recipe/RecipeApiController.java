@@ -25,9 +25,13 @@ public class RecipeApiController {
         log.info("recipeSaveForm : {}", recipeSaveForm);
         log.info("member : {}", memberAdapter);
 
-        Long id = recipeService.save(recipeSaveForm, memberAdapter.getMember());
+        if (memberAdapter != null) {
+            Long id = recipeService.save(recipeSaveForm, memberAdapter.getMember());
+            log.info("id : {} ", id);
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
 
-        return ResponseEntity.ok(id);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/recipe/{id}")

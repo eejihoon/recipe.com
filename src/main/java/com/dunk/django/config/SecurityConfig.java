@@ -32,9 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .mvcMatchers("/node_modules/**", "/error", "/img/**", "/profile", "/like/**",
+                .mvcMatchers("/node_modules/**", "/error", "/img/**", "/profile", "/like/**", "/scrap",
                         "/", "/login", "/signup", "/recipe", "/withoutPasswordLogin", "/member/withoutPasswordLogin").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/like/**").permitAll()
                 .mvcMatchers("/register", "/modify/**", "/member/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 
