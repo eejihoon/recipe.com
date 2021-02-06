@@ -29,6 +29,11 @@ public class MemberController {
         return "member/login";
     }
 
+    @GetMapping("/setting")
+    public String settingForm() {
+        return "member/setting/setting";
+    }
+
     @GetMapping("/member/auth/{key}")
     public String authenticationKeyCheck(@PathVariable String key,
                                          @AuthenticationPrincipal MemberAdapter memberAdapter,

@@ -6,7 +6,7 @@ plugins {
 	id "com.github.node-gradle.node" version "2.2.3"
 }
 
-group = 'com.django'
+group = 'com.recipe'
 version = '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
 sourceCompatibility = '11'
 

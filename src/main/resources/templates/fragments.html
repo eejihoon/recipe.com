@@ -44,8 +44,9 @@
                     <div sec:authorize="isAuthenticated()" class="col-sm-4 offset-md-1 py-4">
                         <h4 class="text-white"><strong><span th:text="${#authentication.name}"></span></strong></h4>
                         <ul class="list-unstyled">
+                            <li><a href="/myrecipe" class="text-white text-decoration-none mt-3">내 게시물</a></li>
                             <li><a href="/register" class="text-white text-decoration-none mt-3">레시피 등록</a></li>
-                            <li><a href="/setting/password" class="text-white text-decoration-none mt-3">회원정보</a></li>
+                            <li><a href="/setting" class="text-white text-decoration-none mt-3">회원정보</a></li>
                             <li><a href="/logout" class="text-white text-decoration-none mt-3">로그아웃</a></li>
                         </ul>
                     </div>

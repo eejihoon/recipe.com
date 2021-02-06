@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<header th:replace="fragments.html :: header"></header>
+<div class="container-sm">
+    <div class="row">
+        <div class="col-sm-3 pt-5">
+            <!-- 메뉴 -->
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list"
+                   href="#list-password" role="tab" aria-control="password">비밀번호 변경</a>
+                <a class="list-group-item list-group-item-action list-group-item-danger" id="list-disabled-list"
+                   data-bs-toggle="list" href="#list-disabled" role="tab" aria-controls="disabled">회원탈퇴</a>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-password" role="tabpanel"
+                     aria-labelledby="list-password-list">
+                    <div class="py-5 text-center">
+                        <img src="/img/login.png" class="col-sm-2 rounded mx-auto d-block w-10 h-10">
+                        <br>
+                        <h6><b>RECIPE</b></h6>
+                        <h1>비밀번호 변경</h1>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="needs-validation col-sm-5" action="#" method="post" novalidate>
+                            <div class="form-group">
+                                <label for="password">비밀번호</label>
+                                <input id="password" class="form-control" value="123456788"
+                                       aria-describedby="passwordHelp" type="password" required
+                                       minlength="8" maxlength="50">
+                                <small id="passwordHelp" class="form-text text-muted">
+                                    8자 이상으로 입력하세요. 공백은 사용할 수 없습니다.
+                                </small>
+                                <small class="invalid-feedback">비밀번호를 입력하세요</small><br>
+                                <small class="form-text text-danger" id="password-warn"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">비밀번호 확인</label>
+                                <input id="password-confirm" class="form-control" value="123456788"
+                                       aria-describedby="password-confirm-help" type="password" required
+                                       minlength="8" maxlength="50">
+                                <small id="password-confirm-help" class="form-text text-muted">
+                                    8자 이상으로 입력하세요. 공백은 사용할 수 없습니다.
+                                </small><br>
+                                <small class="form-text text-danger" id="password-confirm-warn"></small>
+                            </div>
+                            <div class="form-group">
+                                <button id="btn-submit" class="btn btn-warning btn-block mt-3" type="submit"
+                                        aria-describedby="submitHelp">비밀번호 변경
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="list-disabled" role="tabpanel" aria-labelledby="list-disabled-list">
+                    <div class="py-5 text-center">
+                        <img src="/img/bye.gif" class="col-sm-2 rounded mx-auto d-block w-30 h-30">
+                        <br>
+                        <h6><b>RECIPE</b></h6>
+                        <h1>회원탈퇴</h1>
+                        <div class="row justify-content-center">
+                            <div class="needs-validation col-sm-5" action="#" method="post" novalidate>
+                                <div class="form-group">
+                                    <label for="disable-password">본인인증을 위해 비밀번호를 입력하세요.</label>
+                                    <input id="disable-password" class="form-control" placeholder="비밀번호를 입력하세요."
+                                           aria-describedby="passwordHelp" type="password" autocomplete="on"
+                                           required minlength="8" maxlength="50">
+                                    <small class="form-text text-danger" id="disable-password-warn"></small>
+                                </div>
+                                <div class="form-group">
+                                    <button id="btn-disable" class="btn btn-outline-danger">탈퇴하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="fragments.html :: footer"></footer>
+</div>
+
+<script>
+    const btn = {
+        init: function () {
+            document.getElementById('btn-submit').addEventListener('click', () => {
+                this.change();
+            });
+
+            document.getElementById('btn-disable').addEventListener('click', () => {
+                this.disable();
+            });
+        },
+
+        disable : function () {
+            const password = document.getElementById('disable-password').value
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open("DELETE", "/api/member");
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(password);
+
+            xhr.onload = function () {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    alert('탈퇴되었습니다. 이용해주셔서 감사합니다.');
+                    window.location.href='/logout';
+                    return;
+                }
+                document.getElementById('disable-password-warn').innerText='비밀번호가 일치하지 않습니다.';
+                return;
+            }
+        },
+
+        change: function () {
+            const data = {
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('password-confirm').value
+            }
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('PUT', '/api/member/password')
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(data));
+
+            xhr.onload = function () {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    window.location.href = '/logout';
+                    alert('비밀번호가 변경되었습니다. 다시 로그인하세요.');
+                    return;
+                }
+                switch (xhr.responseText) {
+                    case 'confirmPassword' :
+                        document.getElementById('password-confirm-warn').innerText = '비밀번호가 일치하지 않습니다.';
+                        break;
+
+                    case 'password' :
+                        document.getElementById('password-warn').innerText = '비밀번호는 8자 이상입니다.';
+                        break;
+                }
+            }
+
+
+        }
+    }
+
+    btn.init();
+</script>
+
+</body>
+</html>

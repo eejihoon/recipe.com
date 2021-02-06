@@ -3,6 +3,7 @@ package com.recipe.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -32,6 +33,7 @@ public class Member extends BaseEntity {
     private Role role;
 
     private String certification; //비밀번호 분실 시 사용
+    private boolean disable = false;
 
     @Builder
     public Member(String email, String password, String nickname, String authenticationKey, Role role) {
@@ -66,5 +68,10 @@ public class Member extends BaseEntity {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    //회원탈퇴 시 disable true로 변경
+    public void setDisable() {
+        this.disable = true;
     }
 }

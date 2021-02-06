@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -28,15 +29,34 @@ class MemberApiControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
     @Autowired MemberRepository memberRepository;
+    @Autowired PasswordEncoder passwordEncoder;
 
-    final static String TEST_EMAIL = "cocodori@naver.com";
-    final static String TEST_PASSWORD = "asdf1234";
-    final static String TEST_NICKNAME = "kimong";
-    final static ResultMatcher HTTP_OK = status().isOk();
+    final String TEST_EMAIL = "cocodori@naver.com";
+    final String TEST_PASSWORD = "asdf1234";
+    final String TEST_NICKNAME = "kimong";
+
+    private final String ROOT = "/";
+    private final String API = "api";
+    private final String MEMBER = "member";
 
     @AfterEach
     void removeAll() {
         memberRepository.deleteAll();
+    }
+
+    @DisplayName("회원 탈퇴")
+    @WithMockCutstomUser
+    @Test
+    void testDisableMember() throws Exception {
+        Member member = memberRepository.findAll().get(0);
+
+        mockMvc.perform(delete(ROOT + API + ROOT + MEMBER)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("12345678"))
+                .andExpect(status().isOk());
+
+        Member disabledMember = memberRepository.findById(member.getId()).get();
+        assertTrue(disabledMember.isDisable());
     }
 
     @DisplayName("비밀번호 변경 처리")

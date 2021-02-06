@@ -79,4 +79,13 @@ public class RecipeController {
 
         return "recipe/modify";
     }
+
+    //내가 쓴 게시물
+    @GetMapping("/myrecipe")
+    public String mypost(@AuthenticationPrincipal MemberAdapter memberAdapter,
+                         Model model) {
+        log.info("memberAdapter : {} ", memberAdapter);
+
+        return "recipe/my-recipe";
+    }
 }

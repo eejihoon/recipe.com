@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head"></head>
+<body>
+<header th:replace="fragments.html :: header"></header>
+<div th:if="${member!=null && !member.verified}" class="alert alert-warning text-center" role="alert">
+    <h5><span th:text="${member.nickname}"></span> 님 이메일 인증 후 이용해주세요.</h5>
+    <h6><a id="re-sendmail" href="/">인증 메일 재발송</a></h6>
+</div>
+
+<div th:if="${error != null}" class="alert alert-danger text-center" role="alert">
+    <h5 th:text="${error}"></h5>
+</div>
+
+<div th:if="${verified != null}" class="alert alert-primary text-center" role="alert">
+    <h5><p th:text="${verified}"></p></h5>
+</div>
+
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="container d-flex align-items-center flex-column">
+                <img src="img/bye.gif" class="img-fluid">
+                <h1><strong>준비 중입니다.</strong></h1>
+                <h5 sec:authorize="isAnonymous()" class="text-muted">로그인 후 이용해보세요!</h5>
+                <a href="/" class="btn btn-primary text-white">홈으로</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="fragments.html :: footer"></footer>
+
+</body>
+</html>

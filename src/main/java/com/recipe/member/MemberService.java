@@ -6,6 +6,7 @@ import com.recipe.domain.Role;
 import com.recipe.mail.EmailMessage;
 import com.recipe.mail.EmailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -39,6 +40,8 @@ public class MemberService implements UserDetailsService {
         Member loginMember =
                 memberRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("존재하지 않는 계정입니다."));
 
+        checkDisableMember(loginMember);
+
         return new MemberAdapter(loginMember);
     }
 
@@ -67,21 +70,26 @@ public class MemberService implements UserDetailsService {
         return newMember.getNickname();
     }
 
-    public void loginSendMail(String email) throws UsernameNotFoundException{
+    public void loginSendMail(String email) throws UsernameNotFoundException, DisabledException{
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
 
-        Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isEmpty()) {
-            throw new UsernameNotFoundException("존재하지 않는 사용자입니다.");
-        }
+        checkDisableMember(member);
 
-        member.get().setCertificationNumber();
+        member.setCertificationNumber();
 
-        Context context = getContext(member.get(),
-                "/member/withoutPasswordLogin?certification="+member.get().getCertification()+"&email="+member.get().getEmail());
+        Context context = getContext(member,
+                "/member/withoutPasswordLogin?certification="+member.getCertification()+"&email="+member.getEmail());
         String message = templateEngine.process("mail/withoutPasswordLogin", context);
-        EmailMessage emailMessage = getEmailMessage(member.get(), message);
+        EmailMessage emailMessage = getEmailMessage(member, message);
 
         emailService.sendEmail(emailMessage);
+    }
+
+    private void checkDisableMember(Member member) {
+        if (member.isDisable()) {
+            throw new DisabledException("탈퇴한 유저입니다.");
+        }
     }
 
     public void sendMail(Member member) {
@@ -118,6 +126,15 @@ public class MemberService implements UserDetailsService {
         member.changePassword(encoded(changePasswordRequest.getPassword()));
 
         memberRepository.save(member);
+    }
+
+    public boolean disableMember(Member member, String password) {
+        if (matches(member, password)) {
+            member.setDisable();
+            memberRepository.save(member);
+            return true;
+        }
+        return false;
     }
 
     private EmailMessage getEmailMessage(Member member, String message) {
@@ -157,5 +174,9 @@ public class MemberService implements UserDetailsService {
 
     private boolean isEquals(String certification, Member member) {
         return member.getCertification().equals(certification);
+    }
+
+    private boolean matches(Member member, String password) {
+        return passwordEncoder.matches(password, member.getPassword());
     }
 }
