@@ -66,10 +66,9 @@
 
                 </div>
                 <div class="form-group">
-                    <label for="description">요리 과정</label>
+                    <label for="full-description">요리 과정</label>
                     <textarea id="full-description" type="textarea" class="editor form-control"
-                              placeholder="레시피를 소개해주세요." aria-describedby="full-description-help"
-                              required></textarea>
+                              placeholder="레시피를 소개해주세요." aria-describedby="full-description-help" required></textarea>
                     <small id="full-description-help" class="form-text text-muted">
                         요리 과정, 주의할 사항에 대해 써주세요.
                     </small>
@@ -83,9 +82,9 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-<th:block th:replace="fragments.html :: tagify('/recipe', 'post')"></th:block>
-<th:block th:replace="fragments.html :: summernote"></th:block>
+<footer th:replace="fragments.html :: footer"></footer>
 
+<th:block th:replace="fragments.html :: summernote"></th:block>
+<th:block th:replace="fragments.html :: tagify('/recipe', 'post')"></th:block>
 </body>
 </html>

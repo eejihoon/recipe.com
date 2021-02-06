@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
 
-    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- tag -->
@@ -152,14 +152,14 @@
         </script>
     </th:block>
     <th:block th:fragment="summernote">
-        <script src="/node_modules/summernote/dist/summernote.js"></script>
+        <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
         <script>
             $(document).ready(function () {
                 $('.editor').summernote({
                     fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
                     placeholder: '레시피를 소개해주세요.',
                     tabsize: 2,
-                    height: 300
+                    height: 300,
                 })
             });
         </script>
