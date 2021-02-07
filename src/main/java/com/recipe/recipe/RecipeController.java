@@ -4,6 +4,7 @@ import com.recipe.member.MemberAdapter;
 import com.recipe.recipe.utils.AuthorVerification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -83,8 +84,15 @@ public class RecipeController {
     //내가 쓴 게시물
     @GetMapping("/myrecipe")
     public String mypost(@AuthenticationPrincipal MemberAdapter memberAdapter,
+                         @PageableDefault(size = 9, value = 9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                          Model model) {
         log.info("memberAdapter : {} ", memberAdapter);
+
+        if (Objects.nonNull(memberAdapter)) {
+            Page<RecipeDto> byMember = recipeQueryRepository.findByMember(memberAdapter.getMember(), pageable);
+            model.addAttribute("recipes", byMember);
+            model.addAttribute("maxPage", 9);
+        }
 
         return "recipe/my-recipe";
     }

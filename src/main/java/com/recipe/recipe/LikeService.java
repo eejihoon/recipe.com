@@ -20,7 +20,6 @@ import java.util.List;
 public class LikeService {
     private final LikeRepository likeRepository;
     private final RecipeRepository recipeRepository;
-    private final LikeQueryRepository likeQueryRepository;
 
     public boolean addLike(Member member, Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();

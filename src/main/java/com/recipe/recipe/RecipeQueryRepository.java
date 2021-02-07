@@ -83,6 +83,33 @@ public class RecipeQueryRepository extends QuerydslRepositorySupport {
 
         return new PageImpl<>(content, pageable, total);
     }
+    //내가 쓴 게시물 조회
+    public Page<RecipeDto> findByMember(Member findMember, Pageable pageable) {
+        QueryResults<RecipeDto> recipeDtoQueryResults = queryFactory
+                .select(Projections.constructor(RecipeDto.class,
+                        recipe.id,
+                        recipe.title,
+                        recipe.thumbnail,
+                        recipe.description,
+                        recipe.viewCount,
+                        member.nickname,
+                        like.count()))
+                .from(recipe)
+                .leftJoin(recipe.member, member)
+                .leftJoin(recipe.likes, like)
+                .where(recipe.member.eq(findMember))
+                .groupBy(recipe.id)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(recipe.regdate.desc())
+                .fetchResults();
+
+        List<RecipeDto> results = recipeDtoQueryResults.getResults();
+
+        long total = recipeDtoQueryResults.getTotal();
+
+        return new PageImpl<>(results, pageable, total);
+    }
 
     private BooleanExpression titleContains(String keyword) {
         return keyword == null ? null : recipe.title.containsIgnoreCase(keyword);
