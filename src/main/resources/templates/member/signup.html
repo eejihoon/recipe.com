@@ -4,7 +4,6 @@
 </head>
 <body>
 <header th:replace="fragments.html :: header"></header>
-
 <div class="container">
     <div class="py-5 text-center">
         <h2>회원가입</h2>
@@ -56,6 +55,12 @@
                 <button id="btn-signup" class="btn btn-warning btn-block" type="submit"
                         aria-describedby="submitHelp">가입하기
                 </button>
+
+                <button class="btn btn-warning" type="button" id="spinner" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    가입 중입니다...
+                </button>
+
                 <small id="submitHelp" class="form-text text-muted">
                     <a href="#">약관</a>에 동의하시면 가입하기 버튼을 클릭하세요.
                 </small>
@@ -64,12 +69,20 @@
         </div>
     </div>
 </div>
+
+
 <script>
     const handler = {
         init: function () {
             const signupBtn = document.getElementById('btn-signup');
 
+            const spinner = document.getElementById('spinner');
+            spinner.style.display='none';
+
             signupBtn.addEventListener('click', () => {
+                signupBtn.style.display='none';
+                spinner.style.display='block';
+
                 this.signupSubmit();
             });
 

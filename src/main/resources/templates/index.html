@@ -86,6 +86,11 @@
 <script>
     const event = {
         init : function () {
+            //이메일 재전송 스피너
+            document.getElementById('re-sendmail').addEventListener('click', () => {
+
+            })
+
             document.getElementById('search-btn').addEventListener('click', () => {
                 if (keyword.length != 0 || keyword.trim() === '') {
                     const keyword = document.getElementById('keyword').value;
