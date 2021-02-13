@@ -53,7 +53,7 @@
                             </div>
                             <div>
                                 <small class="text-muted">작성자 <span th:text="${recipe.nickname}"></span></small><br>
-                                <small class="text-muted">작성일 <span>2021.02.05</span></small><br>
+                                <small class="text-muted">작성일 <span th:text="${#temporals.format(recipe.regdate,'yyyy.MM.dd')}">2021.02.05</span></small><br>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,6 @@
         </div>
     </div>
 </div>
-
 <footer th:replace="fragments.html :: footer"></footer>
 <script>
     const event = {

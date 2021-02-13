@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor @Getter @Setter @ToString
 public class RecipeDto {
     private Long id;
@@ -12,6 +14,7 @@ public class RecipeDto {
     private String thumbnail;
     private String description;
     private int viewCount;
+    private LocalDateTime regdate;
     private String nickname;
     private Long likeCount;
 

@@ -65,6 +65,7 @@ public class RecipeQueryRepository extends QuerydslRepositorySupport {
                         recipe.thumbnail,
                         recipe.description,
                         recipe.viewCount,
+                        recipe.regdate,
                         member.nickname,
                         like.count()))
                 .from(recipe)
@@ -92,6 +93,7 @@ public class RecipeQueryRepository extends QuerydslRepositorySupport {
                         recipe.thumbnail,
                         recipe.description,
                         recipe.viewCount,
+                        recipe.regdate,
                         member.nickname,
                         like.count()))
                 .from(recipe)
