@@ -2,10 +2,13 @@ package com.recipe.recipe;
 
 import com.recipe.domain.*;
 import com.recipe.recipe.repository.*;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-//@Service
+@Component
 public class RecipeDataInsert {
     private final RecipeRepository recipeRepository;
     private final FoodTypeRepository foodTypeRepository;
@@ -24,8 +27,13 @@ public class RecipeDataInsert {
     private final IngredientTypeRepository ingredientTypeRepository;
     private final CookingMethodRepository cookingMethodRepository;
 
-    @Transactional
     @PostConstruct
+    public void initRecipeData() {
+
+    }
+
+//    @Transactional
+//    @PostConstruct
     public void initRecipeService() throws IOException {
         if (foodNationRepository.count() == 0) {
             Resource resource = new ClassPathResource("nation.csv");
