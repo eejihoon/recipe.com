@@ -23,7 +23,7 @@ import java.util.*;
 public class RecipeDataInsert {
     private final RecipeRepository recipeRepository;
 
-    @PostConstruct
+    //@PostConstruct
     public void initRecipeData() {
         if (recipeRepository.count() == 0) {
             String url =
@@ -85,24 +85,24 @@ public class RecipeDataInsert {
                     }
                 }
 
-                Recipe recipe = Recipe.builder()
-                        .title(title)
-                        .thumbnail(thumbnail)
-                        .originalImage(originalImage)
-                        .calorie(Float.parseFloat(calorie))
-                        .carbohydrate(Float.parseFloat(carbohydrate))
-                        .fat(Float.parseFloat(fat))
-                        .natrium(Float.parseFloat(natrium))
-                        .protein(Float.parseFloat(protein))
-                        .hashTag(hashTag)
-                        .ingredients(ingredients)
-                        .cookingMethods(cookingMethods)
-                        .build();
-
-                ingredients.forEach(ingredient -> ingredient.add(recipe));
-                cookingMethods.forEach(cookingMethod -> cookingMethod.addRecipe(recipe));
-
-                recipes.add(recipe);
+//                Recipe recipe = Recipe.builder()
+//                        .title(title)
+//                        .thumbnail(thumbnail)
+//                        .originalImage(originalImage)
+//                        .calorie(Float.parseFloat(calorie))
+//                        .carbohydrate(Float.parseFloat(carbohydrate))
+//                        .fat(Float.parseFloat(fat))
+//                        .natrium(Float.parseFloat(natrium))
+//                        .protein(Float.parseFloat(protein))
+//                        .hashTag(hashTag)
+//                        .ingredients(ingredients)
+//                        .cookingMethods(cookingMethods)
+//                        .build();
+//
+//                ingredients.forEach(ingredient -> ingredient.add(recipe));
+//                cookingMethods.forEach(cookingMethod -> cookingMethod.addRecipe(recipe));
+//
+//                recipes.add(recipe);
             }
 
             log.info("recipe size : " + recipes.size());

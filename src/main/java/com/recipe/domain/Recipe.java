@@ -19,7 +19,6 @@ public class Recipe extends BaseEntity {
     @Lob
     private String thumbnail;
 
-    @Deprecated
     private String description;
 
     @Lob
@@ -60,7 +59,8 @@ public class Recipe extends BaseEntity {
     String originalImage;
     String hashTag;
 
-    @Builder //새로운 레시피 데이터를 위한 생성자
+    @Deprecated
+    //@Builder //새로운 레시피 데이터를 위한 생성자
     public Recipe(String title, String thumbnail, Set<Ingredient> ingredients, Set<CookingMethod> cookingMethods, float calorie, float carbohydrate, float protein, float fat, float natrium, String originalImage, String hashTag) {
         this.title = title;
         this.thumbnail = thumbnail;
