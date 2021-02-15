@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Objects;
 
-public class ReadRecipeApi {
+public class RecipeJsonParsingTest {
     @Test
     void testReadRecipeApi() throws JsonProcessingException {
         TestRestTemplate testRestTemplate = new TestRestTemplate();
@@ -50,16 +50,19 @@ public class ReadRecipeApi {
             System.out.println("나트륨 : " + replaceQuotes(object.get("INFO_NA")));
             System.out.println();
 
-            System.out.println("요리 종류--------------");
-            System.out.println(replaceQuotes(object.get("RCP_PAT2")));
-            System.out.println();
 
+            System.out.println(replaceQuotes(object.get("RCP_PAT2")));
             System.out.println("#HashTag");
-            System.out.println("#" + replaceQuotes(object.get("HASH_TAG")));
+            if (replaceQuotes(object.get("HASH_TAG")).length() == 0
+                    && replaceQuotes(object.get("HASH_TAG")).length() == 1) {
+                System.out.println("#" + replaceQuotes(object.get("HASH_TAG")));
+            } else {
+                System.out.println(replaceQuotes(object.get("RCP_PAT2")));
+            }
             System.out.println();
 
             System.out.println("재료--------------------------");
-            System.out.println(replaceQuotes(object.get("RCP_PARTS_DTLS")));
+            System.out.println(replaceQuotes(object.get("RCP_PARTS_DTLS")).replaceAll("\\\\n", " "));
             System.out.println();
 
             System.out.println("thumbnail");

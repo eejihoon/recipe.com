@@ -1,168 +1,125 @@
 package com.recipe.recipe;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.recipe.domain.*;
 import com.recipe.recipe.repository.*;
 import lombok.*;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
+@Slf4j
+@Transactional
 @RequiredArgsConstructor
 @Component
 public class RecipeDataInsert {
     private final RecipeRepository recipeRepository;
-    private final FoodTypeRepository foodTypeRepository;
-    private final FoodNationRepository foodNationRepository;
-    private final IngredientRepository ingredientRepository;
-    private final IngredientTypeRepository ingredientTypeRepository;
-    private final CookingMethodRepository cookingMethodRepository;
 
     @PostConstruct
     public void initRecipeData() {
+        if (recipeRepository.count() == 0) {
+            String url =
+                    "http://openapi.foodsafetykorea.go.kr/api/API-KEY/COOKRCP01/json/1/699";
 
+            RestTemplate testRestTemplate = new RestTemplate();
+
+            ResponseEntity<String> forEntity = testRestTemplate.getForEntity(url, String.class);
+
+            JsonParser jsonParser = new JsonParser();
+
+            JsonElement parse = jsonParser.parse(forEntity.getBody());
+
+
+            JsonArray asJsonArray = parse.getAsJsonObject()
+                    .get("COOKRCP01")
+                    .getAsJsonObject()
+                    .get("row")
+                    .getAsJsonArray();
+
+            List<Recipe> recipes = new ArrayList<>();
+
+            for (JsonElement el : asJsonArray) {
+                JsonObject object = el.getAsJsonObject();
+                String title = replaceQuotes(object.get("RCP_NM"));
+                String thumbnail = replaceQuotes(object.get("ATT_FILE_NO_MAIN"));
+                String originalImage = replaceQuotes(object.get("ATT_FILE_NO_MK"));
+                String hashTag = getHashTag(object);
+
+                String natrium = replaceQuotes(object.get("INFO_NA"));
+                String fat = replaceQuotes(object.get("INFO_FAT"));
+                String protein = replaceQuotes(object.get("INFO_PRO"));
+                String carbohydrate = replaceQuotes(object.get("INFO_CAR"));
+                String calorie = replaceQuotes(object.get("INFO_ENG"));
+
+                //재료
+                String ingredientStr = replaceQuotes(object.get("RCP_PARTS_DTLS")).replaceAll("\\\\n", "");
+                String[] split = ingredientStr.trim().split(",");
+                Set<Ingredient> ingredients = new HashSet<>();
+
+                for (String ingr : split) {
+                    ingredients.add(new Ingredient(ingr));
+                }
+
+                //CookingMethod
+                Set<CookingMethod> cookingMethods = new HashSet<>();
+                for (int i = 1; i <= 20; i++) {
+                    if (Objects.nonNull(object.get("MANUAL0" + i))) {
+                        int sequence = i;
+                        String manual = replaceQuotes(object.get("MANUAL0" + i));
+
+                        if (Objects.nonNull(object.get("MANUAL_IMG0" + i))) {
+                            String manualImage = replaceQuotes(object.get("MANUAL_IMG0" + i));
+                            cookingMethods.add(new CookingMethod(sequence, manual, manualImage));
+                        } else {
+                            cookingMethods.add(new CookingMethod(sequence, manual, ""));
+                        }
+
+                    }
+                }
+
+                Recipe recipe = Recipe.builder()
+                        .title(title)
+                        .thumbnail(thumbnail)
+                        .originalImage(originalImage)
+                        .calorie(Float.parseFloat(calorie))
+                        .carbohydrate(Float.parseFloat(carbohydrate))
+                        .fat(Float.parseFloat(fat))
+                        .natrium(Float.parseFloat(natrium))
+                        .protein(Float.parseFloat(protein))
+                        .hashTag(hashTag)
+                        .ingredients(ingredients)
+                        .cookingMethods(cookingMethods)
+                        .build();
+
+                ingredients.forEach(ingredient -> ingredient.add(recipe));
+                cookingMethods.forEach(cookingMethod -> cookingMethod.addRecipe(recipe));
+
+                recipes.add(recipe);
+            }
+
+            log.info("recipe size : " + recipes.size());
+
+            recipeRepository.saveAll(recipes);
+        }
     }
 
-//    @Transactional
-//    @PostConstruct
-    public void initRecipeService() throws IOException {
-        if (foodNationRepository.count() == 0) {
-            Resource resource = new ClassPathResource("nation.csv");
-
-            List<FoodNation> nations = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-                    .stream()
-                    .map(line -> {
-                        String[] split = line.split(",", 2);
-
-                        return FoodNation.builder()
-                                .id(Long.parseLong(split[0]))
-                                .nation(split[1])
-                                .build();
-                    }).collect(Collectors.toList());
-
-            foodNationRepository.saveAll(nations);
+    private String getHashTag(JsonObject object) {
+        if (Objects.nonNull(replaceQuotes(object.get("HASH_TAG")))) {
+            return replaceQuotes(object.get("HASH_TAG"));
+        } else {
+            return replaceQuotes(object.get("RCP_PAT2"));
         }
+    }
 
-        if (foodTypeRepository.count() == 0) {
-            Resource resource = new ClassPathResource("foodType.csv");
-
-            List<FoodType> foodTypes = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-                    .stream()
-                    .map(line -> {
-                        String[] split = line.split(",", 2);
-
-                        return FoodType.builder()
-                                .id(Long.parseLong(split[0]))
-                                .type(split[1])
-                                .build();
-
-                    }).collect(Collectors.toList());
-
-            foodTypeRepository.saveAll(foodTypes);
-        }
-
-//        if (recipeRepository.count() == 0) {
-//            Resource resource = new ClassPathResource("Recipe.csv");
-//
-//            List<Recipe> recipes = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-//                    .stream()
-//                    .map(line -> {
-//                        String[] split = line.split(",", 9);
-//
-//                        return Recipe.builder()
-//                                .id(Long.parseLong(split[0]))
-//                                .name(split[1])
-//                                .foodNation(foodNationRepository.findById(Long.parseLong(split[2])).get())
-//                                .foodType(foodTypeRepository.findById(Long.parseLong(split[3])).get())
-//                                .cookingTime(Integer.parseInt(split[4].replaceAll("분", "")))
-//                                .calorie(Integer.parseInt(split[5].replaceAll("Kcal", "")))
-//                                .servings(Integer.parseInt(split[6].replaceAll("인분", "")))
-//                                .thumbnail(split[7])
-//                                .description(split[8])
-//                                .build();
-//
-//                    }).collect(Collectors.toList());
-//
-//            recipeRepository.saveAll(recipes);
-//        }
-
-        if (cookingMethodRepository.count() == 0) {
-            Resource resource = new ClassPathResource("Cooking-Method.csv");
-
-            List<CookingMethod> cookingMethodList = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-                    .stream()
-                    .map(line -> {
-
-                        String[] split = line.split(",", 4);
-
-                        System.out.println("split[0] : " + split[0]);
-
-                        Recipe recipe = recipeRepository.findById(Long.parseLong(split[0])).get();
-
-                        System.out.println("***************************************************************");
-                        System.out.println("split[0] : " + split[0]);
-                        System.out.println("recipe : " + recipe);
-                        System.out.println("id : " + recipe.getId());
-                        System.out.println("name : " + recipe.getTitle());
-                        System.out.println("description : " + recipe.getDescription());
-                        System.out.println("***************************************************************");
-
-                        return CookingMethod.builder()
-                                .recipe(recipeRepository.findById(Long.parseLong(split[0])).get())
-                                .sequence(Integer.parseInt(split[1]))
-                                .image(split[2])
-                                .description(split[3])
-                                .build();
-                    }).collect(Collectors.toList());
-
-            cookingMethodRepository.saveAll(cookingMethodList);
-        }
-
-//        if (ingredientTypeRepository.count() == 0) {
-//            Resource resource = new ClassPathResource("IngredientType.csv");
-//
-//            List<IngredientType> ingredientTypes = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-//                    .stream()
-//                    .map(foodTypeCsv -> {
-//                        String[] split = foodTypeCsv.split(",");
-//
-//                        return IngredientType.builder()
-//                                .id(Long.parseLong(split[0]))
-//                                .ingredientType(split[1])
-//                                .build();
-//
-//                    }).collect(Collectors.toList());
-//
-//            ingredientTypeRepository.saveAll(ingredientTypes);
-//        }
-
-//        if (ingredientRepository.count() == 0) {
-//            Resource resource = new ClassPathResource("ingredient.csv");
-//
-//            List<Ingredient> ingredients = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-//                    .stream()
-//                    .map(line -> {
-//                        String[] split = line.split(",", 4);
-//
-//                        return Ingredient.builder()
-//                                .recipe(recipeRepository.findById(Long.parseLong(split[0])).get())
-//                                .quantity(split[1])
-//                                .ingredientType(ingredientTypeRepository.findById(Long.parseLong(split[2])).get())
-//                                .ingredient(split[3])
-//                                .build();
-//
-//                    }).collect(Collectors.toList());
-//
-//            ingredientRepository.saveAll(ingredients);
-//        }
+    private String replaceQuotes(JsonElement el) {
+        return el.toString().replaceAll("\"", "");
     }
 }

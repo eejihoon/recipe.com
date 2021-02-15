@@ -32,31 +32,6 @@ public class RecipeQueryRepository extends QuerydslRepositorySupport {
         member = QMember.member;
     }
 
-    /*
-    *   TODO
-    *   삭제 예정
-    * */
-    public Page<Recipe> findByRecipeTitle(String keyword, Pageable pageable) {
-        QRecipe recipe = QRecipe.recipe;
-
-        JPQLQuery<Recipe> query = from(recipe);
-
-        if (Objects.nonNull(keyword)) {
-            if (!keyword.equals("")) {
-                QIngredient ingredient = QIngredient.ingredient1;
-                query.leftJoin(recipe.ingredients, ingredient)
-                        .on(ingredient.ingredient.containsIgnoreCase(keyword))
-                        .where(recipe.title.containsIgnoreCase(keyword));
-            }
-        }
-
-        JPQLQuery<Recipe> recipeJPQLQuery = getQuerydsl().applyPagination(pageable, query);
-
-        QueryResults<Recipe> fetchResults = recipeJPQLQuery.fetchResults();
-
-        return new PageImpl<>(fetchResults.getResults(), pageable, fetchResults.getTotal());
-    }
-
     public Page<RecipeDto> findAllRecipeAndSearchWithPaging(String keyword, Pageable pageable) {
         QueryResults<RecipeDto> recipeDtoQueryResults = queryFactory
                 .select(Projections.constructor(RecipeDto.class,

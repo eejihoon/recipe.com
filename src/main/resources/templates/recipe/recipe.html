@@ -60,7 +60,6 @@
                     <h6 th:text="${recipe.servings}+'인 기준'"></h6>
                     <th:block th:each="ingredient:${recipe.ingredients}">
                         <span th:text="${ingredient.ingredient}"></span>
-                        <span th:if="${ingredient.quantity != null}" th:text="'('+ ${ingredient.quantity} +')'"></span>
                         <span>,</span>
                     </th:block>
                 </div>
@@ -72,8 +71,8 @@
                 </div>
                 <div class="card-body">
                     <div th:if="${!recipe.cookingMethods.isEmpty()}" th:each="method : ${recipe.cookingMethods}">
-                        <h6 th:text="${method.sequence} + '. '+ ${method.description}"></h6>
-                        <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${method.image}">
+                        <h6 th:text="${method.description}"></h6>
+                        <img th:if="${method.image.length() > 1}" class="bd-placeholder-img card-img-top img-thumbnail" th:src="${method.image}">
                         <hr>
                     </div>
                     <div th:if="${recipe.cookingMethods.isEmpty()}">

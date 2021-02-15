@@ -1,16 +1,14 @@
 package com.recipe.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Ingredient {
-
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id;
 
@@ -19,11 +17,6 @@ public class Ingredient {
     private Recipe recipe;
 
     private String ingredient;
-
-    private String quantity;
-
-    @ManyToOne
-    IngredientType ingredientType;
 
     public Ingredient(String ingredient) {
         this.ingredient = ingredient;

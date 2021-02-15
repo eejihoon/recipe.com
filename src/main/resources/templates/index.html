@@ -67,14 +67,14 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:if="${start > 1}">
-                        <a class="page-link" th:href="@{'?page='+${start - maxPage - 1}}">이전</a>
+                        <a class="page-link" th:href="@{/(page=${start - maxPage - 1}, keyword=${param.keyword})}">이전</a>
                     </li>
                     <li class="page-item" th:classappend="${page-1 == recipes.number}? active"
                         th:each="page : ${#numbers.sequence(start, end)}">
                         <a class="page-link" th:href="@{/(page=${page-1}, keyword=${param.keyword})}"><span th:text="${page}"></span></a>
                     </li>
                     <li class="page-item" th:if="${end < recipes.totalPages}">
-                        <a class="page-link" th:href="@{'?page='+${start+maxPage - 1}}">다음</a>
+                        <a class="page-link" th:href="@{/(page=${start+maxPage - 1}, keyword=${param.keyword})}">다음</a>
                     </li>
                 </ul>
             </nav>
@@ -85,11 +85,6 @@
 <script>
     const event = {
         init : function () {
-            //이메일 재전송 스피너
-            document.getElementById('re-sendmail').addEventListener('click', () => {
-
-            })
-
             document.getElementById('search-btn').addEventListener('click', () => {
                 if (keyword.length != 0 || keyword.trim() === '') {
                     const keyword = document.getElementById('keyword').value;
