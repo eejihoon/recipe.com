@@ -48,6 +48,8 @@ public class RecipeSaveForm {
                 .member(member)
                 .build();
 
+        ingredientSet.forEach(ingredient -> ingredient.add(recipe));
+
         return recipe;
     }
 
