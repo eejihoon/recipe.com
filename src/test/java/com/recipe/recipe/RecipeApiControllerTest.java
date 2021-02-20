@@ -68,7 +68,7 @@ public class RecipeApiControllerTest {
         String requesetJson = objectMapper.writeValueAsString(recipeSaveForm);
         System.out.println("requesetJson : " + requesetJson);
 
-        mockMvc.perform(post("/recipe")
+        mockMvc.perform(post("/api/recipe")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .with(csrf())
                 .content(requesetJson))
@@ -98,7 +98,7 @@ public class RecipeApiControllerTest {
                 .member(memberRepository.findAll().get(0))
                 .build();
 
-        mockMvc.perform(put("/recipe/"+recipe.getId())
+        mockMvc.perform(put("/api/recipe/"+recipe.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(recipeUpdateForm))
                 .with(csrf()))
@@ -121,7 +121,7 @@ public class RecipeApiControllerTest {
 
         assertTrue(recipeRepository.findById(recipe.getId()).isPresent());
 
-        mockMvc.perform(delete("/recipe/"+recipe.getId())
+        mockMvc.perform(delete("/api/recipe/"+recipe.getId())
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());

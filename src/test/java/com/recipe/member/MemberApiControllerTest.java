@@ -69,7 +69,7 @@ class MemberApiControllerTest {
         changePasswordRequest.setPassword("aaaabbbb");
         changePasswordRequest.setConfirmPassword("aaaabbbb");
 
-        mockMvc.perform(put("/api/member/password")
+        mockMvc.perform(put("/api/member")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(changePasswordRequest)))
                 .andExpect(status().isOk());
@@ -89,7 +89,7 @@ class MemberApiControllerTest {
         changePasswordRequest.setPassword("aaa11123");
         changePasswordRequest.setConfirmPassword("asdf1234");
 
-        mockMvc.perform(put("/api/member/password")
+        mockMvc.perform(put("/api/member")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(changePasswordRequest)))
                 .andExpect(status().isInternalServerError());
@@ -144,7 +144,7 @@ class MemberApiControllerTest {
 
         String beforeAuthKey = member.getAuthenticationKey();
 
-        mockMvc.perform(put("/re-sendmail"))
+        mockMvc.perform(put(ROOT+API+"/re-sendmail"))
                 .andExpect(status().isOk());
 
         Member member2 = memberRepository.findById(member.getId()).orElseThrow();
@@ -166,7 +166,7 @@ class MemberApiControllerTest {
 
         assertNull(member.getCertification());
 
-        mockMvc.perform(put("/withoutPasswordLogin")
+        mockMvc.perform(put(ROOT+API+"/withoutPasswordLogin")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(member.getEmail()))
                 .andExpect(status().isOk());
@@ -205,7 +205,7 @@ class MemberApiControllerTest {
     }
 
     private ResultActions signupRequest(SignupRequest signupRequest, ResultMatcher status) throws Exception{
-        return mockMvc.perform(post("/signup")
+        return mockMvc.perform(post(ROOT+API+ROOT+MEMBER)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(signupRequest)))

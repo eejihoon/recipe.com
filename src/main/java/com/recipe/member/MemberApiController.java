@@ -1,5 +1,6 @@
 package com.recipe.member;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,8 @@ public class MemberApiController {
     private final SignupRequestValidator signupRequestValidator;
     private final ChangePasswordRequestValidator changePasswordRequestValidator;
 
-    private final String ROOT = "/";
-    private final String API = "api";
-    private final String MEMBER = "member";
+    private final String API = "/api";
+    private final String MEMBER_URL = "/api/member";
 
 
     @InitBinder("signupRequest")
@@ -37,7 +37,8 @@ public class MemberApiController {
         webDataBinder.addValidators(changePasswordRequestValidator);
     }
 
-    @PostMapping("/signup")
+    @ApiOperation(value = "회원 가입")
+    @PostMapping(MEMBER_URL)
     public ResponseEntity<String> signupSubmit(@RequestBody @Valid SignupRequest signupRequest, Errors errors) {
         if (errors.hasErrors()) {
             log.info(errors.getFieldError().getField());
@@ -49,13 +50,15 @@ public class MemberApiController {
         return new ResponseEntity<>(nickname, HttpStatus.OK);
     }
 
-    @PutMapping("/re-sendmail")
+    @ApiOperation(value = "회원가입 인증 메일 재전송")
+    @PutMapping(API+"/re-sendmail")
     public ResponseEntity<String> reSendMail(@AuthenticationPrincipal MemberAdapter memberAdapter) {
         memberService.sendMail(memberAdapter.getMember());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/withoutPasswordLogin")
+    @ApiOperation(value = "비밀번호 분실한 회원 계정으로 메일 전송")
+    @PutMapping(API+"/withoutPasswordLogin")
     public ResponseEntity<String> withoutPasswordLoginSendMail(@RequestBody String email) {
         log.info("email : {} ",email);
 
@@ -68,7 +71,8 @@ public class MemberApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/api/member/password")
+    @ApiOperation(value = "비밀번호 변경")
+    @PutMapping(MEMBER_URL)
     public ResponseEntity<String> changePassword(@AuthenticationPrincipal MemberAdapter memberAdapter,
                                                  @RequestBody @Valid ChangePasswordRequest changePasswordRequest,
                                                  Errors errors) {
@@ -82,7 +86,8 @@ public class MemberApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(ROOT + API + ROOT + MEMBER)
+    @ApiOperation(value = "회원탈퇴")
+    @DeleteMapping(MEMBER_URL)
     public ResponseEntity<String> disableMember(@AuthenticationPrincipal MemberAdapter memberAdapter,
                                                 @RequestBody String password) {
 

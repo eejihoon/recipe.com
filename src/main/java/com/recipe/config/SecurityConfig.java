@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .mvcMatchers("/node_modules/**", "/error", "/img/**", "/profile", "/like/**", "/scrap",
-                        "/", "/login", "/signup", "/recipe", "/withoutPasswordLogin", "/member/withoutPasswordLogin").permitAll()
+                        "/", "/login", "/signup", "/api/**", "/recipe", "/withoutPasswordLogin", "/member/withoutPasswordLogin").permitAll()
                 .mvcMatchers("/register", "/modify/**", "/member/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 

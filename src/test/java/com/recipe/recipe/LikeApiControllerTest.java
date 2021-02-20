@@ -40,13 +40,7 @@ public class LikeApiControllerTest {
     @Test
     void testGetCount() throws Exception {
         Recipe recipe = addRecipe();
-        Member member = memberRepository.findByEmail("test@email.com").orElseThrow();
-
-//        ResponseEntity<ResponseEntity> forEntity = restTemplate.getForEntity("/like/" + recipe.getId(), ResponseEntity.class);
-//
-//        assertEquals(forEntity.getStatusCode(), HttpStatus.OK);
-
-        mockMvc.perform(get("/like/"+recipe.getId()))
+        mockMvc.perform(get("/api/like/"+recipe.getId()))
                 .andExpect(status().isOk());
     }
 
@@ -63,7 +57,7 @@ public class LikeApiControllerTest {
         assertNotNull(allLike.get(0).getId());
         assertTrue(allLike.size() > 0);
 
-        mockMvc.perform(delete("/like/"+recipe.getId()))
+        mockMvc.perform(delete("/api/like/"+recipe.getId()))
                 .andExpect(status().isOk());
 
         List<Like> likes = likeRepository.findAll();
@@ -79,7 +73,7 @@ public class LikeApiControllerTest {
     void testCreateLike() throws Exception {
         Recipe recipe = addRecipe();
 
-        mockMvc.perform(post("/like/"+recipe.getId()))
+        mockMvc.perform(post("/api/like/"+recipe.getId()))
                 .andExpect(status().isOk());
 
         Like like = likeRepository.findAll().get(0);
@@ -95,10 +89,10 @@ public class LikeApiControllerTest {
     void testDuplicateLike() throws Exception {
         Recipe recipe = addRecipe();
 
-        mockMvc.perform(post("/like/"+recipe.getId()))
+        mockMvc.perform(post("/api/like/"+recipe.getId()))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(post("/like/"+recipe.getId()))
+        mockMvc.perform(post("/api/like/"+recipe.getId()))
                 .andExpect(status().isBadRequest());
 
         Like like = likeRepository.findAll().get(0);

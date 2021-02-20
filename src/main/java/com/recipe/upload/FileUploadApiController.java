@@ -1,5 +1,6 @@
 package com.recipe.upload;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class FileUploadController {
+public class FileUploadApiController {
 
     private final UploadService uploadService;
 
@@ -28,7 +29,8 @@ public class FileUploadController {
         return "file-upload";
     }
 
-    @PostMapping("/file-upload")
+    @ApiOperation(value = "파일 등록")
+    @PostMapping("/api/file-upload")
     public ResponseEntity<HttpEntity> uploadPost(@RequestPart List<MultipartFile> files) throws IOException {
         HttpEntity httpEntity = null;
 

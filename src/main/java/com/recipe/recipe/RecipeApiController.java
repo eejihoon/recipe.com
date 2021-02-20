@@ -1,6 +1,7 @@
 package com.recipe.recipe;
 
 import com.recipe.member.MemberAdapter;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,8 @@ import java.nio.file.AccessDeniedException;
 public class RecipeApiController {
     private final RecipeService recipeService;
 
-    @PostMapping("/recipe")
+    @ApiOperation(value = "레시피 등록", notes = "성공 200 OK, 실패 400 ERROR")
+    @PostMapping("/api/recipe")
     public ResponseEntity<Long> save(@RequestBody RecipeSaveForm recipeSaveForm,
                                      @AuthenticationPrincipal MemberAdapter memberAdapter) {
         log.info("recipeSaveForm : {}", recipeSaveForm);
@@ -31,7 +33,8 @@ public class RecipeApiController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/recipe/{id}")
+    @ApiOperation(value = "레시피 수정", notes = "성공 200 OK + recipeId반환")
+    @PutMapping("/api/recipe/{id}")
     public ResponseEntity<Long> update(@RequestBody RecipeSaveForm recipeSaveForm,
                                        @PathVariable Long id,
                                        @AuthenticationPrincipal MemberAdapter memberAdapter) throws AccessDeniedException {
@@ -42,7 +45,8 @@ public class RecipeApiController {
         return ResponseEntity.ok(id);
     }
 
-    @DeleteMapping("/recipe/{id}")
+    @ApiOperation(value = "레시피 삭제", notes = "성공 200 OK")
+    @DeleteMapping("/api/recipe/{id}")
     public ResponseEntity<String> remove(@PathVariable Long id,
                                          @AuthenticationPrincipal MemberAdapter memberAdapter) throws AccessDeniedException {
         recipeService.remove(id, memberAdapter.getMember());
