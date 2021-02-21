@@ -1,13 +1,8 @@
 package com.recipe.recipe;
 
-import com.recipe.ControllerTest;
-import com.recipe.domain.Ingredient;
+import com.recipe.TestSet;
 import com.recipe.domain.Member;
-import com.recipe.domain.Recipe;
-import com.recipe.member.MemberRepository;
 import com.recipe.member.WithMockCutstomUser;
-import com.recipe.recipe.repository.RecipeRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class RecipeQueryRepositoryTest extends ControllerTest {
+class RecipeQueryRepositoryTest extends TestSet {
     @Autowired RecipeQueryRepository recipeQueryRepository;
 
     @DisplayName("내가 등록한 레시피 조회")

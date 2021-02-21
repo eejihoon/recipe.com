@@ -1,25 +1,15 @@
 package com.recipe.like;
 
-import com.recipe.ControllerTest;
-import com.recipe.domain.Ingredient;
+import com.recipe.TestSet;
 import com.recipe.domain.Like;
 import com.recipe.domain.Member;
 import com.recipe.domain.Recipe;
-import com.recipe.member.LikeRepository;
-import com.recipe.member.MemberRepository;
 import com.recipe.member.WithMockCutstomUser;
-import com.recipe.recipe.repository.RecipeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -27,9 +17,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
-@AutoConfigureMockMvc
 @SpringBootTest
-public class LikeApiControllerTest extends ControllerTest {
+public class LikeApiControllerTest extends TestSet {
     private final String LIKE_URL = "/like";
 
     @DisplayName("좋아요 카운트")

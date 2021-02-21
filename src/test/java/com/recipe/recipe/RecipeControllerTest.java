@@ -1,22 +1,12 @@
 package com.recipe.recipe;
 
-import com.recipe.ControllerTest;
+import com.recipe.TestSet;
 import com.recipe.domain.*;
-import com.recipe.member.MemberRepository;
 import com.recipe.member.WithMockCutstomUser;
-import com.recipe.recipe.repository.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -26,9 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WithMockCutstomUser
 @Transactional
-@AutoConfigureMockMvc
 @SpringBootTest
-class RecipeControllerTest extends ControllerTest {
+class RecipeControllerTest extends TestSet {
 
     @DisplayName("자신의 게시물 조회하기 - 조회수 안 오름")
     @Test
