@@ -34,7 +34,6 @@ public class MemberService implements UserDetailsService {
     private final AppProperty appProperty;
     private final TemplateEngine templateEngine;
 
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member loginMember =
@@ -124,7 +123,6 @@ public class MemberService implements UserDetailsService {
 
     public void changePassword(ChangePasswordRequest changePasswordRequest, Member member) {
         member.changePassword(encoded(changePasswordRequest.getPassword()));
-
         memberRepository.save(member);
     }
 

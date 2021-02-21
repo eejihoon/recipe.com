@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 public class LikeApiControllerTest extends ControllerTest {
+    private final String LIKE_URL = "/like";
 
     @DisplayName("좋아요 카운트")
     @WithMockCutstomUser

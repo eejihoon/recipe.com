@@ -1,5 +1,6 @@
 package com.recipe.member;
 
+import com.recipe.ControllerTest;
 import com.recipe.domain.Member;
 import com.recipe.domain.Role;
 import org.junit.jupiter.api.Assertions;
@@ -20,15 +21,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 
 @Transactional
-@AutoConfigureMockMvc
 @SpringBootTest
-public class MemberControllerTest {
-    @Autowired MockMvc mockMvc;
-    @Autowired MemberRepository memberRepository;
+public class MemberControllerTest extends ControllerTest {
 
-    @Test
     @DisplayName("비밀번호없이 로그인 하기")
+    @Test
     void testWithoutPassword() throws Exception {
+        //given
+        //@WithMockUser애노테이션을 사용하면 로그인 상태가 되어버리니 새로운 Member객체를 생성해서 대체.
         Member member = memberRepository.save(Member.builder()
                 .email("test@test.com")
                 .password("12345678")
@@ -38,12 +38,14 @@ public class MemberControllerTest {
 
         member.setCertificationNumber();
 
+        //when - then
         mockMvc.perform(get("/member/withoutPasswordLogin")
-        .queryParam("certification", member.getCertification())
-        .queryParam("email", member.getEmail()))
+                .queryParam("certification", member.getCertification())
+                .queryParam("email", member.getEmail()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(authenticated().withUsername(member.getEmail()));
     }
+
 
     @DisplayName("이메일 인증 테스트")
     @WithMockCutstomUser
