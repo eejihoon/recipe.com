@@ -1,5 +1,6 @@
 package com.recipe.recipe;
 
+import com.recipe.ControllerTest;
 import com.recipe.domain.Ingredient;
 import com.recipe.domain.Member;
 import com.recipe.domain.Recipe;
@@ -20,78 +21,58 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class RecipeQueryRepositoryTest {
+class RecipeQueryRepositoryTest extends ControllerTest {
     @Autowired RecipeQueryRepository recipeQueryRepository;
-    @Autowired RecipeRepository recipeRepository;
-    @Autowired MemberRepository memberRepository;
-
-    @BeforeEach
-    void addRecipe() {
-        for (int i = 0; i < 100; i++) {
-            Set<Ingredient> ingredients = new HashSet();
-            ingredients.add(new Ingredient("ingr1"));
-            ingredients.add(new Ingredient("ingr2"));
-            ingredients.add(new Ingredient("ingr3"));
-
-            Recipe recipe = Recipe.builder()
-                    .thumbnail("test")
-                    .title("recipe-title!!!!!")
-                    .fullDescription("test")
-                    .description("test")
-                    .ingredients(ingredients)
-                    .cookingTime(11)
-                    .build();
-
-            recipeRepository.save(recipe);
-        }
-    }
 
     @DisplayName("내가 등록한 레시피 조회")
     @WithMockCutstomUser
     @Test
     void testFindByMember() {
+        //given
         Pageable of = PageRequest.of(0, 10, Sort.by("id").descending());
         Member member = memberRepository.findAll().get(0);
 
         Page<RecipeDto> byMember = recipeQueryRepository.findByMember(member, of);
-
         assertTrue(byMember.isEmpty());
 
-        Set<Ingredient> ingredients = new HashSet();
-        ingredients.add(new Ingredient("ingr1"));
-        ingredients.add(new Ingredient("ingr2"));
-        ingredients.add(new Ingredient("ingr3"));
+        //when
+        addRecipeDummies();
 
-        Recipe recipe = Recipe.builder()
-                .thumbnail("test")
-                .title("recipe-title!!!!!")
-                .fullDescription("test")
-                .description("test")
-                .ingredients(ingredients)
-                .cookingTime(11)
-                .build();
-
-        recipe.setMember(member);
-
-        recipeRepository.save(recipe);
-
+        //then
         Page<RecipeDto> registeredMember = recipeQueryRepository.findByMember(member, of);
-
         assertFalse(registeredMember.isEmpty());
+        assertEquals(registeredMember.getSize(), 10);
+        assertEquals(registeredMember.getContent().size(), 5);
     }
 
+    @DisplayName("레시피 정보와 Like Count까지 조인해서 조회 - keyword가 null일 때 전체 조회")
+    @WithMockCutstomUser
     @Test
     void testFindByRecipeTitleWithLikeCount () {
-        Pageable of = PageRequest.of(0, 10, Sort.by("id").descending());
-        Page<RecipeDto> byRecipeTitleWithLikeCount = recipeQueryRepository.findAllRecipeAndSearchWithPaging(null, of);
+        //given
+        addRecipeDummies();
 
-        for (RecipeDto recipeDto : byRecipeTitleWithLikeCount) {
-            System.out.println("recipeDto : " + recipeDto);
+        //when
+        Pageable of = PageRequest.of(0, 10, Sort.by("id").descending());
+
+        //then
+        Page<RecipeDto> byRecipeTitleWithLikeCount =
+                recipeQueryRepository
+                        .findAllRecipeAndSearchWithPaging(null, of);
+
+        assertFalse(byRecipeTitleWithLikeCount.isEmpty());
+        assertEquals(byRecipeTitleWithLikeCount.getTotalPages(), 1);
+
+    }
+
+    private void addRecipeDummies() {
+        for (int i = 0; i < 5; i++) {
+            //레시피 5개 등록
+            addRecipe();
         }
     }
 }

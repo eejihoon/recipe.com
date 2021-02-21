@@ -1,4 +1,4 @@
-package com.recipe.recipe;
+package com.recipe.like;
 
 import com.recipe.domain.Ingredient;
 import com.recipe.domain.Like;

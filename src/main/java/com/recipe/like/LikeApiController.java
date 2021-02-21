@@ -1,4 +1,4 @@
-package com.recipe.recipe;
+package com.recipe.like;
 
 import com.recipe.member.MemberAdapter;
 import io.swagger.annotations.ApiOperation;

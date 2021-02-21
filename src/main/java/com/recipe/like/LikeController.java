@@ -1,6 +1,7 @@
-package com.recipe.recipe;
+package com.recipe.like;
 
 import com.recipe.member.MemberAdapter;
+import com.recipe.recipe.RecipeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

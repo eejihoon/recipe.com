@@ -1,4 +1,4 @@
-package com.recipe.recipe;
+package com.recipe.like;
 
 import com.recipe.domain.Ingredient;
 import com.recipe.domain.Like;
@@ -7,6 +7,7 @@ import com.recipe.domain.Recipe;
 import com.recipe.member.LikeRepository;
 import com.recipe.member.MemberRepository;
 import com.recipe.member.WithMockCutstomUser;
+import com.recipe.recipe.RecipeDto;
 import com.recipe.recipe.repository.RecipeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

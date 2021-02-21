@@ -1,5 +1,6 @@
 package com.recipe.recipe;
 
+import com.recipe.ControllerTest;
 import com.recipe.domain.*;
 import com.recipe.member.MemberRepository;
 import com.recipe.member.WithMockCutstomUser;
@@ -27,18 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
-class RecipeControllerTest {
-    @Autowired MockMvc mockMvc;
-    @Autowired RecipeRepository recipeRepository;
-    @Autowired IngredientTypeRepository ingredientTypeRepository;
-    @Autowired IngredientRepository ingredientRepository;
-    @Autowired ObjectMapper objectMapper;
-    @Autowired MemberRepository memberRepository;
-
-    @BeforeEach
-    void deleteAll() {
-        recipeRepository.deleteAll();
-    }
+class RecipeControllerTest extends ControllerTest {
 
     @DisplayName("자신의 게시물 조회하기 - 조회수 안 오름")
     @Test
@@ -87,22 +77,5 @@ class RecipeControllerTest {
                .andExpect(status().isOk())
                .andExpect(model().attributeExists("recipes"));
     }
-
-    private Recipe addRecipe() {
-        Recipe recipe = Recipe.builder()
-                .thumbnail("test")
-                .title("test-recipe")
-                .fullDescription("test")
-                .description("test")
-                .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))
-                .cookingTime(11)
-                .member(memberRepository.findAll().get(0))
-                .build();
-
-        Recipe save = recipeRepository.save(recipe);
-
-        return save;
-    }
-
 
 }

@@ -1,4 +1,4 @@
-package com.recipe.recipe;
+package com.recipe.like;
 
 import com.recipe.domain.Member;
 import com.recipe.domain.QLike;
@@ -7,6 +7,7 @@ import com.recipe.domain.QRecipe;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.recipe.recipe.RecipeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
