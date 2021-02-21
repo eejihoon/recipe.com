@@ -1,19 +1,16 @@
 package com.recipe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.recipe.domain.Ingredient;
-import com.recipe.domain.Recipe;
-import com.recipe.member.LikeRepository;
-import com.recipe.member.MemberRepository;
-import com.recipe.recipe.RecipeSaveForm;
+import com.recipe.recipe.domain.Ingredient;
+import com.recipe.recipe.domain.Recipe;
+import com.recipe.like.repository.LikeRepository;
+import com.recipe.member.repository.MemberRepository;
+import com.recipe.recipe.dto.RecipeSaveForm;
 import com.recipe.recipe.repository.IngredientRepository;
 import com.recipe.recipe.repository.RecipeRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;

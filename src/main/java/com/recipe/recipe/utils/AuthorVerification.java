@@ -1,6 +1,6 @@
 package com.recipe.recipe.utils;
 
-import com.recipe.domain.Member;
+import com.recipe.member.domain.Member;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.AccessDeniedException;

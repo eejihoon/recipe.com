@@ -1,9 +1,9 @@
 package com.recipe.like;
 
 import com.recipe.TestSet;
-import com.recipe.domain.Like;
-import com.recipe.domain.Member;
-import com.recipe.domain.Recipe;
+import com.recipe.like.domain.Like;
+import com.recipe.member.domain.Member;
+import com.recipe.recipe.domain.Recipe;
 import com.recipe.member.WithMockCutstomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

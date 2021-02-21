@@ -1,11 +1,12 @@
 package com.recipe.like;
 
 import com.recipe.TestSet;
-import com.recipe.domain.Like;
-import com.recipe.domain.Member;
-import com.recipe.domain.Recipe;
+import com.recipe.like.domain.Like;
+import com.recipe.member.domain.Member;
+import com.recipe.recipe.domain.Recipe;
+import com.recipe.like.repository.LikeQueryRepository;
 import com.recipe.member.WithMockCutstomUser;
-import com.recipe.recipe.RecipeDto;
+import com.recipe.recipe.dto.RecipeDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @SpringBootTest
 class LikeQueryRepositoryTest extends TestSet {
-    @Autowired LikeQueryRepository likeQueryRepository;
+    @Autowired
+    LikeQueryRepository likeQueryRepository;
 
     @Test
     @WithMockCutstomUser

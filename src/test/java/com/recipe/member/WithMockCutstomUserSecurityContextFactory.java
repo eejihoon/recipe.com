@@ -1,5 +1,7 @@
 package com.recipe.member;
 
+import com.recipe.member.dto.SignupRequest;
+import com.recipe.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
