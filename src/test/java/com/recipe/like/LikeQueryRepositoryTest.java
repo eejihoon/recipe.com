@@ -1,5 +1,6 @@
 package com.recipe.like;
 
+import com.recipe.ControllerTest;
 import com.recipe.domain.Ingredient;
 import com.recipe.domain.Like;
 import com.recipe.domain.Member;
@@ -24,27 +25,25 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
-@WithMockCutstomUser
 @SpringBootTest
-class LikeQueryRepositoryTest {
+class LikeQueryRepositoryTest extends ControllerTest {
     @Autowired LikeQueryRepository likeQueryRepository;
-    @Autowired RecipeRepository recipeRepository;
-    @Autowired MemberRepository memberRepository;
-    @Autowired LikeRepository likeRepository;
 
     @Test
+    @WithMockCutstomUser
     void testFindScrappedRecipe() {
+        //given
         Member member = memberRepository.findAll().get(0);
 
-        addRecipe(member);
+        addRecipe();
         addLike(member);
 
         Pageable pageable = PageRequest.of(0, 10);
 
+        //when
         Page<RecipeDto> likedRecipe = likeQueryRepository.findLikedRecipe(member, pageable);
 
-        likedRecipe.getContent().forEach(recipeDto -> System.out.println(recipeDto));
-
+        //then
         assertTrue(likedRecipe.getContent().size() > 0);
     }
 
@@ -55,26 +54,5 @@ class LikeQueryRepositoryTest {
             likeRepository.save(new Like(recipe, member));
         }
     }
-
-    private void addRecipe(Member member) {
-        for (int i = 0; i < 10; i++) {
-            Set<Ingredient> ingredients = new HashSet();
-            ingredients.add(new Ingredient("ingr1"));
-            ingredients.add(new Ingredient("ingr2"));
-            ingredients.add(new Ingredient("ingr3"));
-
-            Recipe recipe = Recipe.builder()
-                    .thumbnail("test")
-                    .title("recipe-title!!!!!")
-                    .fullDescription("test")
-                    .description("test")
-                    .ingredients(ingredients)
-                    .cookingTime(11)
-                    .member(member)
-                    .build();
-            recipeRepository.save(recipe);
-        }
-    }
-
 
 }

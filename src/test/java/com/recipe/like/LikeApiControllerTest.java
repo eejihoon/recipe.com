@@ -1,5 +1,6 @@
 package com.recipe.like;
 
+import com.recipe.ControllerTest;
 import com.recipe.domain.Ingredient;
 import com.recipe.domain.Like;
 import com.recipe.domain.Member;
@@ -27,20 +28,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Transactional
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LikeApiControllerTest {
-    @Autowired MemberRepository memberRepository;
-    @Autowired LikeRepository likeRepository;
-    @Autowired MockMvc mockMvc;
-    @Autowired RecipeRepository recipeRepository;
-    @Autowired TestRestTemplate restTemplate;
+@SpringBootTest
+public class LikeApiControllerTest extends ControllerTest {
 
     @DisplayName("좋아요 카운트")
     @WithMockCutstomUser
     @Test
     void testGetCount() throws Exception {
+        //given
         Recipe recipe = addRecipe();
-        mockMvc.perform(get("/api/like/"+recipe.getId()))
+
+        //when
+        mockMvc.perform(get(API_URL+LIKE_URL+"/"+recipe.getId()))
                 .andExpect(status().isOk());
     }
 
@@ -48,7 +47,8 @@ public class LikeApiControllerTest {
     @WithMockCutstomUser
     @Test
     void testCancelLike() throws Exception {
-        Member member = memberRepository.findByEmail("test@email.com").orElseThrow();
+        //given
+        Member member = memberRepository.findByEmail(USER_EMAIL).orElseThrow();
         Recipe recipe = addRecipe();
         likeRepository.save(new Like(recipe, member));
 
@@ -57,25 +57,29 @@ public class LikeApiControllerTest {
         assertNotNull(allLike.get(0).getId());
         assertTrue(allLike.size() > 0);
 
-        mockMvc.perform(delete("/api/like/"+recipe.getId()))
+        //when
+        mockMvc.perform(delete(API_URL+LIKE_URL+"/"+recipe.getId()))
                 .andExpect(status().isOk());
 
+        //then
         List<Like> likes = likeRepository.findAll();
-
         assertTrue(likes.isEmpty());
         assertTrue(likes.size() == 0);
 
     }
 
-    @DisplayName("좋아요 테스트")
+    @DisplayName("좋아요 등록 테스트")
     @WithMockCutstomUser
     @Test
     void testCreateLike() throws Exception {
+        //given
         Recipe recipe = addRecipe();
 
-        mockMvc.perform(post("/api/like/"+recipe.getId()))
+        //when
+        mockMvc.perform(post(API_URL+LIKE_URL+"/"+recipe.getId()))
                 .andExpect(status().isOk());
 
+        //then
         Like like = likeRepository.findAll().get(0);
 
         assertNotNull(like);
@@ -87,34 +91,21 @@ public class LikeApiControllerTest {
     @WithMockCutstomUser
     @Test
     void testDuplicateLike() throws Exception {
+        //given
         Recipe recipe = addRecipe();
 
-        mockMvc.perform(post("/api/like/"+recipe.getId()))
+        //when
+        mockMvc.perform(post(API_URL+LIKE_URL+"/"+recipe.getId()))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(post("/api/like/"+recipe.getId()))
+        mockMvc.perform(post(API_URL+LIKE_URL+"/"+recipe.getId()))
                 .andExpect(status().isBadRequest());
 
+        //then
         Like like = likeRepository.findAll().get(0);
 
         assertNotNull(like);
         assertNotNull(like.getMember().getId());
         assertNotNull(like.getRecipe().getId());
-    }
-
-    private Recipe addRecipe() {
-        Recipe recipe = Recipe.builder()
-                .thumbnail("test")
-                .title("test-recipe")
-                .fullDescription("test")
-                .description("test")
-                .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))
-                .cookingTime(11)
-                .member(memberRepository.findAll().get(0))
-                .build();
-
-        Recipe save = recipeRepository.save(recipe);
-
-        return save;
     }
 }

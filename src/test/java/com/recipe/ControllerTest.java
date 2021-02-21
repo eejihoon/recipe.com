@@ -7,9 +7,7 @@ import com.recipe.member.LikeRepository;
 import com.recipe.member.MemberRepository;
 import com.recipe.recipe.RecipeSaveForm;
 import com.recipe.recipe.repository.IngredientRepository;
-import com.recipe.recipe.repository.IngredientTypeRepository;
 import com.recipe.recipe.repository.RecipeRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +27,8 @@ public class ControllerTest {
     @Autowired protected LikeRepository likeRepository;
 
     protected final String USER_EMAIL = "test@email.com";
+    protected final String API_URL = "/api";
+    protected final String LIKE_URL = "/like";
 
     protected RecipeSaveForm getRecipeSaveForm() {
         RecipeSaveForm recipeSaveForm = RecipeSaveForm.builder()
