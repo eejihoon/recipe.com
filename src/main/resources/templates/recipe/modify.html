@@ -91,7 +91,7 @@
     </div>
 </div>
 <footer th:replace="fragments.html :: footer"></footer>
-<th:block th:replace="fragments.html :: tagify('/recipe/'+${recipe.id}, 'PUT')"></th:block>
+<th:block th:replace="fragments.html :: tagify('/api/recipe/'+${recipe.id}, 'PUT')"></th:block>
 <th:block th:replace="fragments.html :: summernote"></th:block>
 <script th:inline="javascript">
     const btnHandle = {
@@ -106,7 +106,7 @@
                 const xhr = new XMLHttpRequest();
                 const removeTargetId = document.getElementById('id').innerText;
 
-                xhr.open('delete', '/recipe/' + removeTargetId);
+                xhr.open('delete', '/api/recipe/' + removeTargetId);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send();
 

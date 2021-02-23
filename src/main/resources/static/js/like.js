@@ -18,7 +18,7 @@ const eventHandler = {
 
         let recipeId = document.getElementById('id').innerText;
 
-        xhr.open('POST', '/like/'+recipeId);
+        xhr.open('POST', '/api/like/'+recipeId);
         xhr.send();
 
         const _this = this;
@@ -38,7 +38,7 @@ const eventHandler = {
 
         let recipeId = document.getElementById('id').innerText;
 
-        xhr.open('DELETE', '/like/' + recipeId);
+        xhr.open('DELETE', '/api/like/' + recipeId);
         xhr.send();
 
         const _this = this;
@@ -61,7 +61,7 @@ const eventHandler = {
 
         let recipeId = document.getElementById('id').innerText;
 
-        xhr.open('GET', '/like/'+recipeId);
+        xhr.open('GET', '/api/like/'+recipeId);
         xhr.send();
 
         xhr.onload = function () {
