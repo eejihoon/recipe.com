@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Transactional
 @RequiredArgsConstructor
@@ -44,15 +45,15 @@ public class LikeService {
         likeRepository.delete(like);
     }
 
-    public List<String> count(Long recipeId, MemberAdapter memberAdapter) {
+    public List<String> count(Long recipeId, Member loginMember) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
 
         Integer recipeLikeCount = likeRepository.countByRecipe(recipe).orElse(0);
 
         List<String> resultData = new ArrayList<>(Arrays.asList(String.valueOf(recipeLikeCount)));
 
-        if (memberAdapter != null) {
-            boolean notAlreadyLike = isNotAlreadyLike(memberAdapter.getMember(), recipe);
+        if (Objects.nonNull(loginMember)) {
+            boolean notAlreadyLike = isNotAlreadyLike(loginMember, recipe);
             resultData.add(String.valueOf(notAlreadyLike));
             return resultData;
         }

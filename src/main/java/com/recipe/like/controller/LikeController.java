@@ -1,7 +1,9 @@
 package com.recipe.like.controller;
 
+import com.recipe.config.security.LoginMember;
 import com.recipe.like.repository.LikeQueryRepository;
 import com.recipe.like.service.LikeService;
+import com.recipe.member.domain.Member;
 import com.recipe.member.utils.MemberAdapter;
 import com.recipe.recipe.dto.RecipeDto;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +16,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Controller
 public class LikeController {
-    private final LikeService likeService;
     private final LikeQueryRepository likeQueryRepository;
 
-
     @GetMapping("/scrap")
-    public String viewScrappedRecipe(@AuthenticationPrincipal MemberAdapter memberAdapter,
+    public String viewScrappedRecipe(@LoginMember Member loginMember,
                                      @PageableDefault(size = 9, value = 9, sort = "id", direction = Sort.Direction.DESC) Pageable page,
                                      Model model) {
-        if (memberAdapter != null) {
-            Page<RecipeDto> likedRecipe = likeQueryRepository.findLikedRecipe(memberAdapter.getMember(), page);
+        if (Objects.nonNull(loginMember)) {
+            Page<RecipeDto> likedRecipe = likeQueryRepository.findLikedRecipe(loginMember, page);
             model.addAttribute("recipes", likedRecipe);
             model.addAttribute("maxPage" , 9);
         }

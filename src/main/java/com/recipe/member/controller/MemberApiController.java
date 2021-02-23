@@ -1,8 +1,10 @@
 package com.recipe.member.controller;
 
+import com.recipe.member.domain.Member;
 import com.recipe.member.dto.ChangePasswordRequest;
 import com.recipe.member.dto.SignupRequest;
 import com.recipe.member.service.MemberService;
+import com.recipe.config.security.LoginMember;
 import com.recipe.member.utils.MemberAdapter;
 import com.recipe.member.vaildation.ChangePasswordRequestValidator;
 import com.recipe.member.vaildation.SignupRequestValidator;
@@ -58,8 +60,8 @@ public class MemberApiController {
 
     @ApiOperation(value = "회원가입 인증 메일 재전송")
     @PutMapping(API+"/re-sendmail")
-    public ResponseEntity<String> reSendMail(@AuthenticationPrincipal MemberAdapter memberAdapter) {
-        memberService.sendMail(memberAdapter.getMember());
+    public ResponseEntity<String> reSendMail(@LoginMember Member loginMember) {
+        memberService.sendMail(loginMember);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -79,7 +81,7 @@ public class MemberApiController {
 
     @ApiOperation(value = "비밀번호 변경")
     @PutMapping(MEMBER_URL)
-    public ResponseEntity<String> changePassword(@AuthenticationPrincipal MemberAdapter memberAdapter,
+    public ResponseEntity<String> changePassword(@LoginMember Member loginMember,
                                                  @RequestBody @Valid ChangePasswordRequest changePasswordRequest,
                                                  Errors errors) {
         if (errors.hasErrors()) {
@@ -87,20 +89,20 @@ public class MemberApiController {
             return new ResponseEntity<>(errors.getFieldError().getField(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        memberService.changePassword(changePasswordRequest, memberAdapter.getMember());
+        memberService.changePassword(changePasswordRequest, loginMember);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "회원탈퇴")
     @DeleteMapping(MEMBER_URL)
-    public ResponseEntity<String> disableMember(@AuthenticationPrincipal MemberAdapter memberAdapter,
+    public ResponseEntity<String> disableMember(@LoginMember Member loginMember,
                                                 @RequestBody String password) {
 
         boolean result = false;
 
-        if (Objects.nonNull(memberAdapter)) {
-            result = memberService.disableMember(memberAdapter.getMember(), password);
+        if (Objects.nonNull(loginMember)) {
+            result = memberService.disableMember(loginMember, password);
         }
 
         return result ?

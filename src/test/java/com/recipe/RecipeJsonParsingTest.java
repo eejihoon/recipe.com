@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Objects;
 
 public class RecipeJsonParsingTest {
-    @Test
+    //@Test
     void testReadRecipeApi() throws JsonProcessingException {
         TestRestTemplate testRestTemplate = new TestRestTemplate();
 

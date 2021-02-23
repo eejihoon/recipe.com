@@ -1,5 +1,7 @@
 package com.recipe.member.controller;
 
+import com.recipe.config.security.LoginMember;
+import com.recipe.member.domain.Member;
 import com.recipe.member.utils.MemberAdapter;
 import com.recipe.member.service.MemberService;
 import com.recipe.member.dto.SignupRequest;
@@ -39,10 +41,10 @@ public class MemberController {
 
     @GetMapping("/member/auth/{key}")
     public String authenticationKeyCheck(@PathVariable String key,
-                                         @AuthenticationPrincipal MemberAdapter memberAdapter,
+                                         @LoginMember Member loginMember,
                                          RedirectAttributes redirect) {
-        if (Objects.nonNull(memberAdapter)) {
-            boolean result = memberService.checkAuthenticationKey(key, memberAdapter.getMember());
+        if (Objects.nonNull(loginMember)) {
+            boolean result = memberService.checkAuthenticationKey(key, loginMember);
             if (result == false) {
                 redirect.addFlashAttribute("error", "잘못된 인증입니다.");
             } else {

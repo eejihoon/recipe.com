@@ -20,15 +20,6 @@ public class FileUploadApiController {
 
     private final UploadService uploadService;
 
-    @Deprecated
-    @GetMapping("/file-upload")
-    public String form () {
-
-        log.info("file-upload form");
-
-        return "file-upload";
-    }
-
     @ApiOperation(value = "파일 등록")
     @PostMapping("/api/file-upload")
     public ResponseEntity<HttpEntity> uploadPost(@RequestPart List<MultipartFile> files) throws IOException {

@@ -4,16 +4,17 @@ import com.recipe.member.domain.Member;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Objects;
 
 /*
 *   작업을 요청한 사용자와 게시물 작성자가 같은 사용자인지 판별하는 객체
 * */
 @Component
 public class AuthorVerification {
-    public void isAuthor(Member currentMember, Member Author) throws AccessDeniedException {
-        if (currentMember.getEmail().equals(Author.getEmail()))
-            return;
+    public boolean isAuthor(Member loginMember, Member Author) {
+        if (Objects.nonNull(loginMember))
+            return loginMember.getEmail().equals(Author.getEmail());
 
-        throw new AccessDeniedException("권한이 없는 사용자가 접근했습니다.");
+        return false;
     }
 }

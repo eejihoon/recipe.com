@@ -1,18 +1,17 @@
 package com.recipe.recipe.controller;
 
-import com.recipe.member.utils.MemberAdapter;
+import com.recipe.config.security.LoginMember;
+import com.recipe.member.domain.Member;
 import com.recipe.recipe.dto.RecipeDto;
 import com.recipe.recipe.repository.RecipeQueryRepository;
 import com.recipe.recipe.dto.RecipeSaveForm;
 import com.recipe.recipe.service.RecipeService;
-import com.recipe.recipe.utils.AuthorVerification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,22 +26,21 @@ import java.util.Objects;
 public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeQueryRepository recipeQueryRepository;
-    private final AuthorVerification authorVerification;
 
     @GetMapping("/")
     public String index(@PageableDefault(size = 9, value = 9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         String keyword,
                         Model model,
-                        @AuthenticationPrincipal MemberAdapter memberAdapter) {
+                        @LoginMember Member loginMember) {
         log.info("keyword       : {} ", keyword);
         log.info("pageable      : {}", pageable);
-        log.info("memberAdapter : {} ", memberAdapter);
+        log.info("memberAdapter : {} ", loginMember);
 
         /*
         *   이메일 인증 안된 사용자에게 알림 띄워주기 위함
         * */
-        if (Objects.nonNull(memberAdapter))
-            model.addAttribute("member", memberAdapter.getMember());
+        if (Objects.nonNull(loginMember))
+            model.addAttribute("member", loginMember);
 
         model.addAttribute("recipes",
                 recipeQueryRepository.findAllRecipeAndSearchWithPaging(keyword, pageable));
@@ -53,47 +51,44 @@ public class RecipeController {
 
     @GetMapping("/recipe")
     public String findRecipe(Long id,
-                          @AuthenticationPrincipal MemberAdapter memberAdapter,
-                          Model model) {
+                             @LoginMember Member loginMember,
+                             Model model) throws AccessDeniedException {
         log.info("id : {}", id);
 
-        model.addAttribute("recipe", recipeService.findRecipe(id, memberAdapter));
+        model.addAttribute("recipe", recipeService.findRecipe(id, loginMember));
 
         return "recipe/recipe";
     }
 
     @GetMapping("/register")
-    public String save(@AuthenticationPrincipal MemberAdapter memberAdapter, Model model) {
-        if (Objects.nonNull(memberAdapter)) {
-            model.addAttribute("member", memberAdapter.getMember());
-        }
-
+    public String save(@LoginMember Member loginMember, Model model) {
+        model.addAttribute("member", loginMember);
         return "recipe/register";
     }
 
     @GetMapping("/modify/{id}")
     public String modifiy(@PathVariable Long id,
-                          @AuthenticationPrincipal MemberAdapter memberAdapter,
+                          @LoginMember Member loginMember,
                           Model model) throws AccessDeniedException {
         log.info("id : {}" , id);
 
-        RecipeSaveForm recipeForm = recipeService.getRecipeForm(id, memberAdapter.getMember());
+        RecipeSaveForm recipeForm = recipeService.getRecipeModifyForm(id, loginMember);
 
         model.addAttribute("recipe", recipeForm);
-        model.addAttribute("member", memberAdapter.getMember());
+        model.addAttribute("member", loginMember);
 
         return "recipe/modify";
     }
 
     //내가 쓴 게시물
     @GetMapping("/myrecipe")
-    public String mypost(@AuthenticationPrincipal MemberAdapter memberAdapter,
+    public String mypost(@LoginMember Member loginMember,
                          @PageableDefault(size = 9, value = 9, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                          Model model) {
-        log.info("memberAdapter : {} ", memberAdapter);
+        log.info("memberAdapter : {} ", loginMember);
 
-        if (Objects.nonNull(memberAdapter)) {
-            Page<RecipeDto> byMember = recipeQueryRepository.findByMember(memberAdapter.getMember(), pageable);
+        if (Objects.nonNull(loginMember)) {
+            Page<RecipeDto> byMember = recipeQueryRepository.findByMember(loginMember, pageable);
             model.addAttribute("recipes", byMember);
             model.addAttribute("maxPage", 9);
         }

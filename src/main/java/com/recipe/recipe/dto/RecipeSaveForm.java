@@ -3,24 +3,31 @@ package com.recipe.recipe.dto;
 import com.recipe.member.domain.Member;
 import com.recipe.recipe.domain.Ingredient;
 import com.recipe.recipe.domain.Recipe;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data @NoArgsConstructor
+@Getter @Setter
 public class RecipeSaveForm {
     private Long id;
     private String thumbnail;
+    @NotBlank
     private String title;
+
     private String description;
+
+    @NotBlank
     private String fullDescription;
+
+    @NotBlank
     private String ingredients;
+
     private Integer cookingTime;
+
     private Member member;
 
     @Builder

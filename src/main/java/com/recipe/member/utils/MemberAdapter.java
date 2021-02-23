@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.User;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 public class MemberAdapter extends User implements Serializable {

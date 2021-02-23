@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -21,6 +23,7 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final AuthorVerification authorVerification;
 
+    //등록
     public Long save(RecipeSaveForm recipeSaveForm, Member member) {
         recipeSaveForm.setMember(member);
         Recipe saveRecipe = recipeRepository.save(recipeSaveForm.toEntity());
@@ -28,6 +31,7 @@ public class RecipeService {
         return saveRecipe.getId();
     }
 
+    //수정
     public void update(RecipeSaveForm recipeSaveForm, Long updateTargetId, Member currentMember) throws AccessDeniedException {
         Recipe recipe = recipeRepository.findWithAllById(updateTargetId);
 
@@ -36,11 +40,12 @@ public class RecipeService {
         recipe.update(recipeSaveForm.toEntity());
     }
 
-    public RecipeSaveForm getRecipeForm(Long id, Member currentMember) throws AccessDeniedException {
+    //수정 폼
+    public RecipeSaveForm getRecipeModifyForm(Long id, Member loginMember) throws AccessDeniedException {
         Recipe findedRecipe = recipeRepository.findWithAllById(id);
 
         //접근한 사용자가 작성자가 맞는 지 체크
-        authorVerification.isAuthor(currentMember, findedRecipe.getMember());
+        authorVerification.isAuthor(loginMember, findedRecipe.getMember());
         return RecipeSaveForm.builder()
                 .id(id)
                 .thumbnail(findedRecipe.getThumbnail())
@@ -62,18 +67,18 @@ public class RecipeService {
         recipeRepository.delete(removeTarget);
     }
 
-    public Recipe findRecipe(Long id, MemberAdapter memberAdapter) {
-        Recipe findedRecipe = recipeRepository.findWithAllById(id);
+    public Recipe findRecipe(Long id, Member loginMember) throws AccessDeniedException {
+        Recipe findByRecipe = recipeRepository.findWithAllById(id);
+        viewCount(findByRecipe, loginMember);
 
-        if (memberAdapter != null) {
-            boolean isNotMine = !memberAdapter.getMember().getEmail().equals(findedRecipe.getMember().getEmail());
-            if (isNotMine) {
-                findedRecipe.viewCount();
-            }
-        } else {
-            findedRecipe.viewCount();
-        }
+        return findByRecipe;
+    }
 
-        return findedRecipe;
+    private void viewCount(Recipe recipe, Member loginMember) throws AccessDeniedException {
+        //내가 쓴 게시물이라면 조회수 증가하지 않는다.
+        if (authorVerification
+                .isAuthor(loginMember, recipe.getMember())) return;
+
+        recipe.viewCount();
     }
 }

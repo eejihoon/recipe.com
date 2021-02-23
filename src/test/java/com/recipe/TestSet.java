@@ -1,15 +1,16 @@
 package com.recipe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.recipe.member.domain.Member;
 import com.recipe.recipe.domain.Ingredient;
 import com.recipe.recipe.domain.Recipe;
 import com.recipe.like.repository.LikeRepository;
 import com.recipe.member.repository.MemberRepository;
 import com.recipe.recipe.dto.RecipeSaveForm;
-import com.recipe.recipe.repository.IngredientRepository;
 import com.recipe.recipe.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -19,7 +20,6 @@ import java.util.HashSet;
 public class TestSet {
     @Autowired protected MockMvc mockMvc;
     @Autowired protected RecipeRepository recipeRepository;
-    @Autowired protected IngredientRepository ingredientRepository;
     @Autowired protected ObjectMapper objectMapper;
     @Autowired protected MemberRepository memberRepository;
     @Autowired protected LikeRepository likeRepository;
@@ -49,12 +49,17 @@ public class TestSet {
                 .description("test")
                 .ingredients(new HashSet<Ingredient>(Arrays.asList(new Ingredient("a"), new Ingredient("b"), new Ingredient("c"))))
                 .cookingTime(11)
-                .member(memberRepository.findAll().get(0))
+                .member(memberRepository.findByEmail(USER_EMAIL).orElseThrow())
                 .build();
 
         Recipe save = recipeRepository.save(recipe);
 
         return save;
+    }
+
+    protected Member getMember() {
+        return memberRepository.findByEmail(USER_EMAIL)
+                .orElseThrow(() -> new UsernameNotFoundException(USER_EMAIL + "은 존재하지 않는 회원입니다."));
     }
 
 }

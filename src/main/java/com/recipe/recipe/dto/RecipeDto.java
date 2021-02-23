@@ -7,7 +7,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor @Getter @Setter @ToString
+@AllArgsConstructor @Getter @Setter
 public class RecipeDto {
     private Long id;
     private String title;
