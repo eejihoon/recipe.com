@@ -23,7 +23,11 @@ public class LikeApiController {
 
     @ApiOperation(value = "좋아요 카운트")
     @GetMapping("/like/{recipeId}")
-    public ResponseEntity<List<String>> getLikeCount(@PathVariable Long recipeId ,@LoginMember Member loginMember) {
+    public ResponseEntity<List<String>> getLikeCount(@PathVariable Long recipeId,
+                                                     @LoginMember Member loginMember) {
+        log.info("recipe-id : {} ", recipeId);
+        log.info("loginMember : {} ", loginMember);
+
         List<String> resultData = likeService.count(recipeId, loginMember);
 
         log.info("likeCount : {} ", resultData);

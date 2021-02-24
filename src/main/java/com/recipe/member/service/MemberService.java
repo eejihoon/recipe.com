@@ -1,10 +1,6 @@
 package com.recipe.member.service;
 
-import com.recipe.config.AppProperty;
 import com.recipe.member.domain.Member;
-import com.recipe.member.domain.Role;
-import com.recipe.mail.EmailMessage;
-import com.recipe.mail.EmailService;
 import com.recipe.member.utils.MemberAdapter;
 import com.recipe.member.dto.ChangePasswordRequest;
 import com.recipe.member.dto.SignupRequest;
@@ -21,11 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional
@@ -33,59 +26,34 @@ import java.util.UUID;
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
-    private final AppProperty appProperty;
-    private final TemplateEngine templateEngine;
+    private final MemberMailService memberMailService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member loginMember =
-                memberRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("존재하지 않는 계정입니다."));
+                memberRepository.findByEmail(email)
+                        .orElseThrow(()->new UsernameNotFoundException("존재하지 않는 계정입니다."));
 
         checkDisableMember(loginMember);
 
         return new MemberAdapter(loginMember);
     }
 
-    /*  회원가입 절차
-    *   1.  Member 객체로 초기화
-    *   2.  이메일 전송
-    *   3.  save
-    *   4.  로그인
-    *   5.  닉네임 반환
+    /*  signup process
+    *   1.  SignupRequest to Member
+    *   2.  send mail
+    *   3.  member save
+    *   4.  login
+    *   5.  return nickname
     * */
     public String signup(SignupRequest signupRequest) {
-        Member member = Member.builder()
-                .email(signupRequest.getEmail())
-                .nickname(signupRequest.getNickname())
-                .password(encoded(signupRequest.getPassword()))
-                .authenticationKey(UUID.randomUUID().toString())
-                .role(Role.USER)
-                .build();
+        Member member = signupRequest.toEntity();
 
-        sendMail(member);
+        memberMailService.sendMail(member);
 
-        Member newMember = memberRepository.save(member);
+        login(member);
 
-        login(newMember);
-
-        return newMember.getNickname();
-    }
-
-    public void loginSendMail(String email) throws UsernameNotFoundException, DisabledException{
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
-
-        checkDisableMember(member);
-
-        member.setCertificationNumber();
-
-        Context context = getContext(member,
-                "/member/withoutPasswordLogin?certification="+member.getCertification()+"&email="+member.getEmail());
-        String message = templateEngine.process("mail/withoutPasswordLogin", context);
-        EmailMessage emailMessage = getEmailMessage(member, message);
-
-        emailService.sendEmail(emailMessage);
+        return member.getNickname();
     }
 
     private void checkDisableMember(Member member) {
@@ -94,20 +62,9 @@ public class MemberService implements UserDetailsService {
         }
     }
 
-    public void sendMail(Member member) {
-        String authKey = UUID.randomUUID().toString();
-        member.setAuthenticationKey(authKey);
-        memberRepository.save(member);
-
-        Context context = getContext(member, "/member/auth/"+ member.getAuthenticationKey());
-
-        String message = templateEngine.process("mail/authentication-link", context);
-
-        EmailMessage emailMessage = getEmailMessage(member, message);
-
-        emailService.sendEmail(emailMessage);
-    }
-
+    /*
+    *  회원 이메일로 보낸 토큰과, 회원 객체에 저장된 토큰이 같은지 확인한다.
+    * */
     public boolean checkAuthenticationKey(String authenticationKey, Member member) {
         boolean result = member.checkKey(authenticationKey);
 
@@ -120,7 +77,6 @@ public class MemberService implements UserDetailsService {
         Member member = memberRepository.findByEmail(email).orElseThrow();
         if(isEquals(certification, member)) {
             login(member);
-
         }
     }
 
@@ -136,26 +92,6 @@ public class MemberService implements UserDetailsService {
             return true;
         }
         return false;
-    }
-
-    private EmailMessage getEmailMessage(Member member, String message) {
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(member.getEmail())
-                .subject("레시피북 인증 메일입니다.")
-                .message(message)
-                .build();
-        return emailMessage;
-    }
-
-    private Context getContext(Member member, String path) {
-        Context context = new Context();
-
-        context.setVariable("link", path);
-        context.setVariable("username", member.getNickname());
-        context.setVariable("link-description", "이메일 인증");
-        context.setVariable("host", appProperty.getHost());
-
-        return context;
     }
 
     private void login(Member loginMember) {

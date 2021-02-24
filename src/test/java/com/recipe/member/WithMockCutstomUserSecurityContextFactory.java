@@ -26,9 +26,13 @@ public class WithMockCutstomUserSecurityContextFactory implements WithSecurityCo
 
         memberService.signup(signupRequest);
 
-        UserDetails principal = memberService.loadUserByUsername(withMockCutstomUser.email());
-        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        UserDetails principal =
+                memberService.loadUserByUsername(withMockCutstomUser.email());
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
+        SecurityContext context =
+                SecurityContextHolder.createEmptyContext();
+
         context.setAuthentication(authentication);
 
         return context;
