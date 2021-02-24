@@ -32,8 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MemberApiControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
-    @Autowired
-    MemberRepository memberRepository;
+    @Autowired MemberRepository memberRepository;
     @Autowired PasswordEncoder passwordEncoder;
 
     final String TEST_EMAIL = "cocodori@naver.com";
@@ -183,9 +182,9 @@ class MemberApiControllerTest {
     }
 
 
-    private SignupRequest getSignupRequestDto(String account, String password, String confirmPassword) {
+    private SignupRequest getSignupRequestDto(String email, String password, String confirmPassword) {
         return SignupRequest.builder()
-                .email(account)
+                .email(email)
                 .password(password)
                 .confirmPassword(confirmPassword)
                 .nickname(TEST_NICKNAME)
