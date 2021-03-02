@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -73,5 +74,13 @@ public class Member extends BaseEntity {
     //회원탈퇴 시 disable true로 변경
     public void setDisable() {
         this.disable = true;
+    }
+
+    /*
+    *  가입 후 24시간 동안 인증되지 않는 회원이라면 자동 탈퇴
+    * */
+    public boolean isAuthenticationTimeOut() {
+        return LocalDateTime.now()
+                .isAfter(regdate.plusHours(24));
     }
 }
