@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,7 +52,8 @@ public class LikeApiController {
                                           @PathVariable Long recipeId) {
         boolean result = false;
 
-        result = likeService.addLike(loginMember, recipeId);
+        if (Objects.nonNull(loginMember))
+            result = likeService.addLike(loginMember, recipeId);
 
         return result ?
                 new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
