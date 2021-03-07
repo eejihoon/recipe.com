@@ -77,7 +77,7 @@ public class Member extends BaseEntity {
     }
 
     /*
-    *  가입 후 24시간 동안 인증되지 않는 회원이라면 자동 탈퇴
+    *  가입 후 24시간 이내에 인증하지 않은 회원인지 체크
     * */
     public boolean isAuthenticationTimeOut() {
         return LocalDateTime.now()

@@ -46,14 +46,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(tokenRepository());
     }
 
+    /*
+    *  static resource에 대한 public access를 설정한 것인데
+    *  적용되지 않는 것 같다
+    * */
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-
     }
 
-
+    /*
+    * Remember-me
+    * */
     @Bean
     public PersistentTokenRepository tokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
