@@ -20,12 +20,10 @@ public class Recipe extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
-    @Lob
     private String thumbnail;
 
     private String description;
 
-    @Lob
     private String fullDescription;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -37,8 +35,6 @@ public class Recipe extends BaseEntity {
     Set<CookingMethod> cookingMethods = new HashSet<>();
 
     private Integer cookingTime;
-
-    private int servings;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
@@ -56,23 +52,6 @@ public class Recipe extends BaseEntity {
     float natrium;   //나트륨
     String originalImage;
     String hashTag;
-
-    @Deprecated
-    //@Builder //새로운 레시피 데이터를 위한 생성자
-    public Recipe(String title, String thumbnail, Set<Ingredient> ingredients, Set<CookingMethod> cookingMethods, float calorie, float carbohydrate, float protein, float fat, float natrium, String originalImage, String hashTag) {
-        this.title = title;
-        this.thumbnail = thumbnail;
-        this.ingredients = ingredients;
-        this.cookingMethods = cookingMethods;
-        this.calorie = calorie;
-        this.carbohydrate = carbohydrate;
-        this.protein = protein;
-        this.fat = fat;
-        this.natrium = natrium;
-        this.originalImage = originalImage;
-        this.hashTag = hashTag;
-        this.viewCount = 0;
-    }
 
     //사용자가 레시피를 등록할 때 사용하는 생성자
     @Builder

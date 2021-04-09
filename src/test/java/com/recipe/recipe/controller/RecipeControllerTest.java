@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @SpringBootTest
 class RecipeControllerTest extends TestSet {
-
     @DisplayName("자신의 게시물 조회하기 - 조회수 안 오름")
     @WithMockCustomUser
     @Test

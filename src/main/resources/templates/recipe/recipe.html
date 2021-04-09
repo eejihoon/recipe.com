@@ -57,7 +57,6 @@
                     <h4>재료</h4>
                 </div>
                 <div class="card-body">
-                    <h6 th:text="${recipe.servings}+'인 기준'"></h6>
                     <th:block th:each="ingredient:${recipe.ingredients}">
                         <span th:text="${ingredient.ingredient}"></span>
                         <span>,</span>
