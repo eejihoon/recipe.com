@@ -11,7 +11,7 @@ import java.util.Objects;
  * */
 @Component
 public class AuthorVerification {
-    public boolean isAuthor(Member loginMember, Member Author) {
+    public static boolean isAuthor(Member loginMember, Member Author) {
         if (Objects.nonNull(loginMember))
             return loginMember.getEmail().equals(Author.getEmail());
 
