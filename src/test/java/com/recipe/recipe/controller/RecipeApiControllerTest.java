@@ -1,6 +1,7 @@
 package com.recipe.recipe.controller;
 
 import com.recipe.TestSet;
+import com.recipe.recipe.domain.Ingredient;
 import com.recipe.recipe.domain.Recipe;
 import com.recipe.member.WithMockCustomUser;
 import com.recipe.recipe.dto.RecipeSaveForm;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,10 +43,7 @@ public class RecipeApiControllerTest extends TestSet {
         //then
         List<Recipe> recipes = recipeRepository.findAll();
 
-//        assertTrue(recipes.get(0).getIngredients().size() > 0);
-
-        recipes.forEach(recipe -> System.out.println(recipe.getTitle()));
-
+        assertTrue(recipes.get(0).getIngredients().size() > 0);
         assertEquals(recipes.get(0).getTitle(), recipeSaveForm.getTitle());
         assertEquals(recipes.get(0).getMember().getEmail(), USER_EMAIL);
     }
@@ -51,36 +51,9 @@ public class RecipeApiControllerTest extends TestSet {
     @DisplayName("레시피 등록 테스트 실패 - 제목&설명에 공백 입력")
     @WithMockCustomUser
     @Test
-    void testRecipeInsertFailure() throws Exception {
-        //given
-        RecipeSaveForm recipeSaveForm = wrongRecipeSaveForm();
-
-        String requesetJson = objectMapper.writeValueAsString(recipeSaveForm);
-
-        //when
-        mockMvc.perform(post("/api/recipe")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .with(csrf())
-                .content(requesetJson))
-                .andExpect(status().isBadRequest());
-
-        //then
-        List<Recipe> recipes = recipeRepository.findAll();
-
-        assertEquals(recipes.size(), 0);
-    }
-
-    @DisplayName("레시피 등록 테스트 실패 - 제목&설명에 공백 입력")
-    @WithMockCustomUser
-    @Test
     void testRecipeInsertFailure2() throws Exception {
         //given
-        RecipeSaveForm recipeSaveForm = RecipeSaveForm.builder()
-                .title("")
-                .fullDescription("")
-                .ingredients("a,b,c,d")
-                .description("...")
-                .build();
+        RecipeSaveForm recipeSaveForm = wrongRecipeSaveForm();
 
         String requesetJson = objectMapper.writeValueAsString(recipeSaveForm);
 
@@ -162,13 +135,16 @@ public class RecipeApiControllerTest extends TestSet {
     }
 
     private RecipeSaveForm wrongRecipeSaveForm() {
-        return RecipeSaveForm.builder()
+        Recipe recipe = Recipe.builder()
+                .thumbnail("")
                 .title("")
                 .fullDescription("")
-                .ingredients("a,b,c,d")
-                .member(getMember())
-                .description("...")
+                .description("")
+                .ingredients(new HashSet<>())
+                .cookingTime(11)
                 .build();
+
+        return new RecipeSaveForm(recipe);
     }
 
 }

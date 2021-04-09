@@ -34,7 +34,7 @@ public class TestSet {
     protected final String API_URL = "/api";
 
     protected RecipeSaveForm getRecipeSaveForm() {
-        RecipeSaveForm recipeSaveForm = RecipeSaveForm.builder()
+/*        RecipeSaveForm recipeSaveForm = RecipeSaveForm.builder()
                 .thumbnail("recipe-thumbnail")
                 .title("recipe-title")
                 .description("recipe-description")
@@ -42,8 +42,8 @@ public class TestSet {
                 .ingredients("tag1,tag2,tag3,tag4,tag5")
                 .cookingTime(22)
                 .member(memberRepository.findAll().get(0))
-                .build();
-        return recipeSaveForm;
+                .build();*/
+        return new RecipeSaveForm(addRecipe());
     }
 
     protected Recipe addRecipe() {

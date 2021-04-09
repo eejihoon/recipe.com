@@ -41,16 +41,8 @@ public class RecipeService {
 
         //접근한 사용자가 작성자가 맞는 지 체크
         isAuthor(loginMember, findedRecipe.getMember());
-        return RecipeSaveForm.builder()
-                .id(id)
-                .thumbnail(findedRecipe.getThumbnail())
-                .title(findedRecipe.getTitle())
-                .description(findedRecipe.getDescription())
-                .fullDescription(findedRecipe.getFullDescription())
-                .ingredients(findedRecipe.getIngredientsString())
-                .cookingTime(findedRecipe.getCookingTime())
-                .member(findedRecipe.getMember())
-                .build();
+
+        return new RecipeSaveForm(findedRecipe);
     }
 
     public void remove(Long id, Member currentMember) {

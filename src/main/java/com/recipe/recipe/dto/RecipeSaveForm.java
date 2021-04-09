@@ -8,11 +8,12 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Getter @Setter
+@NoArgsConstructor
 public class RecipeSaveForm {
     private Long id;
     private String thumbnail;
@@ -31,18 +32,16 @@ public class RecipeSaveForm {
 
     private Member member;
 
-    @Builder
-    public RecipeSaveForm(Long id, Member member, String thumbnail, String title,
-                          String description, String fullDescription, String ingredients, Integer cookingTime) {
-        this.id = id;
-        this.ingredients = "";
-        this.thumbnail = thumbnail;
-        this.title = title;
-        this.description = description;
-        this.fullDescription = fullDescription;
-        this.ingredients = ingredients;
-        this.cookingTime = cookingTime;
-        this.member = member;
+    public RecipeSaveForm(Recipe recipe) {
+        this.id = recipe.getId();
+        this.ingredients = recipe.getIngredientsString();
+        this.thumbnail = recipe.getThumbnail();
+        this.title = recipe.getTitle();
+        this.description = recipe.getDescription();
+        this.fullDescription = recipe.getFullDescription();
+        this.ingredients = recipe.getIngredientsString();
+        this.cookingTime = recipe.getCookingTime();
+        this.member = recipe.getMember();
     }
 
     public Recipe toEntity() {
