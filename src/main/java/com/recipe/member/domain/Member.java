@@ -55,6 +55,7 @@ public class Member extends BaseEntity {
         this.authenticationKey = authenticationKey;
     }
 
+    //TODO CQRS 위반.
     public boolean checkKey(String authenticationKey) {
         if (this.authenticationKey.equals(authenticationKey)) {
             role = Role.USER;
