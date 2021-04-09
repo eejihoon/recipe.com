@@ -13,7 +13,10 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter @Builder @ToString
+@Getter
+@Setter
+@Builder
+@ToString
 public class SignupRequest {
     @Length(min = 4)
     @Email

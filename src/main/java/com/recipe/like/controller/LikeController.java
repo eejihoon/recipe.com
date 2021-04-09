@@ -30,7 +30,7 @@ public class LikeController {
         if (Objects.nonNull(loginMember)) {
             Page<RecipeDto> likedRecipe = likeQueryRepository.findLikedRecipe(loginMember, page);
             model.addAttribute("recipes", likedRecipe);
-            model.addAttribute("maxPage" , 9);
+            model.addAttribute("maxPage", 9);
         }
 
         return "recipe/scrap";

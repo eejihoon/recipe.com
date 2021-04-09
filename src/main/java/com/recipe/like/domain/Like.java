@@ -6,11 +6,15 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor @Getter @Setter @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 @Table(name = "likes")
 @Entity
 public class Like {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

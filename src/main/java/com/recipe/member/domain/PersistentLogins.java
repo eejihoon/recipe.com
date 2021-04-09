@@ -24,6 +24,6 @@ public class PersistentLogins {
     @Column(nullable = false, length = 64)
     private String token;
 
-    @Column(name="last_used", nullable = false, length = 64)
+    @Column(name = "last_used", nullable = false, length = 64)
     private LocalDateTime lastUsed;
 }

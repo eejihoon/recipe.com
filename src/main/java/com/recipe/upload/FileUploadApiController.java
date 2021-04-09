@@ -25,7 +25,7 @@ public class FileUploadApiController {
     public ResponseEntity<HttpEntity> uploadPost(@RequestPart List<MultipartFile> files) throws IOException {
         HttpEntity httpEntity = null;
 
-        for ( MultipartFile file : files ) {
+        for (MultipartFile file : files) {
             String upload = uploadService.upload(file);
             httpEntity = new HttpEntity(upload);
         }

@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
+@Setter
 public class RecipeSaveForm {
     private Long id;
     private String thumbnail;

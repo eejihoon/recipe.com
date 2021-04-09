@@ -12,17 +12,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProfileControllerTest {
-    @Autowired MockMvc mockMvc;
-    @Autowired TestRestTemplate testRestTemplate;
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    TestRestTemplate testRestTemplate;
 
     @Test
-    void testRequestProfileWithAnonymous () {
+    void testRequestProfileWithAnonymous() {
         String expected = "local";
 
         ResponseEntity<String> response = testRestTemplate.getForEntity("/profile", String.class);
-        
+
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         assertEquals(response.getBody(), expected);
     }

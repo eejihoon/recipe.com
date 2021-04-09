@@ -1,13 +1,14 @@
 package com.recipe.member.domain;
 
 import lombok.*;
+
 @Getter
 @RequiredArgsConstructor
 public enum Role {
-        ADMIN("ROLE_ADMIN", "관리자"),
-        USER("ROLE_USER", "회원"),
-        TEMPORARY("ROLE_TEMPORARY", "인증되지 않은 회원");
+    ADMIN("ROLE_ADMIN", "관리자"),
+    USER("ROLE_USER", "회원"),
+    TEMPORARY("ROLE_TEMPORARY", "인증되지 않은 회원");
 
-        private final String key;
-        private final String title;
+    private final String key;
+    private final String title;
 }

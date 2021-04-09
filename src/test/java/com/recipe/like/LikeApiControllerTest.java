@@ -4,7 +4,7 @@ import com.recipe.TestSet;
 import com.recipe.like.domain.Like;
 import com.recipe.member.domain.Member;
 import com.recipe.recipe.domain.Recipe;
-import com.recipe.member.WithMockCutstomUser;
+import com.recipe.member.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,19 +22,19 @@ public class LikeApiControllerTest extends TestSet {
     private final String LIKE_URL = "/like";
 
     @DisplayName("좋아요 카운트")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testGetCount() throws Exception {
         //given
         Recipe recipe = addRecipe();
 
         //when
-        mockMvc.perform(get(API_URL+LIKE_URL+"/"+recipe.getId()))
+        mockMvc.perform(get(API_URL + LIKE_URL + "/" + recipe.getId()))
                 .andExpect(status().isOk());
     }
 
     @DisplayName("좋아요 취소")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testCancelLike() throws Exception {
         //given
@@ -48,7 +48,7 @@ public class LikeApiControllerTest extends TestSet {
         assertTrue(allLike.size() > 0);
 
         //when
-        mockMvc.perform(delete(API_URL+LIKE_URL+"/"+recipe.getId()))
+        mockMvc.perform(delete(API_URL + LIKE_URL + "/" + recipe.getId()))
                 .andExpect(status().isOk());
 
         //then
@@ -59,14 +59,14 @@ public class LikeApiControllerTest extends TestSet {
     }
 
     @DisplayName("좋아요 등록 테스트")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testCreateLike() throws Exception {
         //given
         Recipe recipe = addRecipe();
 
         //when
-        mockMvc.perform(post(API_URL+LIKE_URL+"/"+recipe.getId()))
+        mockMvc.perform(post(API_URL + LIKE_URL + "/" + recipe.getId()))
                 .andExpect(status().isOk());
 
         //then
@@ -78,17 +78,17 @@ public class LikeApiControllerTest extends TestSet {
     }
 
     @DisplayName("좋아요 중복 테스트 - fail")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testDuplicateLike() throws Exception {
         //given
         Recipe recipe = addRecipe();
 
         //when
-        mockMvc.perform(post(API_URL+LIKE_URL+"/"+recipe.getId()))
+        mockMvc.perform(post(API_URL + LIKE_URL + "/" + recipe.getId()))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(post(API_URL+LIKE_URL+"/"+recipe.getId()))
+        mockMvc.perform(post(API_URL + LIKE_URL + "/" + recipe.getId()))
                 .andExpect(status().isBadRequest());
 
         //then

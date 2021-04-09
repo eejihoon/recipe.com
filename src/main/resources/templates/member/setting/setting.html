@@ -19,7 +19,8 @@
                 <div class="tab-pane fade show active" id="list-password" role="tabpanel"
                      aria-labelledby="list-password-list">
                     <div class="py-5 text-center">
-                        <img src="/img/password-change.png" class="col-sm-2 rounded mx-auto d-block w-10 h-10 img-fluid">
+                        <img src="/img/password-change.png"
+                             class="col-sm-2 rounded mx-auto d-block w-10 h-10 img-fluid">
                         <br>
                         <h6><b>RECIPE</b></h6>
                         <h1>비밀번호 변경</h1>
@@ -96,7 +97,7 @@
             });
         },
 
-        disable : function () {
+        disable: function () {
             const password = document.getElementById('disable-password').value
 
             const xhr = new XMLHttpRequest();
@@ -108,10 +109,10 @@
             xhr.onload = function () {
                 if (xhr.status === 200 || xhr.status === 201) {
                     alert('탈퇴되었습니다. 이용해주셔서 감사합니다.');
-                    window.location.href='/logout';
+                    window.location.href = '/logout';
                     return;
                 }
-                document.getElementById('disable-password-warn').innerText='비밀번호가 일치하지 않습니다.';
+                document.getElementById('disable-password-warn').innerText = '비밀번호가 일치하지 않습니다.';
                 return;
             }
         },

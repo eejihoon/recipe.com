@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,11 +16,11 @@ import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 class RecipeRepositoryTest {
-
     @Autowired
     RecipeRepository recipeRepository;
 
     @DisplayName("RecipeRepository - 등록 테스트")
+    @Transactional
     @Test
     void testSaveRecipe() {
         Set<Ingredient> ingredientList = new HashSet<>();
@@ -40,8 +41,6 @@ class RecipeRepositoryTest {
         Recipe findRecipe = recipeRepository.findAll().get(0);
 
         assertEquals(saveRecipe.getId(), findRecipe.getId());
-
-
     }
 
 }

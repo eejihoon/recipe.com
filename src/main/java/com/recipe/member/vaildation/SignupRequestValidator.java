@@ -24,7 +24,7 @@ public class SignupRequestValidator implements Validator {
 
         //아이디 중복 체크
         if (existEmail(signupRequest)) {
-            errors.rejectValue("email", "invalid.email", new Object[]{signupRequest.getEmail()},"이미 가입한 사용자입니다.");
+            errors.rejectValue("email", "invalid.email", new Object[]{signupRequest.getEmail()}, "이미 가입한 사용자입니다.");
         }
 
         //비밀번호 일치하는지 체크

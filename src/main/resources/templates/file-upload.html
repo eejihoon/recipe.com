@@ -73,14 +73,14 @@
 </script>
 
 <script type="text/javascript">
-    $(function(){
+    $(function () {
         $('#summernote').summernote({
             height: 600,
-            fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
-            fontNamesIgnoreCheck : [ '맑은고딕' ],
+            fontNames: ['맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',],
+            fontNamesIgnoreCheck: ['맑은고딕'],
 
             callbacks: {
-                onImageUpload: function(files, editor, welEditable) {
+                onImageUpload: function (files, editor, welEditable) {
                     for (var i = files.length - 1; i >= 0; i--) {
                         sendFile(files[i], this);
                     }
@@ -103,7 +103,7 @@
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
-            success: function(img_name) {
+            success: function (img_name) {
                 console.dir(img_name)
                 console.dir(img_name.body)
                 $(el).summernote('editor.insertImage', img_name.body);

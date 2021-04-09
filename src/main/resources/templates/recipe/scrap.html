@@ -37,7 +37,8 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <div class="col" th:each="recipe : ${recipes}">
                     <div class="card shadow-sm">
-                        <a th:href="@{/recipe(id=${recipe.id}, page=${recipes.number}, keyword=${param.keyword})}" class="text-decoration-none text-reset">
+                        <a th:href="@{/recipe(id=${recipe.id}, page=${recipes.number}, keyword=${param.keyword})}"
+                           class="text-decoration-none text-reset">
                             <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${recipe.thumbnail}">
                             <div class="card-body">
                                 <h3 th:text="${recipe.title}"></h3>
@@ -48,7 +49,8 @@
                                             <i id="like-logo" class="bi bi-bookmark-heart"></i>
                                             <span th:text="${recipe.likeCount}"></span>
                                         </small><br>
-                                        <small class="text-muted">조회수 <span th:text="${recipe.viewCount}"></span>회</small>
+                                        <small class="text-muted">조회수 <span
+                                                th:text="${recipe.viewCount}"></span>회</small>
                                     </div>
                                     <div>
                                         <small class="text-muted">작성자 <span th:text="${recipe.nickname}"></span></small><br>
@@ -62,7 +64,7 @@
             </div>
             <div class="mt-4"
                  th:with="start=${(recipes.number/maxPage)*maxPage + 1},
-                      end=(${(recipes.totalPages == 0) ? 1 : (start + (maxPage - 1) < recipes.totalPages ? start + (maxPage - 1) : recipes.totalPages)})" >
+                      end=(${(recipes.totalPages == 0) ? 1 : (start + (maxPage - 1) < recipes.totalPages ? start + (maxPage - 1) : recipes.totalPages)})">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item" th:if="${start > 1}">
@@ -85,11 +87,11 @@
 <footer th:replace="fragments.html :: footer"></footer>
 <script>
     const event = {
-        init : function () {
+        init: function () {
             document.getElementById('search-btn').addEventListener('click', () => {
                 if (keyword.length != 0 || keyword.trim() === '') {
                     const keyword = document.getElementById('keyword').value;
-                    window.location.href='/?keyword='+keyword;
+                    window.location.href = '/?keyword=' + keyword;
                 }
             });
             const reSendmailLink = document.getElementById('re-sendmail');
@@ -102,7 +104,7 @@
 
         },
 
-        reSendmail : function () {
+        reSendmail: function () {
             const xhr = new XMLHttpRequest();
 
             xhr.open('PUT', '/re-sendmail');

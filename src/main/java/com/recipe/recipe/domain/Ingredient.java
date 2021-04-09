@@ -9,7 +9,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Ingredient {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @ManyToOne

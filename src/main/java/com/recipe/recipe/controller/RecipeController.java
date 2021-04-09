@@ -37,14 +37,14 @@ public class RecipeController {
         log.info("memberAdapter : {} ", loginMember);
 
         /*
-        *   이메일 인증 안된 사용자에게 알림 띄워주기 위함
-        * */
+         *   이메일 인증 안된 사용자에게 알림 띄워주기 위함
+         * */
         if (Objects.nonNull(loginMember))
             model.addAttribute("member", loginMember);
 
         model.addAttribute("recipes",
                 recipeQueryRepository.findAllRecipeAndSearchWithPaging(keyword, pageable));
-        model.addAttribute("maxPage" , 9);
+        model.addAttribute("maxPage", 9);
 
         return "index";
     }
@@ -70,7 +70,7 @@ public class RecipeController {
     public String modifiy(@PathVariable Long id,
                           @LoginMember Member loginMember,
                           Model model) throws AccessDeniedException {
-        log.info("id : {}" , id);
+        log.info("id : {}", id);
 
         RecipeSaveForm recipeForm = recipeService.getRecipeModifyForm(id, loginMember);
 

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recipe.member.dto.ChangePasswordRequest;
 import com.recipe.member.repository.MemberRepository;
 import com.recipe.member.dto.SignupRequest;
-import com.recipe.member.WithMockCutstomUser;
+import com.recipe.member.WithMockCustomUser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,10 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 class MemberApiControllerTest {
-    @Autowired MockMvc mockMvc;
-    @Autowired ObjectMapper objectMapper;
-    @Autowired MemberRepository memberRepository;
-    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired
+    MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     final String TEST_EMAIL = "cocodori@naver.com";
     final String TEST_PASSWORD = "asdf1234";
@@ -49,7 +53,7 @@ class MemberApiControllerTest {
     }
 
     @DisplayName("회원 탈퇴")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testDisableMember() throws Exception {
         Member member = memberRepository.findAll().get(0);
@@ -64,7 +68,7 @@ class MemberApiControllerTest {
     }
 
     @DisplayName("비밀번호 변경 처리")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testChangePassword() throws Exception {
         Member member = memberRepository.findByEmail("test@email.com").orElseThrow();
@@ -84,7 +88,7 @@ class MemberApiControllerTest {
     }
 
     @DisplayName("비밀번호 변경 처리 - 비밀번호 다를 경우")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testChangePasswordfailure() throws Exception {
         Member member = memberRepository.findByEmail("test@email.com").orElseThrow();
@@ -140,7 +144,7 @@ class MemberApiControllerTest {
     }
 
     @DisplayName("인증 메일 재전송 테스트")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testResendMail() throws Exception {
 
@@ -148,7 +152,7 @@ class MemberApiControllerTest {
 
         String beforeAuthKey = member.getAuthenticationKey();
 
-        mockMvc.perform(put(ROOT+API+"/re-sendmail"))
+        mockMvc.perform(put(ROOT + API + "/re-sendmail"))
                 .andExpect(status().isOk());
 
         Member member2 = memberRepository.findById(member.getId()).orElseThrow();
@@ -170,7 +174,7 @@ class MemberApiControllerTest {
 
         assertNull(member.getCertification());
 
-        mockMvc.perform(put(ROOT+API+"/withoutPasswordLogin")
+        mockMvc.perform(put(ROOT + API + "/withoutPasswordLogin")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(member.getEmail()))
                 .andExpect(status().isOk());
@@ -193,23 +197,23 @@ class MemberApiControllerTest {
 
     @DisplayName("로그인 테스트")
     @Test
-    void testLoginSubmit() throws Exception{
+    void testLoginSubmit() throws Exception {
         SignupRequest signupRequest =
                 getSignupRequestDto(TEST_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
 
         signupRequest(signupRequest, status().isOk());
 
         mockMvc.perform(post("/login")
-            .with(csrf())
-            .param("username", TEST_EMAIL)
-            .param("password", TEST_PASSWORD))
+                .with(csrf())
+                .param("username", TEST_EMAIL)
+                .param("password", TEST_PASSWORD))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(authenticated().withUsername(TEST_EMAIL));
     }
 
-    private ResultActions signupRequest(SignupRequest signupRequest, ResultMatcher status) throws Exception{
-        return mockMvc.perform(post(ROOT+API+ROOT+MEMBER)
+    private ResultActions signupRequest(SignupRequest signupRequest, ResultMatcher status) throws Exception {
+        return mockMvc.perform(post(ROOT + API + ROOT + MEMBER)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(signupRequest)))

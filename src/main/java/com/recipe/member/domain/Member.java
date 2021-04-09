@@ -13,7 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 public class Member extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
     private Long id;
 
@@ -77,8 +78,8 @@ public class Member extends BaseEntity {
     }
 
     /*
-    *  가입 후 24시간 이내에 인증하지 않은 회원인지 체크
-    * */
+     *  가입 후 24시간 이내에 인증하지 않은 회원인지 체크
+     * */
     public boolean isAuthenticationTimeOut() {
         return LocalDateTime.now()
                 .isAfter(regdate.plusHours(24));

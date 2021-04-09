@@ -1,5 +1,5 @@
 const eventHandler = {
-    init : function () {
+    init: function () {
         document.getElementById('like').addEventListener('click', (e) => {
             e.preventDefault();
             this.likeEvent();
@@ -13,18 +13,18 @@ const eventHandler = {
         });
     },
 
-    likeEvent : function () {
+    likeEvent: function () {
         const xhr = new XMLHttpRequest();
 
         let recipeId = document.getElementById('id').innerText;
 
-        xhr.open('POST', '/api/like/'+recipeId);
+        xhr.open('POST', '/api/like/' + recipeId);
         xhr.send();
 
         const _this = this;
 
         xhr.onload = function () {
-            if (xhr.status === 200 || xhr.status === 201 ) {
+            if (xhr.status === 200 || xhr.status === 201) {
                 //화면 처리
                 _this.likeCount();
                 return;
@@ -56,16 +56,16 @@ const eventHandler = {
         }
     },
 
-    likeCount : function () {
+    likeCount: function () {
         const xhr = new XMLHttpRequest();
 
         let recipeId = document.getElementById('id').innerText;
 
-        xhr.open('GET', '/api/like/'+recipeId);
+        xhr.open('GET', '/api/like/' + recipeId);
         xhr.send();
 
         xhr.onload = function () {
-            if (xhr.status === 200 || xhr.status === 201 ) {
+            if (xhr.status === 200 || xhr.status === 201) {
                 //화면 처리
                 let likeCount = JSON.parse(xhr.responseText);
                 document.getElementsByClassName('like-count')[0].innerText = likeCount[0];

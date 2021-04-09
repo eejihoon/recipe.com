@@ -68,8 +68,8 @@ public class MemberController {
         memberService.withoutPasswordLogin(certification, email);
 
         /*
-        * TODO 비밀번호 변경 페이지로 redirect 하도록 변경
-        * */
+         * TODO 비밀번호 변경 페이지로 redirect 하도록 변경
+         * */
         return "redirect:/";
     }
 

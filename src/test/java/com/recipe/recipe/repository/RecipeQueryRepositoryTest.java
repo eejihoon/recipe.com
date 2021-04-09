@@ -2,7 +2,7 @@ package com.recipe.recipe.repository;
 
 import com.recipe.TestSet;
 import com.recipe.member.domain.Member;
-import com.recipe.member.WithMockCutstomUser;
+import com.recipe.member.WithMockCustomUser;
 import com.recipe.recipe.dto.RecipeDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class RecipeQueryRepositoryTest extends TestSet {
     RecipeQueryRepository recipeQueryRepository;
 
     @DisplayName("내가 등록한 레시피 조회")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testFindByMember() {
         //given
@@ -44,9 +44,9 @@ class RecipeQueryRepositoryTest extends TestSet {
     }
 
     @DisplayName("레시피 정보와 Like Count까지 조인해서 조회 - keyword가 null일 때 전체 조회")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
-    void testFindByRecipeTitleWithLikeCount () {
+    void testFindByRecipeTitleWithLikeCount() {
         //given
         addRecipeDummies();
 

@@ -26,7 +26,7 @@ public class LikeService {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
 
         //중복 좋아요 방지
-        if(isNotAlreadyLike(member, recipe)) {
+        if (isNotAlreadyLike(member, recipe)) {
             likeRepository.save(new Like(recipe, member));
             return true;
         }
@@ -36,16 +36,16 @@ public class LikeService {
 
     public void cancelLike(Member member, Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
-        Like like = likeRepository.findByMemberAndRecipe(member,recipe).orElseThrow();
+        Like like = likeRepository.findByMemberAndRecipe(member, recipe).orElseThrow();
         likeRepository.delete(like);
     }
 
     /*
-    *   1. 좋아요를 count할 대상 recipe를 가져온다.
-    *   2. 가져온 recipe로 like테이블에 쿼리한 결과를 List에 담는다.
-    *   3. 현재 로그인한 사용자가
-    *       이미 해당 레시피에 좋아요를 눌렀는지 검사하고 결과를 List에 담아 반환한다.
-    * */
+     *   1. 좋아요를 count할 대상 recipe를 가져온다.
+     *   2. 가져온 recipe로 like테이블에 쿼리한 결과를 List에 담는다.
+     *   3. 현재 로그인한 사용자가
+     *       이미 해당 레시피에 좋아요를 눌렀는지 검사하고 결과를 List에 담아 반환한다.
+     * */
     public List<String> count(Long recipeId, Member loginMember) {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
 

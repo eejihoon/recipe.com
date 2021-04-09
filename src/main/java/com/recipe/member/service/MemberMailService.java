@@ -31,14 +31,14 @@ public class MemberMailService {
         if (member.isDisable()) {
             throw new DisabledException("탈퇴한 회원입니다.");
         }
-            member.setCertificationNumber();
+        member.setCertificationNumber();
 
-            Context context = getContext(member,
-                    "/member/withoutPasswordLogin?certification="+member.getCertification()+"&email="+member.getEmail());
-            String message =
-                    templateEngine.process("mail/withoutPasswordLogin", context);
-            EmailMessage emailMessage = getEmailMessage(member, message);
-            emailService.sendEmail(emailMessage);
+        Context context = getContext(member,
+                "/member/withoutPasswordLogin?certification=" + member.getCertification() + "&email=" + member.getEmail());
+        String message =
+                templateEngine.process("mail/withoutPasswordLogin", context);
+        EmailMessage emailMessage = getEmailMessage(member, message);
+        emailService.sendEmail(emailMessage);
     }
 
     public void sendMail(Member member) {
@@ -47,7 +47,7 @@ public class MemberMailService {
         memberRepository.save(member);
 
         Context context =
-                getContext(member, "/member/auth/"+ member.getAuthenticationKey());
+                getContext(member, "/member/auth/" + member.getAuthenticationKey());
         String message =
                 templateEngine.process("mail/authentication-link", context);
 

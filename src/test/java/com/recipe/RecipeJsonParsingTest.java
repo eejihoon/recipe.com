@@ -72,14 +72,14 @@ public class RecipeJsonParsingTest {
             System.out.println();
 
             System.out.println("조리 방법");
-            for (int i=1; i<=20; i++) {
-                if (Objects.nonNull(object.get("MANUAL0"+i))) {
+            for (int i = 1; i <= 20; i++) {
+                if (Objects.nonNull(object.get("MANUAL0" + i))) {
                     System.out.println("sequence : " + i);
-                    System.out.println(replaceQuotes(object.get("MANUAL0"+i)));
+                    System.out.println(replaceQuotes(object.get("MANUAL0" + i)));
                 }
 
-                if (Objects.nonNull(object.get("MANUAL_IMG0"+i))) {
-                    System.out.println(replaceQuotes(object.get("MANUAL_IMG0"+i)));
+                if (Objects.nonNull(object.get("MANUAL_IMG0" + i))) {
+                    System.out.println(replaceQuotes(object.get("MANUAL_IMG0" + i)));
                 } else {
                     System.out.println("");
                 }

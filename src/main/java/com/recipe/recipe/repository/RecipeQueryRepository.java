@@ -62,6 +62,7 @@ public class RecipeQueryRepository extends QuerydslRepositorySupport {
 
         return new PageImpl<>(content, pageable, total);
     }
+
     //내가 쓴 게시물 조회
     public Page<RecipeDto> findByMember(Member findMember, Pageable pageable) {
         QueryResults<RecipeDto> recipeDtoQueryResults = queryFactory

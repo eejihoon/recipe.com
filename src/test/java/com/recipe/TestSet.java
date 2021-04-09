@@ -18,11 +18,16 @@ import java.util.HashSet;
 
 @AutoConfigureMockMvc
 public class TestSet {
-    @Autowired protected MockMvc mockMvc;
-    @Autowired protected RecipeRepository recipeRepository;
-    @Autowired protected ObjectMapper objectMapper;
-    @Autowired protected MemberRepository memberRepository;
-    @Autowired protected LikeRepository likeRepository;
+    @Autowired
+    protected MockMvc mockMvc;
+    @Autowired
+    protected RecipeRepository recipeRepository;
+    @Autowired
+    protected ObjectMapper objectMapper;
+    @Autowired
+    protected MemberRepository memberRepository;
+    @Autowired
+    protected LikeRepository likeRepository;
 
     protected final String USER_EMAIL = "test@email.com";
     protected final String USER_PASSWORD = "12345678";

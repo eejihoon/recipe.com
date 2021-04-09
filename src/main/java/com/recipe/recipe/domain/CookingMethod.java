@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Getter
 @Entity
 public class CookingMethod {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

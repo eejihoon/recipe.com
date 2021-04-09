@@ -10,10 +10,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
 @Entity
 public class Recipe extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -99,7 +100,7 @@ public class Recipe extends BaseEntity {
     }
 
     public String getIngredientsString() {
-        String result="";
+        String result = "";
 
         for (Ingredient ingredient : ingredients)
             result += ingredient.getIngredient() + ",";

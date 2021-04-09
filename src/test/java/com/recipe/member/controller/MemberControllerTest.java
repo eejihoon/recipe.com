@@ -3,7 +3,7 @@ package com.recipe.member.controller;
 import com.recipe.TestSet;
 import com.recipe.member.domain.Member;
 import com.recipe.member.domain.Role;
-import com.recipe.member.WithMockCutstomUser;
+import com.recipe.member.WithMockCustomUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,14 +46,14 @@ public class MemberControllerTest extends TestSet {
 
 
     @DisplayName("이메일 인증 테스트")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testCheckEmail() throws Exception {
         Member member = memberRepository.findAll().get(0);
 
         assertFalse(member.isVerified());
 
-        mockMvc.perform(get("/member/auth/"+member.getAuthenticationKey()))
+        mockMvc.perform(get("/member/auth/" + member.getAuthenticationKey()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(flash().attributeExists("verified"));
@@ -63,14 +63,14 @@ public class MemberControllerTest extends TestSet {
     }
 
     @DisplayName("이메일 인증 실패 테스트")
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @Test
     void testCheckEmailFailure() throws Exception {
         Member member = memberRepository.findAll().get(0);
 
         assertFalse(member.isVerified());
 
-        mockMvc.perform(get("/member/auth/"+"wrong-auth-key"))
+        mockMvc.perform(get("/member/auth/" + "wrong-auth-key"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(flash().attributeExists("error"));
@@ -101,7 +101,7 @@ public class MemberControllerTest extends TestSet {
     }
 
     @Test
-    @WithMockCutstomUser
+    @WithMockCustomUser
     @DisplayName("비밀번호 변경 폼")
     void testChangePasswordForm() throws Exception {
         mockMvc.perform(get("/setting/password"))

@@ -27,9 +27,9 @@
     <title>레시피야</title>
 </head>
 <body>
-    <!-- nav bar -->
-    <header th:fragment="header">
-        <nav class="">
+<!-- nav bar -->
+<header th:fragment="header">
+    <nav class="">
         <div class="collapse bg-dark" id="navbarHeader">
             <div class="container">
                 <div class="row">
@@ -65,144 +65,103 @@
                         <a class="text-warning p-2 h4" href="/scrap">
                             <i class="bi bi-bookmark-heart-fill"></i></a>
                     </span>
-                <button id="toggle-btn" class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-controls="navbarToggleExternalContent" data-bs-target="#navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    <button id="toggle-btn" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            aria-controls="navbarToggleExternalContent" data-bs-target="#navbarHeader"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                 </div>
             </div>
         </nav>
-        </nav>
-    </header>
+    </nav>
+</header>
 
-    <!-- footer -->
-    <footer class="text-muted py-5" th:fragment="footer">
-        <div class="container">
-            <div>
-                <p class="float-end mb-1">
-                    <a href="#">맨 위로</a>
-                </p>
-            </div>
-            <div>
-                <small class="mb-0">아직 회원이 아니신가요? <a href="/signup">회원가입</a>하고 이용하세요.</small>
-            </div>
-            <div>
-                <span>만든 사람</span>
-            </div>
-            <div>
-                <small><a href="https://github.com/cocodori"><img src="img/github.png"></a></small>
-                <small><a href="https://coco-log.tistory.com"><img src="img/web.png"></a></small>
-                <a href="https://www.facebook.com/soyo.lee.503"><span class="badge bg-primary">Facebook</span></a>
-                <br>
-                <small>moradulee@gmail.com</small>
-            </div>
+<!-- footer -->
+<footer class="text-muted py-5" th:fragment="footer">
+    <div class="container">
+        <div>
+            <p class="float-end mb-1">
+                <a href="#">맨 위로</a>
+            </p>
         </div>
-    </footer>
+        <div>
+            <small class="mb-0">아직 회원이 아니신가요? <a href="/signup">회원가입</a>하고 이용하세요.</small>
+        </div>
+        <div>
+            <span>만든 사람</span>
+        </div>
+        <div>
+            <small><a href="https://github.com/cocodori"><img src="img/github.png"></a></small>
+            <small><a href="https://coco-log.tistory.com"><img src="img/web.png"></a></small>
+            <a href="https://www.facebook.com/soyo.lee.503"><span class="badge bg-primary">Facebook</span></a>
+            <br>
+            <small>moradulee@gmail.com</small>
+        </div>
+    </div>
+</footer>
 
-    <th:block th:fragment="tagify(url, method)">
-        <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
-        <script th:inline="javascript">
-            window.onload = function () {
-                // The DOM element you wish to replace with Tagify
-                let input = document.querySelector('input[name=basic]');
-                let ingredients;
-                let tagify = new Tagify(input, {
-                    originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(',')
-                })
-                const submitBtn = document.getElementById('btn-submit');
+<th:block th:fragment="tagify(url, method)">
+    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script th:inline="javascript">
+        window.onload = function () {
+            // The DOM element you wish to replace with Tagify
+            let input = document.querySelector('input[name=basic]');
+            let ingredients;
+            let tagify = new Tagify(input, {
+                originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(',')
+            })
+            const submitBtn = document.getElementById('btn-submit');
 
-                input.addEventListener('change', onChange)
+            input.addEventListener('change', onChange)
 
-                submitBtn.addEventListener('click', requestSave);
+            submitBtn.addEventListener('click', requestSave);
 
-                function onChange(e) {
-                    // outputs a String
-                    console.log(e.target.value)
-                    ingredients = e.target.value;
-                }
-
-                function requestSave() {
-                    const xhr = new XMLHttpRequest();
-                    const data = {
-                        thumbnail       :   document.getElementById("image").src,
-                        title           :   document.getElementById('title').value,
-                        description     :   document.getElementById('description').value,
-                        ingredients     :   ingredients,
-                        cookingTime     :   document.getElementById('cooking-time').value,
-                        fullDescription :   document.getElementById('full-description').value,
-                        member          :   [[${member}]]
-                    }
-
-                    const URL = [[${url}]]
-                    const method = [[${method}]]
-
-                    xhr.open(method, URL)
-                    xhr.setRequestHeader('Content-Type', 'application/json')
-                    xhr.send(JSON.stringify(data))
-
-                    xhr.onload = function () {
-                        if (xhr.status === 200 || xhr.status === 201) {
-                            console.log(xhr.responseText)
-                            window.location.href='/recipe?id='+xhr.responseText;
-                        } else {
-                            console.log(xhr.responseText)
-                        }
-                    }
-                }
-
-                //file upload
-                document.getElementById("thumbnail").onchange = function () {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        // get loaded data and render thumbnail.
-                        //썸네일 파일
-                        let file = document.getElementById("thumbnail").files[0];
-                        var form_data = new FormData();
-                        form_data.append('files', file);
-
-                        //썸네일 업로드
-                        $.ajax({
-                            data: form_data,
-                            type: "POST",
-                            url: '/api/file-upload',
-                            cache: false,
-                            contentType: false,
-                            enctype: 'multipart/form-data',
-                            processData: false,
-                            success: function(img_name) {
-                                console.dir(img_name)
-                                console.dir(img_name.body)
-                                document.getElementById("image").src = img_name.body;
-                            }
-                        });
-                    };
-                    // read the image file as a data URL.
-                    reader.readAsDataURL(this.files[0]);
-                };
+            function onChange(e) {
+                // outputs a String
+                console.log(e.target.value)
+                ingredients = e.target.value;
             }
-        </script>
-    </th:block>
-    <th:block th:fragment="summernote">
-        <script src="/node_modules/summernote/dist/summernote-lite.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('.editor').summernote({
-                    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
-                    placeholder: '레시피를 소개해주세요.',
-                    tabsize: 2,
-                    height: 300,
-                    callbacks: {
-                        onImageUpload: function(files, editor, welEditable) {
-                            for (var i = files.length - 1; i >= 0; i--) {
-                                sendFile(files[i], this);
-                            }
-                        }
-                    }
-                }); //editor
 
-                function sendFile(file, el) {
-                    console.log(file)
+            function requestSave() {
+                const xhr = new XMLHttpRequest();
+                const data = {
+                    thumbnail: document.getElementById("image").src,
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value,
+                    ingredients: ingredients,
+                    cookingTime: document.getElementById('cooking-time').value,
+                    fullDescription: document.getElementById('full-description').value,
+                    member: [[${member}]]
+                }
+
+                const URL = [[${url}]]
+                const method = [[${method}]]
+
+                xhr.open(method, URL)
+                xhr.setRequestHeader('Content-Type', 'application/json')
+                xhr.send(JSON.stringify(data))
+
+                xhr.onload = function () {
+                    if (xhr.status === 200 || xhr.status === 201) {
+                        console.log(xhr.responseText)
+                        window.location.href = '/recipe?id=' + xhr.responseText;
+                    } else {
+                        console.log(xhr.responseText)
+                    }
+                }
+            }
+
+            //file upload
+            document.getElementById("thumbnail").onchange = function () {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // get loaded data and render thumbnail.
+                    //썸네일 파일
+                    let file = document.getElementById("thumbnail").files[0];
                     var form_data = new FormData();
                     form_data.append('files', file);
+
+                    //썸네일 업로드
                     $.ajax({
                         data: form_data,
                         type: "POST",
@@ -211,15 +170,58 @@
                         contentType: false,
                         enctype: 'multipart/form-data',
                         processData: false,
-                        success: function(img_name) {
+                        success: function (img_name) {
                             console.dir(img_name)
                             console.dir(img_name.body)
-                            $(el).summernote('editor.insertImage', img_name.body);
+                            document.getElementById("image").src = img_name.body;
                         }
                     });
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            };
+        }
+    </script>
+</th:block>
+<th:block th:fragment="summernote">
+    <script src="/node_modules/summernote/dist/summernote-lite.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.editor').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+                placeholder: '레시피를 소개해주세요.',
+                tabsize: 2,
+                height: 300,
+                callbacks: {
+                    onImageUpload: function (files, editor, welEditable) {
+                        for (var i = files.length - 1; i >= 0; i--) {
+                            sendFile(files[i], this);
+                        }
+                    }
                 }
-            });
-        </script>
-    </th:block>
+            }); //editor
+
+            function sendFile(file, el) {
+                console.log(file)
+                var form_data = new FormData();
+                form_data.append('files', file);
+                $.ajax({
+                    data: form_data,
+                    type: "POST",
+                    url: '/api/file-upload',
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    success: function (img_name) {
+                        console.dir(img_name)
+                        console.dir(img_name.body)
+                        $(el).summernote('editor.insertImage', img_name.body);
+                    }
+                });
+            }
+        });
+    </script>
+</th:block>
 </body>
 </html>

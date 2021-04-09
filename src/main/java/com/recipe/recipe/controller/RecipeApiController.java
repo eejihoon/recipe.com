@@ -27,7 +27,7 @@ public class RecipeApiController {
     @ApiOperation(value = "레시피 등록", notes = "성공 200 OK, 실패 400 ERROR")
     @PostMapping("/api/recipe")
     public ResponseEntity<Long> save(@RequestBody @Valid RecipeSaveForm recipeSaveForm, Errors errors,
-                                    @LoginMember Member loginMember) {
+                                     @LoginMember Member loginMember) {
         log.info("recipeSaveForm : {}", recipeSaveForm);
         log.info("loginMember : {}", loginMember);
         log.info("errors : {} ", errors);
@@ -46,7 +46,7 @@ public class RecipeApiController {
     @PutMapping("/api/recipe/{id}")
     public ResponseEntity<Long> update(@RequestBody @Valid RecipeSaveForm recipeSaveForm, Errors errors,
                                        @PathVariable Long id,
-                                      @LoginMember Member loginMember) throws AccessDeniedException {
+                                       @LoginMember Member loginMember) throws AccessDeniedException {
         log.info("recipeSaveForm : {}", recipeSaveForm);
 
         if (errors.hasErrors()) {
@@ -61,7 +61,7 @@ public class RecipeApiController {
     @ApiOperation(value = "레시피 삭제", notes = "성공 200 OK")
     @DeleteMapping("/api/recipe/{id}")
     public ResponseEntity<String> remove(@PathVariable Long id,
-                                        @LoginMember Member loginMember) throws AccessDeniedException {
+                                         @LoginMember Member loginMember) throws AccessDeniedException {
         recipeService.remove(id, loginMember);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -17,8 +17,8 @@ public class SchedulerTask {
     private final MemberRepository memberRepository;
 
     /*
-    *   매일 오전 04시에 한 번만 실행
-    * */
+     *   매일 오전 04시에 한 번만 실행
+     * */
     @Scheduled(cron = "0 0 4 * * ?")
     public void athenticationTimeOutMemberDeleteTask() {
         log.info("Schedule Task Run... Time : {} ", LocalDateTime.now());

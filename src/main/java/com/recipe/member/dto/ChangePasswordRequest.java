@@ -6,7 +6,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter @Setter
+@Getter
+@Setter
 public class ChangePasswordRequest {
     @Length(min = 8)
     @NotBlank

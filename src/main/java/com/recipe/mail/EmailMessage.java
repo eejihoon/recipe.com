@@ -3,7 +3,9 @@ package com.recipe.mail;
 import lombok.*;
 
 @ToString
-@Getter @Setter @Builder
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 public class EmailMessage {
     private String to;

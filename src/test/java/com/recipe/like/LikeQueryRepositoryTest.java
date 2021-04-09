@@ -5,7 +5,7 @@ import com.recipe.like.domain.Like;
 import com.recipe.member.domain.Member;
 import com.recipe.recipe.domain.Recipe;
 import com.recipe.like.repository.LikeQueryRepository;
-import com.recipe.member.WithMockCutstomUser;
+import com.recipe.member.WithMockCustomUser;
 import com.recipe.recipe.dto.RecipeDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ class LikeQueryRepositoryTest extends TestSet {
     LikeQueryRepository likeQueryRepository;
 
     @Test
-    @WithMockCutstomUser
+    @WithMockCustomUser
     void testFindScrappedRecipe() {
         //given
         Member member = memberRepository.findAll().get(0);

@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="thumbnail">대표 사진</label>
                     <br>
-                    <input type="file" id="thumbnail" />
+                    <input type="file" id="thumbnail"/>
                     <img class="img-thumbnail" id="image" th:src="${recipe.thumbnail}"/>
                     <small id="thumbnail-help" class="form-text text-muted">
                         대표 사진을 등록하세요.
@@ -78,13 +78,16 @@
                     </small>
                 </div>
                 <div class="form-group inline-block">
-                    <a class="btn btn-success btn-block" th:href="@{/recipe(id=${recipe.id}, page=${param.page}, keyword=${param.keyword})}"
-                            aria-describedby="submitHelp">취소</a>
+                    <a class="btn btn-success btn-block"
+                       th:href="@{/recipe(id=${recipe.id}, page=${param.page}, keyword=${param.keyword})}"
+                       aria-describedby="submitHelp">취소</a>
                     <button id="btn-submit" class="btn btn-warning btn-block" type="submit"
-                            aria-describedby="submitHelp">레시피 수정</button>
+                            aria-describedby="submitHelp">레시피 수정
+                    </button>
 
                     <button id="btn-remove" class="btn btn-danger btn-block" type="submit"
-                            aria-describedby="submitHelp">레시피 삭제</button>
+                            aria-describedby="submitHelp">레시피 삭제
+                    </button>
                 </div>
             </div>
         </div>
@@ -95,13 +98,13 @@
 <th:block th:replace="fragments.html :: summernote"></th:block>
 <script th:inline="javascript">
     const btnHandle = {
-        init : function() {
-            document.getElementById('btn-remove').addEventListener('click', ()=>{
+        init: function () {
+            document.getElementById('btn-remove').addEventListener('click', () => {
                 this.remove();
             });
         },
 
-        remove : function () {
+        remove: function () {
             if (confirm('정말 삭제하겠습니까?')) {
                 const xhr = new XMLHttpRequest();
                 const removeTargetId = document.getElementById('id').innerText;

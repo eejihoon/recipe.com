@@ -15,8 +15,8 @@ public class ChangePasswordRequestValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         ChangePasswordRequest changePasswordRequest = (ChangePasswordRequest) target;
-        if(passwordConfirm(changePasswordRequest))
-            errors.rejectValue("confirmPassword", "wrong.value","비밀번호가 일치하지 않습니다.");
+        if (passwordConfirm(changePasswordRequest))
+            errors.rejectValue("confirmPassword", "wrong.value", "비밀번호가 일치하지 않습니다.");
     }
 
     private boolean passwordConfirm(ChangePasswordRequest changePasswordRequest) {

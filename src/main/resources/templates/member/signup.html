@@ -25,7 +25,7 @@
                 <input id="nickname" type="text" class="form-control"
                        placeholder="별명을 입력하세요" aria-describedby="nickname-help" required>
                 <small id="nickname-help" class="form-text text-muted">
-                   특수문자도 사용할 수 있습니다.
+                    특수문자도 사용할 수 있습니다.
                 </small>
                 <small class="invalid-feedback">별명을 입력하세요.</small>
                 <small class="form-text text-danger" id="nickname-warn"></small>
@@ -77,11 +77,11 @@
             const signupBtn = document.getElementById('btn-signup');
 
             const spinner = document.getElementById('spinner');
-            spinner.style.display='none';
+            spinner.style.display = 'none';
 
             signupBtn.addEventListener('click', () => {
-                signupBtn.style.display='none';
-                spinner.style.display='block';
+                signupBtn.style.display = 'none';
+                spinner.style.display = 'block';
 
                 this.signupSubmit();
             });
@@ -100,25 +100,25 @@
 
                 switch (xhr.responseText) {
                     case 'email'            :
-                        document.getElementById('email-warn').innerText='이메일을 제대로 입력했는지 확인하세요.';
+                        document.getElementById('email-warn').innerText = '이메일을 제대로 입력했는지 확인하세요.';
                         break;
                     case 'nickname'         :
-                        document.getElementById('nickname-warn').innerText='별명은 2자 이상 8자 이하로 설정해주세요.';
+                        document.getElementById('nickname-warn').innerText = '별명은 2자 이상 8자 이하로 설정해주세요.';
                         break;
                     case 'password'         :
-                        document.getElementById('password-warn').innerText='비밀번호를 확인하세요.'
+                        document.getElementById('password-warn').innerText = '비밀번호를 확인하세요.'
                         break;
                     case 'confirmPassword'  :
-                        document.getElementById('password-confirm-warn').innerText='비밀번호가 다릅니다.';
+                        document.getElementById('password-confirm-warn').innerText = '비밀번호가 다릅니다.';
                         break;
                 }
             }
 
             const data = {
-                nickname        :   document.getElementById('nickname').value,
-                email           :   document.getElementById('email').value,
-                password        :   document.getElementById('password').value,
-                confirmPassword :   document.getElementById('password-confirm').value
+                nickname: document.getElementById('nickname').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('password-confirm').value
             }
             xhr.open('POST', '/api/member')
             xhr.setRequestHeader('Content-Type', 'application/json')

@@ -22,16 +22,16 @@ public class MemberMailApiController {
     private final static String API = "/api";
 
     @ApiOperation(value = "회원가입 인증 메일 재전송")
-    @PutMapping(API+"/re-sendmail")
+    @PutMapping(API + "/re-sendmail")
     public ResponseEntity<String> reSendMail(@LoginMember Member loginMember) {
         memberMailService.sendMail(loginMember);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "비밀번호 분실한 회원 계정으로 메일 전송")
-    @PutMapping(API+"/withoutPasswordLogin")
+    @PutMapping(API + "/withoutPasswordLogin")
     public ResponseEntity<String> withoutPasswordLoginSendMail(@RequestBody String email) {
-        log.info("email : {} ",email);
+        log.info("email : {} ", email);
 
         try {
             memberMailService.loginSendMail(email);

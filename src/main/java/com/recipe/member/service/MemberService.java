@@ -32,7 +32,7 @@ public class MemberService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member loginMember =
                 memberRepository.findByEmail(email)
-                        .orElseThrow(()->new UsernameNotFoundException("존재하지 않는 계정입니다."));
+                        .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 계정입니다."));
 
         checkDisableMember(loginMember);
 
@@ -40,12 +40,12 @@ public class MemberService implements UserDetailsService {
     }
 
     /*  signup process
-    *   1.  SignupRequest to Member
-    *   2.  send mail
-    *   3.  member save
-    *   4.  login
-    *   5.  return nickname
-    * */
+     *   1.  SignupRequest to Member
+     *   2.  send mail
+     *   3.  member save
+     *   4.  login
+     *   5.  return nickname
+     * */
     public String signup(SignupRequest signupRequest) {
         Member member = signupRequest.toEntity();
 
@@ -63,8 +63,8 @@ public class MemberService implements UserDetailsService {
     }
 
     /*
-    *  회원 이메일로 보낸 토큰과, 회원 객체에 저장된 토큰이 같은지 확인한다.
-    * */
+     *  회원 이메일로 보낸 토큰과, 회원 객체에 저장된 토큰이 같은지 확인한다.
+     * */
     public boolean checkAuthenticationKey(String authenticationKey, Member member) {
         boolean result = member.checkKey(authenticationKey);
 
@@ -75,7 +75,7 @@ public class MemberService implements UserDetailsService {
 
     public void withoutPasswordLogin(String certification, String email) {
         Member member = memberRepository.findByEmail(email).orElseThrow();
-        if(isEquals(certification, member)) {
+        if (isEquals(certification, member)) {
             login(member);
         }
     }

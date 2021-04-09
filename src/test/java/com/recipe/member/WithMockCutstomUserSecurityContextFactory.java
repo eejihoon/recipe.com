@@ -10,16 +10,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-public class WithMockCutstomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCutstomUser> {
+public class WithMockCutstomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomUser> {
 
     @Autowired
     private MemberService memberService;
 
     @Override
-    public SecurityContext createSecurityContext(WithMockCutstomUser withMockCutstomUser) {
+    public SecurityContext createSecurityContext(WithMockCustomUser withMockCustomUser) {
         SignupRequest signupRequest = SignupRequest.builder()
-                .email(withMockCutstomUser.email())
-                .nickname(withMockCutstomUser.nickname())
+                .email(withMockCustomUser.email())
+                .nickname(withMockCustomUser.nickname())
                 .password("12345678")
                 .confirmPassword("12345678")
                 .build();
@@ -27,7 +27,7 @@ public class WithMockCutstomUserSecurityContextFactory implements WithSecurityCo
         memberService.signup(signupRequest);
 
         UserDetails principal =
-                memberService.loadUserByUsername(withMockCutstomUser.email());
+                memberService.loadUserByUsername(withMockCustomUser.email());
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
         SecurityContext context =

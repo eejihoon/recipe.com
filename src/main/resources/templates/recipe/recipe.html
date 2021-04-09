@@ -72,7 +72,8 @@
                 <div class="card-body">
                     <div th:if="${!recipe.cookingMethods.isEmpty()}" th:each="method : ${recipe.cookingMethods}">
                         <h6 th:text="${method.description}"></h6>
-                        <img th:if="${method.image.length() > 1}" class="bd-placeholder-img card-img-top img-thumbnail" th:src="${method.image}">
+                        <img th:if="${method.image.length() > 1}" class="bd-placeholder-img card-img-top img-thumbnail"
+                             th:src="${method.image}">
                         <hr>
                     </div>
                     <div th:if="${recipe.cookingMethods.isEmpty()}">

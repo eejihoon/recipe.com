@@ -22,7 +22,8 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <div class="col" th:each="recipe : ${recipes}">
                 <div class="card shadow-sm">
-                    <a th:href="@{/recipe(id=${recipe.id}, page=${recipes.number}, keyword=${param.keyword})}" class="text-decoration-none text-reset">
+                    <a th:href="@{/recipe(id=${recipe.id}, page=${recipes.number}, keyword=${param.keyword})}"
+                       class="text-decoration-none text-reset">
                         <img class="bd-placeholder-img card-img-top img-thumbnail" th:src="${recipe.thumbnail}">
                         <div class="card-body">
                             <h3 th:text="${recipe.title}"></h3>
@@ -47,7 +48,7 @@
         </div>
         <div class="mt-4"
              th:with="start=${(recipes.number/maxPage)*maxPage + 1},
-                  end=(${(recipes.totalPages == 0) ? 1 : (start + (maxPage - 1) < recipes.totalPages ? start + (maxPage - 1) : recipes.totalPages)})" >
+                  end=(${(recipes.totalPages == 0) ? 1 : (start + (maxPage - 1) < recipes.totalPages ? start + (maxPage - 1) : recipes.totalPages)})">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:if="${start > 1}">
@@ -55,7 +56,8 @@
                     </li>
                     <li class="page-item" th:classappend="${page-1 == recipes.number}? active"
                         th:each="page : ${#numbers.sequence(start, end)}">
-                        <a class="page-link" th:href="@{/myrecipe(page=${page-1}, keyword=${param.keyword})}"><span th:text="${page}"></span></a>
+                        <a class="page-link" th:href="@{/myrecipe(page=${page-1}, keyword=${param.keyword})}"><span
+                                th:text="${page}"></span></a>
                     </li>
                     <li class="page-item" th:if="${end < recipes.totalPages}">
                         <a class="page-link" th:href="@{'/myrecipe?page='+${start+maxPage - 1}}">다음</a>
