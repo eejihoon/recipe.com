@@ -1,8 +1,6 @@
 # 레시피야_ [![Build Status](https://travis-ci.org/cocodori/recipe.com.svg?branch=main)](https://travis-ci.org/cocodori/recipe.com)
 
 > 레시피야는 원하는 레시피를 검색할 수 있고, 자신만의 레시피를 등록해서 공유할 수 있는 웹 서비스입니다.
->
-> [사이트 바로가기](http://recipeya.site)
 
 ----
 1인 개발
